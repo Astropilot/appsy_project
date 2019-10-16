@@ -1,0 +1,146 @@
+/*Style par défault du texte*/
+*{
+	color:  #004570;
+	font-family: 'Lato', sans-serif;
+}
+
+.page_accueil{
+	display: flex;
+	align-items: center;
+	-webkit-transform: rotateY(10deg);
+	transition: transform 1s;
+}
+
+
+/*Style pour l'entête d'accueil, logo, titre et boutons*/
+nav {
+	background-color: #004570;
+	box-shadow: 0 10px 0 10px #004570; /*La banière ne s'étend pas sur toute la page ... il faut ruser ou trouver comment faire*/
+	position: sticky;
+	right: 0;
+	left: 0;
+	top: 0;
+	display: flex;
+	justify-content: space-between;
+
+}
+
+
+nav h1 {
+	text-align: center;
+	color:white;
+}
+
+
+/*Style de la barre de navigation*/
+.navigation{
+	position:sticky;
+	top: 90px;
+	right: 0;
+	left: 0;
+	background-color: #004e86;
+	box-shadow:  0 1px 0px 8px #004e86; /*La banière ne s'étend pas sur toute la page .. il faut ruser ou trouver comment faire*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/*boutons en haut de page*/
+.btn-group-1 button{
+	background-color: #004570;
+	border: solid white 1px;
+	color: white;
+	text-align: center;
+	border-radius:4px;
+	float:right;
+
+}
+
+
+/*Boutons pour la navigation*/
+.btn-group-2 button{
+	background-color: #004e86;
+	border: none;
+	text-align:center;
+	color:white;
+	border-radius:4px;
+	float:left;
+}
+
+button{
+	width:120px;
+	height: 30px;
+	font-size:14px;
+}
+
+/*Met les boutons en surbrillance (blanc) lorsqu'on passe la sourie dessus*/
+button:hover{
+	width: 140px;
+	height:50px;
+	background-color: white;
+	color:black;
+}
+
+/*Rajoute un effet dynamique d'enfoncement lorsque le bouton est pressé*/
+button:active {
+	background-color: white;
+	transform: translateY(4px);
+}
+
+
+/*Style pour les tableaux (à optimiser)*/
+table,tr,td,th{
+	text-align: center;
+	border-bottom:solid #004e86 1px;
+	border-top: solid #004e86 1px;
+	margin-left:100px;
+	border-collapse: collapse;
+}
+
+table{
+	border: solid #004e86 1px ;
+	width: 400px;
+	height:170px;
+}
+
+th{
+	background-color:#004e86;
+	color:white;
+}
+
+/*Style pour les zones de texte*/
+section {
+	position: relative;
+	top:90px;
+	z-index: -1;
+	display: flex;
+	justify-content:space-around;
+	align-items:center;
+	border: solid #004570 1px;
+	border-bottom: none;
+	margin: 0 100px 0 100px;
+	padding: 40px;
+}
+
+/*Style pour le bas de page*/
+footer{
+	background-color: #004570;
+	align-items:center;
+	text-align: center;
+	position: relative;
+	top: 50px;
+	box-shadow: 0 100vh 0 100vh #004570; /*La banière ne s'étend pas sur toute la page .. il faut ruser ou trouver comment faire*/
+}
+
+footer p,a{
+	color:white;
+	text-decoration:none;
+}
+
+/*Dans l'attente d'un meilleur responsive design !*/
+nav,.navigation,section{
+	min-width:600px;
+}
+
+
+
