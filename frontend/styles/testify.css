@@ -7,27 +7,23 @@
 .page_accueil{
 	display: flex;
 	align-items: center;
-	-webkit-transform: rotateY(10deg);
-	transition: transform 1s;
 }
 
 
 /*Style pour l'entête d'accueil, logo, titre et boutons*/
 nav {
 	background-color: #004570;
-	box-shadow: 0 10px 0 10px #004570; /*La banière ne s'étend pas sur toute la page ... il faut ruser ou trouver comment faire*/
+	/*optimiser : La banière ne s'étend pas sur tout la page, il faut ruser box-shadow rajoute un background ou trouver comment faire;*/
+	box-shadow: 0 10px 0 10px #004570; 
 	position: sticky;
-	right: 0;
-	left: 0;
-	top: 0;
+	top:0;
 	display: flex;
 	justify-content: space-between;
-
 }
 
 
 nav h1 {
-	text-align: center;
+	margin-right: auto;
 	color:white;
 }
 
@@ -35,11 +31,10 @@ nav h1 {
 /*Style de la barre de navigation*/
 .navigation{
 	position:sticky;
-	top: 90px;
-	right: 0;
-	left: 0;
+	top: 75px;
 	background-color: #004e86;
-	box-shadow:  0 1px 0px 8px #004e86; /*La banière ne s'étend pas sur toute la page .. il faut ruser ou trouver comment faire*/
+	/*optimiser : La banière ne s'étend pas sur tout la page, il faut ruser box-shadow rajoute un background ou trouver comment faire;*/
+	box-shadow:  0 1px 0px 8px #004e86; 
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -51,7 +46,6 @@ nav h1 {
 	border: solid white 1px;
 	color: white;
 	text-align: center;
-	border-radius:4px;
 	float:right;
 
 }
@@ -62,8 +56,7 @@ nav h1 {
 	background-color: #004e86;
 	border: none;
 	text-align:center;
-	color:white;
-	border-radius:4px;
+	color:white;	
 	float:left;
 }
 
@@ -71,11 +64,12 @@ button{
 	width:120px;
 	height: 30px;
 	font-size:14px;
+	border-radius:8px;
 }
 
 /*Met les boutons en surbrillance (blanc) lorsqu'on passe la sourie dessus*/
 button:hover{
-	width: 140px;
+	width: 120px;
 	height:50px;
 	background-color: white;
 	color:black;
@@ -110,16 +104,19 @@ th{
 
 /*Style pour les zones de texte*/
 section {
-	position: relative;
-	top:90px;
-	z-index: -1;
+	z-index: -1; /*Gere la disposition par rapport aux autres éléments*/
 	display: flex;
 	justify-content:space-around;
 	align-items:center;
 	border: solid #004570 1px;
 	border-bottom: none;
-	margin: 0 100px 0 100px;
-	padding: 40px;
+	margin: 0 200px 0 200px;
+	padding: 40px 150px 40px 150px;
+}
+
+section div{
+	padding-right: 120px;
+	padding-left: 120px;
 }
 
 /*Style pour le bas de page*/
@@ -128,8 +125,9 @@ footer{
 	align-items:center;
 	text-align: center;
 	position: relative;
-	top: 50px;
-	box-shadow: 0 100vh 0 100vh #004570; /*La banière ne s'étend pas sur toute la page .. il faut ruser ou trouver comment faire*/
+	top:-10px;
+	/*optimiser : La banière ne s'étend pas sur tout la page, il faut ruser box-shadow rajoute un background ou trouver comment faire;*/
+	box-shadow: 0 1px 0 30px #004570; 
 }
 
 footer p,a{
@@ -139,7 +137,7 @@ footer p,a{
 
 /*Dans l'attente d'un meilleur responsive design !*/
 nav,.navigation,section{
-	min-width:600px;
+	min-width:800px;
 }
 
 
