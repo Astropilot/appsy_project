@@ -16,6 +16,7 @@ nav {
 	/*optimiser : La banière ne s'étend pas sur tout la page, il faut ruser box-shadow rajoute un background ou trouver comment faire;*/
 	box-shadow: 0 10px 0 10px #004570; 
 	position: sticky;
+	/*Pour que la banière reste en haut lorsque l'on scroll*/
 	top:0;
 	display: flex;
 	justify-content: space-between;
@@ -40,43 +41,61 @@ nav h1 {
 	justify-content: center;
 }
 
-/*boutons en haut de page*/
-.btn-group-1 button{
+/*Met les boutons en haut à droite*/
+.btn-group-1{
+	margin-top: 0;
+	margin-right: 0;	
+}
+
+.btn-group-1 li{
+	width: 140px;
+	height:25px;
+	float:right;
+	display: inline;
 	background-color: #004570;
 	border: solid white 1px;
-	color: white;
 	text-align: center;
+}
+
+/*boutons en haut de page*/
+.btn-group-2 li{
+	width: 140px;
+	height:25px;
 	float:right;
-
-}
-
-
-/*Boutons pour la navigation*/
-.btn-group-2 button{
+	display: inline;
 	background-color: #004e86;
-	border: none;
-	text-align:center;
-	color:white;	
-	float:left;
+	text-align: center;
+	font-size: 16px;
 }
 
-button{
-	width:120px;
-	height: 30px;
-	font-size:14px;
-	border-radius:8px;
+li a{
+	display: block;
+	margin-top: 3px;
+	padding-bottom:20px;
+}
+
+li:first-child{
+	border-bottom-right-radius: 8px;
+	border-top-right-radius: 8px; 
+}
+
+li:last-child{
+	border-bottom-left-radius: 8px;
+	border-top-left-radius: 8px; 
 }
 
 /*Met les boutons en surbrillance (blanc) lorsqu'on passe la sourie dessus*/
-button:hover{
-	width: 120px;
-	height:50px;
+li:hover{
+	height:30px;
 	background-color: white;
+}
+li a:hover{
+	margin-top: 5px;
 	color:black;
 }
 
 /*Rajoute un effet dynamique d'enfoncement lorsque le bouton est pressé*/
-button:active {
+li:active {
 	background-color: white;
 	transform: translateY(4px);
 }
