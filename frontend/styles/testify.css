@@ -108,10 +108,3 @@ footer {
 footer a {
   color: inherit;
 }
-
-/* Dans l'attente d'un meilleur responsive design ! */
-nav,
-.navigation,
-section {
-  min-width:850px;
-}
