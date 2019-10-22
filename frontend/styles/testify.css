@@ -1,163 +1,167 @@
-/*Style par défault du texte*/
-*{
-	color:  #004570;
-	font-family: 'Lato', sans-serif;
+/* Style par défault du texte */
+* {
+  color: #004570;
+  font-family: 'Lato', sans-serif;
 }
 
-.page_accueil{
-	display: flex;
-	align-items: center;
+body {
+  margin: 0;
 }
 
-
-/*Style pour l'entête d'accueil, logo, titre et boutons*/
-nav {
-	background-color: #004570;
-	/*optimiser : La banière ne s'étend pas sur tout la page, il faut ruser box-shadow rajoute un background ou trouver comment faire;*/
-	box-shadow: 0 10px 0 10px #004570; 
-	position: sticky;
-	/*Pour que la banière reste en haut lorsque l'on scroll*/
-	top:0;
-	display: flex;
-	justify-content: space-between;
+footer p,
+a {
+  color: white;
+  text-decoration: none;
 }
 
-
-nav h1 {
-	margin-right: auto;
-	color:white;
+.page_accueil {
+  display: flex;
+  align-items: center;
 }
 
+/* Style pour l'entête d'accueil, logo, titre et boutons */
+.header-nav {
+  background-color: #004570;
 
-/*Style de la barre de navigation*/
-.navigation{
-	position:sticky;
-	top: 75px;
-	background-color: #004e86;
-	/*optimiser : La banière ne s'étend pas sur tout la page, il faut ruser box-shadow rajoute un background ou trouver comment faire;*/
-	box-shadow:  0 1px 0px 8px #004e86; 
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  /* Pour que la banière reste en haut lorsque l'on scroll */
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
 }
 
-/*Met les boutons en haut à droite*/
-.btn-group-1{
-	margin-top: 0;
-	margin-right: 0;	
+.header-nav > h1 {
+  margin-right: auto;
+  color: white;
 }
 
-.btn-group-1 li{
-	width: 140px;
-	height:25px;
-	float:right;
-	display: inline;
-	background-color: #004570;
-	border: solid white 1px;
-	text-align: center;
+.header-nav > ul {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
-/*boutons en haut de page*/
-.btn-group-2 li{
-	width: 140px;
-	height:25px;
-	float:right;
-	display: inline;
-	background-color: #004e86;
-	text-align: center;
-	font-size: 16px;
+/* Style de la barre de navigation */
+.navigation {
+  position: sticky;
+  top: 70px;
+  background-color: #004e86;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-li a{
-	display: block;
-	margin-top: 3px;
-	padding-bottom:20px;
+/* Met les boutons en haut à droite */
+.btn-group-1 {
+  margin-top: 0;
+  margin-right: 0;
 }
 
-li:first-child{
-	border-bottom-right-radius: 8px;
-	border-top-right-radius: 8px; 
+.btn-group-1 li {
+  width: 140px;
+  height: 25px;
+  float: right;
+  display: inline;
+  background-color: #004570;
+  border: solid white 1px;
+  text-align: center;
 }
 
-li:last-child{
-	border-bottom-left-radius: 8px;
-	border-top-left-radius: 8px; 
+/* Boutons en haut de page */
+.btn-group-2 li {
+  width: 140px;
+  height: 25px;
+  float: right;
+  display: inline;
+  background-color: #004e86;
+  text-align: center;
+  font-size: 16px;
 }
 
-/*Met les boutons en surbrillance (blanc) lorsqu'on passe la sourie dessus*/
-li:hover{
-	height:30px;
-	background-color: white;
-}
-li a:hover{
-	margin-top: 5px;
-	color:black;
+li a {
+  display: block;
+  margin-top: 3px;
+  padding-bottom: 20px;
 }
 
-/*Rajoute un effet dynamique d'enfoncement lorsque le bouton est pressé*/
+li:first-child {
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+li:last-child {
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+/* Met les boutons en surbrillance (blanc) lorsqu'on passe la sourie dessus */
+li:hover {
+  background-color: white;
+}
+
+li a:hover {
+  color: black;
+}
+
+/* Rajoute un effet dynamique d'enfoncement lorsque le bouton est pressé */
 li:active {
-	background-color: white;
-	transform: translateY(4px);
+  background-color: white;
+  transform: translateY(4px);
 }
 
-
-/*Style pour les tableaux (à optimiser)*/
-table,tr,td,th{
-	text-align: center;
-	border-bottom:solid #004e86 1px;
-	border-top: solid #004e86 1px;
-	margin-left:100px;
-	border-collapse: collapse;
+/* Style pour les tableaux (à optimiser) */
+table,
+tr,
+td,
+th {
+  text-align: center;
+  border-bottom: solid #004e86 1px;
+  border-top: solid #004e86 1px;
+  margin-left: 100px;
+  border-collapse: collapse;
 }
 
-table{
-	border: solid #004e86 1px ;
-	width: 400px;
-	height:170px;
+table {
+  border: solid #004e86 1px;
+  width: 400px;
+  height: 170px;
 }
 
-th{
-	background-color:#004e86;
-	color:white;
+th {
+  background-color: #004e86;
+  color: white;
 }
 
-/*Style pour les zones de texte*/
+/* Style pour les zones de texte */
 section {
-	z-index: -1; /*Gere la disposition par rapport aux autres éléments*/
-	display: flex;
-	justify-content:space-around;
-	align-items:center;
-	border: solid #004570 1px;
-	border-bottom: none;
-	margin: 0 200px 0 200px;
-	padding: 40px 150px 40px 150px;
+  z-index: -1; /* Gere la disposition par rapport aux autres éléments */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: solid #004570 1px;
+  border-bottom: none;
+  margin: 0 200px 0 200px;
+  padding: 40px 150px 40px 150px;
 }
 
-section div{
-	padding-right: 120px;
-	padding-left: 120px;
+section div {
+  padding-right: 120px;
+  padding-left: 120px;
 }
 
-/*Style pour le bas de page*/
-footer{
-	background-color: #004570;
-	align-items:center;
-	text-align: center;
-	position: relative;
-	top:-10px;
-	/*optimiser : La banière ne s'étend pas sur tout la page, il faut ruser box-shadow rajoute un background ou trouver comment faire;*/
-	box-shadow: 0 1px 0 30px #004570; 
+/* Style pour le bas de page */
+footer {
+  display: flex;
+  background-color: #004570;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  bottom: 0;
+  height: 50px;
 }
 
-footer p,a{
-	color:white;
-	text-decoration:none;
+/* Dans l'attente d'un meilleur responsive design ! */
+nav,
+.navigation,
+section {
+  min-width: 800px;
 }
-
-/*Dans l'attente d'un meilleur responsive design !*/
-nav,.navigation,section{
-	min-width:800px;
-}
-
-
-
