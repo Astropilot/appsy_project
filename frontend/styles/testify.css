@@ -1,16 +1,17 @@
+@import 'buttons.css';
+
 /* Style par défault du texte */
 * {
-  color: #004570;
   font-family: 'Lato', sans-serif;
 }
 
 body {
+  color: #004570;
   margin: 0;
 }
 
 footer p,
 a {
-  color: white;
   text-decoration: none;
 }
 
@@ -22,6 +23,7 @@ a {
 /* Style pour l'entête d'accueil, logo, titre et boutons */
 .header-nav {
   background-color: #004570;
+  color: white;
 
   /* Pour que la banière reste en haut lorsque l'on scroll */
   position: sticky;
@@ -32,7 +34,7 @@ a {
 
 .header-nav > h1 {
   margin-right: auto;
-  color: white;
+  color: inherit;
 }
 
 .header-nav > ul {
@@ -48,64 +50,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Met les boutons en haut à droite */
-.btn-group-1 {
-  margin-top: 0;
-  margin-right: 0;
-}
-
-.btn-group-1 li {
-  width: 140px;
-  height: 25px;
-  float: right;
-  display: inline;
-  background-color: #004570;
-  border: solid white 1px;
-  text-align: center;
-}
-
-/* Boutons en haut de page */
-.btn-group-2 li {
-  width: 140px;
-  height: 25px;
-  float: right;
-  display: inline;
-  background-color: #004e86;
-  text-align: center;
-  font-size: 16px;
-}
-
-li a {
-  display: block;
-  margin-top: 3px;
-  padding-bottom: 20px;
-}
-
-li:first-child {
-  border-bottom-right-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-li:last-child {
-  border-bottom-left-radius: 8px;
-  border-top-left-radius: 8px;
-}
-
-/* Met les boutons en surbrillance (blanc) lorsqu'on passe la sourie dessus */
-li:hover {
-  background-color: white;
-}
-
-li a:hover {
-  color: black;
-}
-
-/* Rajoute un effet dynamique d'enfoncement lorsque le bouton est pressé */
-li:active {
-  background-color: white;
-  transform: translateY(4px);
+  color: white;
 }
 
 /* Style pour les tableaux (à optimiser) */
@@ -157,6 +102,11 @@ footer {
   position: relative;
   bottom: 0;
   height: 50px;
+  color: white;
+}
+
+footer a {
+  color: inherit;
 }
 
 /* Dans l'attente d'un meilleur responsive design ! */

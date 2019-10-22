@@ -1,0 +1,70 @@
+li a {
+  display: block;
+  margin-top: 3px;
+  padding-bottom: 20px;
+}
+
+/* Met les boutons en haut à droite */
+.btn-group-1 {
+  margin-top: 0;
+  margin-right: 0;
+}
+
+.btn-group-1 li {
+  width: 140px;
+  height: 25px;
+  float: right;
+  display: inline;
+  background-color: #004570;
+  border: solid white 1px;
+  text-align: center;
+}
+
+.btn-group-1 li a {
+  color: inherit;
+}
+
+.btn-group-1 li:hover {
+  background-color: white;
+}
+
+.btn-group-1 li:hover a {
+  color: black;
+}
+
+.btn-group-1 li:first-child {
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.btn-group-1 li:last-child {
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+/* Boutons en haut de page */
+.btn-group-2 li {
+  width: 140px;
+  height: 25px;
+  float: right;
+  display: inline;
+  background-color: #004e86;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.btn-group-2 li a {
+  color: inherit;
+}
+
+.btn-group-2 li:hover {
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+/* Rajoute un effet dynamique d'enfoncement lorsque le bouton est pressé */
+.btn-group-1 li:active,
+.btn-group-2 li:active {
+  transform: translateY(4px);
+}
