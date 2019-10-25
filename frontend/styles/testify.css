@@ -46,6 +46,7 @@ a {
 .header-nav > ul {
   margin-top: auto;
   margin-bottom: auto;
+  border-radius: 5px;
 }
 
 /* Style de la barre de navigation */
@@ -90,14 +91,17 @@ section {
   align-items: center;
   border: solid #004570 1px;
   border-bottom: none;
-  margin: 0 200px 0 200px;
-  padding: 40px 150px 40px 150px;
+  margin: 0 100px 0 100px;
+  padding: 40px 50px 40px 50px;
+  overflow: auto;
 }
 
 section div {
-  padding-right: 120px;
-  padding-left: 120px;
+  padding-right: 90px;
+  padding-left: 90px;
 }
+
+
 
 /* Style pour le bas de page */
 footer {
@@ -106,7 +110,7 @@ footer {
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 0;
+  bottom: -1;
   left: 0;
   right: 0;
   height: 50px;
