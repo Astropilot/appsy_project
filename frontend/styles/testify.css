@@ -5,9 +5,15 @@
   font-family: 'Lato', sans-serif;
 }
 
+html {
+  height: 100%;
+}
 body {
-  color: #004570;
+  position: relative;
+  min-height: 100%;
   margin: 0;
+  padding: 0;
+  color: #004570;
 }
 
 footer p,
@@ -99,10 +105,13 @@ footer {
   background-color: #004570;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
   height: 50px;
   color: white;
+  margin-top: auto;
 }
 
 footer a {
