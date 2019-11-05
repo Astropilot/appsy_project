@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  lun. 04 nov. 2019 à 11:03
+-- Généré le :  mar. 05 nov. 2019 à 15:49
 -- Version du serveur :  10.1.32-MariaDB
 -- Version de PHP :  7.2.5
 
@@ -34,13 +34,6 @@ CREATE TABLE `tf_faq` (
   `answer` text NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `tf_faq`
---
-
-INSERT INTO `tf_faq` (`id`, `question`, `answer`, `created_at`) VALUES
-(2, 'Hello how are you ?', 'I&#39;m fine and you ?', '2019-11-03 21:11:01');
 
 -- --------------------------------------------------------
 
@@ -78,16 +71,10 @@ CREATE TABLE `tf_forum_post` (
 CREATE TABLE `tf_message` (
   `id` int(11) NOT NULL,
   `author` int(11) NOT NULL,
+  `recipient` int(11) NOT NULL,
   `message` text NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `tf_message`
---
-
-INSERT INTO `tf_message` (`id`, `author`, `message`, `created_at`) VALUES
-(3, 2, 'Bonjour j&#39;ai un problème pouvez-vous m&#39;aider ?', '2019-11-04 10:21:57');
 
 -- --------------------------------------------------------
 
@@ -125,7 +112,7 @@ CREATE TABLE `tf_user` (
 --
 
 INSERT INTO `tf_user` (`id`, `email`, `password`, `lastname`, `firstname`, `role`) VALUES
-(2, 'demo@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'John', 'Doe', 0),
+(2, 'demo@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'John', 'Doe', 2),
 (3, 'demo2@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Alice', 'O\'connel', 0);
 
 --
@@ -158,7 +145,8 @@ ALTER TABLE `tf_forum_post`
 --
 ALTER TABLE `tf_message`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_message_user` (`author`);
+  ADD KEY `FK_message_user` (`author`),
+  ADD KEY `FK_message_user2` (`recipient`);
 
 --
 -- Index pour la table `tf_ticket`
@@ -182,7 +170,7 @@ ALTER TABLE `tf_user`
 -- AUTO_INCREMENT pour la table `tf_faq`
 --
 ALTER TABLE `tf_faq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `tf_forum_category`
@@ -200,7 +188,7 @@ ALTER TABLE `tf_forum_post`
 -- AUTO_INCREMENT pour la table `tf_message`
 --
 ALTER TABLE `tf_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `tf_ticket`
@@ -230,7 +218,8 @@ ALTER TABLE `tf_forum_post`
 -- Contraintes pour la table `tf_message`
 --
 ALTER TABLE `tf_message`
-  ADD CONSTRAINT `FK_message_user` FOREIGN KEY (`author`) REFERENCES `tf_user` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `FK_message_user` FOREIGN KEY (`author`) REFERENCES `tf_user` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_message_user2` FOREIGN KEY (`recipient`) REFERENCES `tf_user` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `tf_ticket`

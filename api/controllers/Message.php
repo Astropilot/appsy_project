@@ -3,13 +3,14 @@
 include_once 'Configuration.php';
 include_once 'models/User.php';
 include_once 'models/Message.php';
+include_once 'models/Role.php';
 include_once 'utils/Security.php';
 
 
 $router = Router::getInstance();
 
 
-$router->get($APPSY_PREFIX . 'users/<user_id>/messages', function($request, $user_id) {
+$router->get($APPSY_PREFIX . 'users/<user_id>/contacts', function($request, $user_id) {
     $errors_arr = array();
 
     Security::checkAPIConnected();
@@ -24,7 +25,35 @@ $router->get($APPSY_PREFIX . 'users/<user_id>/messages', function($request, $use
     }
 
     if(count($errors_arr) === 0) {
-        $messages = Message::getInstance()->getUserMessages($user);
+        $contacts = Message::getInstance()->getContacts($user);
+
+        return json_encode(array("r" => True, "contacts" => $contacts));
+    }
+
+    return json_encode(array("r" => False, "errors" => $errors_arr));
+});
+
+$router->get($APPSY_PREFIX . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
+    $errors_arr = array();
+
+    Security::checkAPIConnected();
+
+    if (intval($user_id) !== $_SESSION['id'])
+        $errors_arr[] = "Vous n'avez pas accès aux informations de cet utilisateur !";
+
+    if(count($errors_arr) === 0) {
+        $user = User::getInstance()->getUser($user_id);
+        if($user === null)
+            $errors_arr[] = "L'utilisateur est introuvable !";
+        else {
+            $contact = User::getInstance()->getUser($contact_id);
+            if ($contact === null)
+                $errors_arr[] = "Le contact est introuvable !";
+        }
+    }
+
+    if(count($errors_arr) === 0) {
+        $messages = Message::getInstance()->getUserContactMessages($user, $contact);
 
         return json_encode(array("r" => True, "messages" => $messages));
     }
@@ -32,7 +61,7 @@ $router->get($APPSY_PREFIX . 'users/<user_id>/messages', function($request, $use
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->post($APPSY_PREFIX . 'users/<user_id>/messages', function($request, $user_id) {
+$router->post($APPSY_PREFIX . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
 
     Security::checkAPIConnected();
@@ -44,6 +73,11 @@ $router->post($APPSY_PREFIX . 'users/<user_id>/messages', function($request, $us
         $user = User::getInstance()->getUser($user_id);
         if($user === null)
             $errors_arr[] = "L'utilisateur est introuvable !";
+        else {
+            $contact = User::getInstance()->getUser($contact_id);
+            if ($contact === null)
+                $errors_arr[] = "Le contact est introuvable !";
+        }
     }
 
     if(!isset($request->getBody()['message']) || empty($request->getBody()['message']))
@@ -52,7 +86,7 @@ $router->post($APPSY_PREFIX . 'users/<user_id>/messages', function($request, $us
     if(count($errors_arr) === 0) {
         $message = Security::protect($request->getBody()['message']);
 
-        $message = Message::getInstance()->createMessage($user, $message);
+        $message = Message::getInstance()->createMessage($user, $contact, $message);
         return json_encode(array("r" => True, "message" => $message));
     }
 

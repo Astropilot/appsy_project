@@ -18,7 +18,7 @@ class Security {
     }
 
     public static function isLogged() : bool {
-        if (!isset($_SESSION['username']) || !isset($_SESSION['id']))
+        if (!isset($_SESSION['email']) || !isset($_SESSION['id']))
             return False;
         return True;
     }

@@ -26,17 +26,18 @@ $router->post($APPSY_PREFIX . 'users/login', function($request) {
 
         if(count($errors_arr) === 0) {
             $user_id = User::getInstance()->getUserID($email);
+            $user_role = User::getInstance()->getUserRole($user_id);
             $_SESSION['email'] = $email;
             $_SESSION['id'] = $user_id;
-            $_SESSION['role'] = User::getInstance()->getUserRole($user_id);
+            $_SESSION['role'] = $user_role;
 
-            return json_encode(array("r" => True, "user_id" => $user_id));
+            return json_encode(array("r" => True, "user_id" => $user_id, "user_role" => $user_role));
         }
     }
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->post($APPSY_PREFIX . 'users/<userid>', function($request, $user_id) {
+$router->get($APPSY_PREFIX . 'users/<userid>', function($request, $user_id) {
     $errors_arr = array();
 
     Security::checkAPIConnected();
