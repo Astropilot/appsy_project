@@ -14,8 +14,14 @@ indent_size              = 4
 trim_trailing_whitespace = false
 
 # Web Files
-[*.{htm,html,js,ts,tsx,css,sass,scss,less,svg,vue}]
+[*.{htm,html}]
 indent_size              = 2
+max_line_length          = 120
+
+[*.{js,css}]
+indent_size              = 2
+max_line_length          = 80
 
 [*.{inc,php,phpt,xml}]
 indent_size              = 4
+max_line_length          = 80

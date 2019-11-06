@@ -26,12 +26,12 @@ $router->post($APPSY_PREFIX . 'users/login', function($request) {
 
         if(count($errors_arr) === 0) {
             $user_id = User::getInstance()->getUserID($email);
-            $user_role = User::getInstance()->getUserRole($user_id);
-            $_SESSION['email'] = $email;
-            $_SESSION['id'] = $user_id;
-            $_SESSION['role'] = $user_role;
+            $user = User::getInstance()->getUser($user_id);
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['role'] = $user['role'];
 
-            return json_encode(array("r" => True, "user_id" => $user_id, "user_role" => $user_role));
+            return json_encode(array("r" => True, "user" => $user));
         }
     }
     return json_encode(array("r" => False, "errors" => $errors_arr));
