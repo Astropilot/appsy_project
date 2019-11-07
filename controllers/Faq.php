@@ -4,19 +4,22 @@ include_once 'Configuration.php';
 include_once 'models/Faq.php';
 include_once 'models/Role.php';
 include_once 'utils/Security.php';
+include_once 'utils/API.php';
 
 
 $router = Router::getInstance();
 
 
-$router->get($APPSY_PREFIX . 'faq/questions', function($request) {
+$router->get(TESTIFY_API_ROOT . 'faq/questions', function($request) {
+    setAPIHeaders();
     Security::checkAPIConnected();
 
     $faq = Faq::getInstance()->getFaq();
     return json_encode(array("r" => True, "faq" => $faq));
 });
 
-$router->post($APPSY_PREFIX . 'faq/questions', function($request) {
+$router->post(TESTIFY_API_ROOT . 'faq/questions', function($request) {
+    setAPIHeaders();
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
@@ -37,7 +40,8 @@ $router->post($APPSY_PREFIX . 'faq/questions', function($request) {
         return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->delete($APPSY_PREFIX . 'faq/questions/<question_id>', function($request, $question_id) {
+$router->delete(TESTIFY_API_ROOT . 'faq/questions/<question_id>', function($request, $question_id) {
+    setAPIHeaders();
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 

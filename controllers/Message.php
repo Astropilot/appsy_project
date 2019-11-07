@@ -5,14 +5,16 @@ include_once 'models/User.php';
 include_once 'models/Message.php';
 include_once 'models/Role.php';
 include_once 'utils/Security.php';
+include_once 'utils/API.php';
 
 
 $router = Router::getInstance();
 
 
-$router->get($APPSY_PREFIX . 'users/<user_id>/contacts', function($request, $user_id) {
+$router->get(TESTIFY_API_ROOT . 'users/<user_id>/contacts', function($request, $user_id) {
     $errors_arr = array();
 
+    setAPIHeaders();
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
@@ -33,9 +35,10 @@ $router->get($APPSY_PREFIX . 'users/<user_id>/contacts', function($request, $use
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get($APPSY_PREFIX . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
+$router->get(TESTIFY_API_ROOT . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
 
+    setAPIHeaders();
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
@@ -61,9 +64,10 @@ $router->get($APPSY_PREFIX . 'users/<user_id>/<contact_id>/messages', function($
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->post($APPSY_PREFIX . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
+$router->post(TESTIFY_API_ROOT . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
 
+    setAPIHeaders();
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])

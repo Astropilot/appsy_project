@@ -3,13 +3,16 @@
 include_once 'Configuration.php';
 include_once 'models/User.php';
 include_once 'utils/Security.php';
+include_once 'utils/API.php';
 
 
 $router = Router::getInstance();
 
 
-$router->post($APPSY_PREFIX . 'users/login', function($request) {
+$router->post(TESTIFY_API_ROOT . 'users/login', function($request) {
     $errors_arr = array();
+
+    setAPIHeaders();
 
     if(!isset($request->getBody()['email']) || empty($request->getBody()['email']))
         $errors_arr[] = "L'identifiant est vide !";
@@ -37,9 +40,10 @@ $router->post($APPSY_PREFIX . 'users/login', function($request) {
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get($APPSY_PREFIX . 'users/<userid>', function($request, $user_id) {
+$router->get(TESTIFY_API_ROOT . 'users/<userid>', function($request, $user_id) {
     $errors_arr = array();
 
+    setAPIHeaders();
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
@@ -55,7 +59,9 @@ $router->get($APPSY_PREFIX . 'users/<userid>', function($request, $user_id) {
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get($APPSY_PREFIX . 'users/logoff', function($request) {
+$router->get(TESTIFY_API_ROOT . 'users/logoff', function($request) {
+    setAPIHeaders();
+
     if(isset($_SESSION['email']) && isset($_SESSION['id'])) {
         unset($_SESSION['email']);
         unset($_SESSION['role']);

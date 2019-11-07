@@ -1,0 +1,39 @@
+{% extends '/../../views/base_home.html' %}
+
+{% block title %}
+Connexion
+{% endblock %}
+
+{% block body %}
+
+<section>
+  <div class="container">
+    <div class="row">
+      <h2 style="text-align: center">Connexion</h2>
+    </div>
+    <div class="row">
+      <form class="form" style="text-align: center">
+        <div>
+          <label for="email">Email : </label>
+          <input type="email" class="form-field" name="email" id="email" placeholder="Ex: email@gmail.com">
+        </div>
+
+        <br>
+
+        <div>
+          <label for="password">Mot de passe : </label>
+          <input type="password" class="form-field" name="password" id="password">
+        </div>
+
+        <br>
+
+        <button id="btn-login" type="button" class="btn btn-primary">
+          Se connecter <i id="wait-login" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        </button>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
