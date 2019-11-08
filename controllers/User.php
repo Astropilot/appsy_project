@@ -2,6 +2,7 @@
 
 include_once 'Configuration.php';
 include_once 'models/User.php';
+include_once 'models/Role.php';
 include_once 'utils/Security.php';
 include_once 'utils/API.php';
 
@@ -55,6 +56,24 @@ $router->get(TESTIFY_API_ROOT . 'users/<userid>', function($request, $user_id) {
             $errors_arr[] = "L'utilisateur est introuvable !";
         } else
             return json_encode(array("r" => True, "user" => $user));
+    }
+    return json_encode(array("r" => False, "errors" => $errors_arr));
+});
+
+$router->post(TESTIFY_API_ROOT . 'contacts/search', function($request) {
+    $errors_arr = array();
+
+    setAPIHeaders();
+    Security::checkAPIConnected();
+
+    if(!isset($request->getBody()['search']) || empty($request->getBody()['search']))
+        $errors_arr[] = "Pas de critère donné !";
+
+    if(count($errors_arr) === 0) {
+        $search = Security::protect($request->getBody()['search']);
+        $contacts = User::getInstance()->findContacts($search, !Role::isUser());
+
+        return json_encode(array("r" => True, "contacts" => $contacts));
     }
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });

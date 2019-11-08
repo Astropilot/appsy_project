@@ -1,3 +1,5 @@
+var ROLES = {0: 'Utilisateur', 1: 'Examinateur', 2: 'Administrateur'};
+
 $(function() {
   checkIsLogged();
 
@@ -166,6 +168,48 @@ function sendMessageTo(contact_id, message) {
             <small>${message.created_at}</small>
            </div>`
         );
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function searchContact(search) {
+  //var user = JSON.parse(localStorage.getItem('user'));
+  $('#wait-searching').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/appsy_project/api/contacts/search`,
+    data: {search: search},
+    dataType: 'json',
+    success: function(data) {
+      $('#wait-searching').hide();
+      if (data.r) {
+        var message = data.message;
+
+        $('#contact-list').empty();
+        data.contacts.forEach(function(contact) {
+          $('#contact-list').append(
+            `<tr>
+              <td>${contact.firstname} ${contact.lastname}</td>
+              <td>${contact.email}</td>
+              <td>${ROLES[contact.role]}</td>
+              <td><a href="/appsy_project/dashboard/chat_user?id=${contact.id}" class="btn btn-primary">
+                Envoyer un message
+              </a></td>
+             </tr>`
+          );
+        });
       } else {
         data.errors.forEach(function(error) {
           new Noty({

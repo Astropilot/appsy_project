@@ -50,6 +50,13 @@ Discussion
 
     getMessages();
 
+    $('#text-message').keypress(function (e) {
+      if (e.which == 13) {
+        sendMessageTo(contact_id, $('#text-message').val());
+        return false;
+      }
+    });
+
     $('#btn-send-message').on('click', function() {
       sendMessageTo(contact_id, $('#text-message').val());
     });

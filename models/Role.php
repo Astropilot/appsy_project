@@ -14,7 +14,11 @@ class Role {
         }
     }
 
+    public static function isUser() : bool {
+        return (intval($_SESSION['role']) === self::$ROLES['USER']);
+    }
+
     public static function isAdministrator() : bool {
-        return (intval($_SESSION['role']) < $this->$ROLES['ADMINISTRATOR']);
+        return (intval($_SESSION['role']) < self::$ROLES['ADMINISTRATOR']);
     }
 }

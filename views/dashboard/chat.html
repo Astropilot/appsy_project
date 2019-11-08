@@ -28,12 +28,24 @@ Messagerie
     <div class="row text-center">
       <form class="form">
         <input type="text" class="form-field" name="contact-search" id="contact-search" placeholder="Ex: John Doe">
-        <button id="btn-login" type="button" class="btn btn-primary">
+        <button id="btn-search" type="button" class="btn btn-primary">
           Chercher <i id="wait-searching" class="fas fa-circle-notch fa-spin" style="display: none"></i>
         </button>
       </form>
     </div>
-    <div class="row text-center" id="contact-list">
+    <div class="row">
+      <table class="mx-auto">
+        <thead>
+          <tr>
+            <th>Nom / Prénom</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="contact-list">
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -45,6 +57,10 @@ Messagerie
 <script type="text/javascript">
   $(function() {
     getUserContacts();
+
+    $('#btn-search').on('click', function() {
+      searchContact($('#contact-search').val());
+    });
   });
 </script>
 

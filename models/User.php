@@ -55,4 +55,24 @@ class User {
         ));
         return ($req->fetch());
     }
+
+    public function findContacts($search, $include_users) {
+        $exclude_users = '';
+        if (!$include_users)
+            $exclude_users = ' AND `role` > 0';
+        $req = Database::getInstance()->getPDO()->prepare(
+            "SELECT id, email, lastname, firstname, role
+            FROM tf_user
+            WHERE (tf_user.email LIKE :search1
+                    OR
+                  tf_user.firstname LIKE :search2
+                    OR
+                  tf_user.lastname LIKE :search3)" . $exclude_users
+        );
+        $req->bindValue(':search1', '%' . $search . '%');
+        $req->bindValue(':search2', '%' . $search . '%');
+        $req->bindValue(':search3', '%' . $search . '%');
+        $req->execute();
+        return ($req->fetchAll());
+    }
 }
