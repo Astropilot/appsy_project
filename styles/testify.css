@@ -155,3 +155,7 @@ footer a {
   margin-top: auto;
   margin-bottom: auto;
 }
+
+.text-center {
+  text-align: center;
+}

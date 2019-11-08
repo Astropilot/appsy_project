@@ -144,6 +144,10 @@ footer p {
   margin-bottom: auto;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .contact > span {
   white-space: nowrap;
   overflow: hidden;

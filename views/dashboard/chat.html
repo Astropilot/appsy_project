@@ -12,14 +12,28 @@ Messagerie
 
 <section>
   <div class="container">
-    <div class="row">
-      <h2 style="text-align: center">Messagerie - Vos discussions</h2>
+    <div class="row text-center">
+      <h2>Messagerie - Vos discussions</h2>
     </div>
-    <div class="row" id="contacts" style="text-align: center">
+    <div class="row text-center" id="contacts">
       <i id="contacts-wait" class="fas fa-circle-notch fa-spin fa-2x"></i>
     </div>
-    <div class="row" id="nocontact" style="display: none">
-      <h3 style="text-align: center">Vous n'avez pas encore de discussion !</h3>
+    <div class="row text-center" id="nocontact" style="display: none">
+      <h3>Vous n'avez pas encore de discussion !</h3>
+    </div>
+
+    <div class="row">
+      <h2 class="text-center">Trouver un contact</h2>
+    </div>
+    <div class="row text-center">
+      <form class="form">
+        <input type="text" class="form-field" name="contact-search" id="contact-search" placeholder="Ex: John Doe">
+        <button id="btn-login" type="button" class="btn btn-primary">
+          Chercher <i id="wait-searching" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        </button>
+      </form>
+    </div>
+    <div class="row text-center" id="contact-list">
     </div>
   </div>
 </section>
