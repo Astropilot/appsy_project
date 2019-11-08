@@ -1,6 +1,7 @@
 <?php
 
 include_once 'utils/router/Request.php';
+include_once 'utils/router/Response.php';
 include_once 'utils/router/Router.php';
 
 session_start();

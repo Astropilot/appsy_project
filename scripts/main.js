@@ -1,4 +1,7 @@
 function connexion(email, password) {
+  localStorage.clear();
+  $('#wait-login').show();
+
   $.ajax({
     type: 'POST',
     url: 'api/users/login',
@@ -7,8 +10,8 @@ function connexion(email, password) {
     success: function(data) {
       $('#wait-login').hide();
       if (data.r) {
-        console.log(data);
-        window.location.replace('dashboard/index.html');
+        localStorage.setItem('user',  JSON.stringify(data.user));
+        window.location.replace('dashboard');
       } else {
         data.errors.forEach(function(error) {
           new Noty({
@@ -29,8 +32,13 @@ function connexion(email, password) {
 }
 
 $(function() {
+  $('#email,#password').keypress(function (e) {
+    if (e.which == 13) {
+      connexion($('#email').val(), $('#password').val());
+      return false;
+    }
+  });
   $('#btn-login').on('click', function() {
-    $('#wait-login').show();
     connexion($('#email').val(), $('#password').val());
   });
 });

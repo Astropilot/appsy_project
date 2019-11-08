@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Testify Dashboard - {% block title %}{% endblock %}</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles/testify_dashboard.css">
+    <link rel="stylesheet" href="vendor/noty/noty.css">
+    <link rel="stylesheet" href="vendor/noty/themes/metroui.css">
+    <link rel="stylesheet" href="vendor/fontawesome/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
+
+    {% block styles %}
+    {% endblock %}
+  </head>
+  <body>
+
+    <nav class="side-nav">
+      <a href="/appsy_project/dashboard">
+        <img src="images/logo_testify.png" width="70px" height="70px">
+      </a>
+
+      <div class="nav-menu" id="home-nav">
+        <div class="nav-element">
+          <a href="/appsy_project/dashboard">
+            <i class="fas fa-home"></i>
+            Accueil
+          </a>
+        </div>
+        <div class="nav-element" id="wait-nav">
+          <a href="#">
+            <i class="fas fa-circle-notch fa-spin"></i>
+          </a>
+        </div>
+        <div class="nav-element" id="tests-nav" style="display: none">
+          <a href="/appsy_project/dashboard/tests">
+            <i class="fas fa-tasks"></i>
+            Tests
+          </a>
+        </div>
+        <div class="nav-element" id="subjects-nav" style="display: none">
+          <a href="/appsy_project/dashboard/subjects">
+            <i class="fas fa-users"></i>
+            Sujets
+          </a>
+        </div>
+        <div class="nav-element" id="examiners-nav" style="display: none">
+          <a href="/appsy_project/dashboard/examiners">
+            <i class="fas fa-users-cog"></i>
+            Examinateurs
+          </a>
+        </div>
+
+        <div class="nav-element log-out" id="logout-nav">
+          <a href="#">
+            <i class="fas fa-sign-out-alt"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main">
+      <nav class="header-nav">
+        <h1>{% block navtitle %}{% endblock %}</h1>
+      </nav>
+
+      {% block body %}
+      {% endblock %}
+
+      <!--<footer>
+        <p>
+          <a href="conditions_generales_de_ventes.html">Conditions générales de ventes</a> &#xa9; 2019, Testify.fr Powered by our own skills
+        </p>
+      </footer>-->
+    </div>
+
+    <script type="text/javascript" src="vendor/jquery/jquery-3.4.1.min.js" ></script>
+    <script type="text/javascript" src="vendor/noty/noty.min.js" ></script>
+    <script type="text/javascript" src="scripts/dashboard.js" ></script>
+
+    {% block scripts %}
+    {% endblock %}
+  </body>
+</html>

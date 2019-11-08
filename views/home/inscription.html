@@ -1,0 +1,69 @@
+{% extends '/../../views/base_home.html' %}
+
+{% block title %}
+Inscription
+{% endblock %}
+
+{% block navtitle %}
+Inscription
+{% endblock %}
+
+{% block body %}
+
+<section>
+  <div class="container">
+    <div class="row">
+      <h2 style="text-align: center">Inscription</h2>
+    </div>
+    <div class="row">
+      <form>
+
+        <div>
+          <label for="nom">Nom : </label>
+          <input type="text" name="nom" id="nom" placeholder="Nom">
+          <label for="prenom">Prénom : </label>
+          <input type="text" name="prenom" id="prenom" placeholder="Prénom">
+        </div>
+
+        <div>
+          <label for="email">Email : </label>
+          <input type="email" name="email" id="email" placeholder="Ex: email@gmail.com">
+          <label for="tel">Téléphone : </label>
+          <input type="tel" name="tel" id="tel" placeholder="06********">
+        </div>
+
+        <div>
+          <label for="pays">Pays : </label>
+          <select name="pays" id="pays">
+            <optgroup label="Europe">
+              <option value="france">France</option>
+              <option value="espagne">Espagne</option>
+              <option value="royaume-uni">Royaume-Uni</option>
+            </optgroup>
+            <optgroup label="Amérique">
+              <option value="canada">Canada</option>
+              <option value="etats-unis">Etats-Unis</option>
+            </optgroup>
+            <optgroup label="Asie">
+              <option value="chine">Chine</option>
+              <option value="japon">Japon</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div>
+          <label for="pass">Choisissez un mot de passe : </label>
+          <input type="password" name="pass" id="pass" placeholder="Maj, nb caracteres, etc.">
+        </div>
+        <div>
+          <label for="pass">Confirmation du mot de passe : </label>
+          <input type="password" name="pass" id="pass" placeholder="Maj, nb caracteres, etc.">
+        </div>
+
+
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
