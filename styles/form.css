@@ -21,6 +21,13 @@
   cursor: pointer;
 }
 
+a.btn {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  text-decoration: none;
+}
+
 .btn-primary {
   background: #7f8ff4;
   color: #fff;

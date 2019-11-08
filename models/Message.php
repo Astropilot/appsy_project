@@ -3,6 +3,8 @@
 include_once 'Database.php';
 include_once 'User.php';
 
+include_once 'utils/Arrays.php';
+
 class Message {
 
     private static $instance = null;
@@ -53,7 +55,7 @@ class Message {
         $contacts = array();
 
         $req = Database::getInstance()->getPDO()->prepare(
-            "SELECT DISTINCT author, recipient
+            "SELECT DISTINCT author, recipient, message, created_at
              FROM tf_message
              WHERE author = :userid OR recipient = :userid2
              ORDER BY `created_at` DESC"
@@ -64,14 +66,33 @@ class Message {
         ));
 
         while ($row = $req->fetch()) {
-            if ($row['author'] === $user['id'] && !in_array($row['recipient'], $contacts_id))
-                array_push($contacts_id, $row['recipient']);
-            else if ($row['recipient'] === $user['id'] && !in_array($row['author'], $contacts_id))
-                array_push($contacts_id, $row['author']);
+            if ($row['author'] === $user['id'] && !Arrays::in_array_key($contacts_id, 'id', $row['recipient']))
+                array_push(
+                    $contacts_id,
+                    array(
+                        'id' => $row['recipient'],
+                        'message' => $row['message'],
+                        'created_at' => $row['created_at']
+                    )
+                );
+            else if ($row['recipient'] === $user['id'] && !Arrays::in_array_key($contacts_id, 'id', $row['author']))
+            array_push(
+                $contacts_id,
+                array(
+                    'id' => $row['author'],
+                    'message' => $row['message'],
+                    'created_at' => $row['created_at']
+                )
+            );
         }
 
-        foreach ($contacts_id as $contact_id){
-            array_push($contacts, User::getInstance()->getUser($contact_id));
+        foreach ($contacts_id as $contact_id) {
+            $contact = array(
+                'user' => User::getInstance()->getUser($contact_id['id']),
+                'message' => $contact_id['message'],
+                'created_at' => $contact_id['created_at']
+            );
+            array_push($contacts, $contact);
         }
 
         return $contacts;

@@ -68,8 +68,9 @@ class Router {
         foreach ($methodsList as $method) {
             $route = $method['route'];
 
-            $route_cmp = preg_replace('/<[a-z_]+>/i', '([0-9]+)', $route);
+            $route_cmp = preg_replace('/\<[a-z_]+\>/i', '([0-9]+)', $route);
             $route_cmp = str_replace('/', '\/', $route_cmp);
+            $route_cmp = str_replace('?', '\?', $route_cmp);
 
             $values = array();
             if (preg_match('/^' . $route_cmp . '$/i', $formatedRoute, $matches)) {

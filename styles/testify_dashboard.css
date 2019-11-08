@@ -1,3 +1,6 @@
+@import 'buttons.css';
+@import 'form.css';
+
 * {
   font-family: 'Lato', sans-serif;
   -webkit-box-sizing: border-box;
@@ -44,7 +47,7 @@ body {
   text-align: center;
 }
 
-.side-nav .log-out {
+.side-nav .nav-bottom {
   margin-top: auto;
 }
 
@@ -139,4 +142,27 @@ footer p {
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.contact > span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.message {
+  border: 2px solid #004576;
+  color: white;
+  width: 50%;
+}
+
+.msgMe {
+  margin-left: auto;
+  border-radius: 13px 13px 0 13px;
+  background-color: #0060a5;
+}
+
+.msgOthers {
+  border-radius: 13px 13px 13px 0;
+  background-color: #004e86;
 }

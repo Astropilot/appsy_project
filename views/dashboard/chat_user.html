@@ -1,0 +1,43 @@
+{% extends '/../../views/base_dashboard.html' %}
+
+{% block title %}
+Discussion
+{% endblock %}
+
+{% block navtitle %}
+Discussion
+{% endblock %}
+
+{% block body %}
+
+<section>
+  <div class="container">
+    <div class="row">
+      <h2 style="text-align: center">Discussion - XXXX XXXX</h2>
+    </div>
+    <div class="row" id="messages">
+      <div class="message msgMe">
+        <h6><b>O'connel Alice</b></h6>
+        <p>Yep ca va merci ;-)</p>
+        <small>2019-11-05 11:32:00</small>
+      </div>
+      <div class="message msgOthers">
+        <h6><b>John Doe</b></h6>
+        <p>Ok super !</p>
+        <small>2019-11-05 11:35:00</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  $(function() {
+
+  });
+</script>
+
+{% endblock %}

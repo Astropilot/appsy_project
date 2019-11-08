@@ -3,10 +3,10 @@
   <head>
     <title>Testify Dashboard - {% block title %}{% endblock %}</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles/testify_dashboard.css">
-    <link rel="stylesheet" href="vendor/noty/noty.css">
-    <link rel="stylesheet" href="vendor/noty/themes/metroui.css">
-    <link rel="stylesheet" href="vendor/fontawesome/all.min.css">
+    <link rel="stylesheet" href="/appsy_project/styles/testify_dashboard.css">
+    <link rel="stylesheet" href="/appsy_project/vendor/noty/noty.css">
+    <link rel="stylesheet" href="/appsy_project/vendor/noty/themes/metroui.css">
+    <link rel="stylesheet" href="/appsy_project/vendor/fontawesome/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
 
     {% block styles %}
@@ -16,7 +16,7 @@
 
     <nav class="side-nav">
       <a href="/appsy_project/dashboard">
-        <img src="images/logo_testify.png" width="70px" height="70px">
+        <img src="/appsy_project/images/logo_testify.png" width="70px" height="70px">
       </a>
 
       <div class="nav-menu" id="home-nav">
@@ -50,7 +50,13 @@
           </a>
         </div>
 
-        <div class="nav-element log-out" id="logout-nav">
+        <div class="nav-element nav-bottom" id="chat-nav">
+          <a href="/appsy_project/dashboard/chat">
+            <i class="fas fa-comments"></i>
+            Messagerie
+          </a>
+        </div>
+        <div class="nav-element" id="logout-nav">
           <a href="#">
             <i class="fas fa-sign-out-alt"></i>
           </a>
@@ -68,9 +74,9 @@
 
     </div>
 
-    <script type="text/javascript" src="vendor/jquery/jquery-3.4.1.min.js" ></script>
-    <script type="text/javascript" src="vendor/noty/noty.min.js" ></script>
-    <script type="text/javascript" src="scripts/dashboard.js" ></script>
+    <script type="text/javascript" src="/appsy_project/vendor/jquery/jquery-3.4.1.min.js" ></script>
+    <script type="text/javascript" src="/appsy_project/vendor/noty/noty.min.js" ></script>
+    <script type="text/javascript" src="/appsy_project/scripts/dashboard.js" ></script>
 
     {% block scripts %}
     {% endblock %}

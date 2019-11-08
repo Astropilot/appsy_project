@@ -21,3 +21,11 @@ $router->get(TESTIFY_ROOT . 'inscription', function($request) {
 $router->get(TESTIFY_ROOT . 'dashboard', function($request) {
     return Response::fromView('/../../views/dashboard/home.html');
 });
+
+$router->get(TESTIFY_ROOT . 'dashboard/chat', function($request) {
+    return Response::fromView('/../../views/dashboard/chat.html');
+});
+
+$router->get(TESTIFY_ROOT . 'dashboard/chat_user?id=<uid>', function($request, $uid) {
+    return Response::fromView('/../../views/dashboard/chat_user.html');
+});

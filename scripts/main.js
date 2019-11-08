@@ -4,7 +4,7 @@ function connexion(email, password) {
 
   $.ajax({
     type: 'POST',
-    url: 'api/users/login',
+    url: '/appsy_project/api/users/login',
     data: {email: email, password: password},
     dataType: 'json',
     success: function(data) {
