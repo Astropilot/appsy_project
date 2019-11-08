@@ -8,10 +8,10 @@ class Response {
 
     public static function fromView(string $file) : string {
         $file_contents = file_get_contents(__DIR__ . $file);
-        $file_extends_contents = NULL;
+        $file_extends_contents = null;
 
         // On vérifie la présence d'une commande extends
-        if (preg_match('/^{% *?extends *?\'(.*)\' *?%}$/m', $file_contents, $matches)) {
+        if (preg_match('/{% *?extends *?\'(.*)\' *?%}/m', $file_contents, $matches)) {
             $file_extends_contents = file_get_contents(__DIR__ . $matches[1]);
         }
 
@@ -82,7 +82,7 @@ class Response {
     }
 
     private static function getBlock(string $file_contents, string $id) {
-        $block = NULL;
+        $block = null;
 
         if (preg_match_all('/{% *?block *?([a-z_0-9]*) *?%}([\S\s]*?){% *?endblock *?%}/m', $file_contents, $matches, PREG_OFFSET_CAPTURE)) {
             $blocks = $matches[0];

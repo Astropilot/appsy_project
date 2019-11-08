@@ -11,3 +11,7 @@ include_once 'views/Views.php';
 include_once 'controllers/User.php';
 include_once 'controllers/Faq.php';
 include_once 'controllers/Message.php';
+
+$router->setNoRouteHandler(function($request) {
+    return Response::fromView('/../../views/404.html');
+});

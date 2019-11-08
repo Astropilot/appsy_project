@@ -11,6 +11,7 @@ class Router {
         "PUT",
         "DELETE"
     );
+    private $noRouteHandler = null;
 
     private function __construct(IRequest $request) {
         $this->request = $request;
@@ -49,9 +50,12 @@ class Router {
 
     private function defaultRequestHandler() {
         header("{$this->request->serverProtocol} 404 Not Found");
+
+        if ($this->noRouteHandler !== null)
+            echo call_user_func_array($this->noRouteHandler, array($this->request));
     }
 
-    function resolve() {
+    private function resolve() {
         $methodsList = array();
         if (property_exists($this, strtolower($this->request->requestMethod)))
             $methodsList = $this->{strtolower($this->request->requestMethod)};
@@ -75,6 +79,10 @@ class Router {
             }
         }
         $this->defaultRequestHandler();
+    }
+
+    public function setNoRouteHandler($handler) {
+        $this->noRouteHandler = $handler;
     }
 
     public static function getInstance(IRequest $request=NULL): Router {
