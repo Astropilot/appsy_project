@@ -15,6 +15,13 @@ class Router {
 
     private function __construct(IRequest $request) {
         $this->request = $request;
+
+        $this->get(TESTIFY_ROOT . '404', function($request) {
+            header("{$this->request->serverProtocol} 404 Not Found");
+
+            if ($this->noRouteHandler !== null)
+                echo call_user_func_array($this->noRouteHandler, array($this->request));
+        });
     }
 
     protected function __clone() { }
@@ -49,10 +56,7 @@ class Router {
     }
 
     private function defaultRequestHandler() {
-        header("{$this->request->serverProtocol} 404 Not Found");
-
-        if ($this->noRouteHandler !== null)
-            echo call_user_func_array($this->noRouteHandler, array($this->request));
+        header('Location: ' . TESTIFY_ROOT . '404');
     }
 
     private function resolve() {
