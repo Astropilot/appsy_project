@@ -154,6 +154,8 @@ footer p {
   border: 2px solid #004576;
   color: white;
   width: 50%;
+  margin-bottom: 5px;
+  padding-left: 10px;
 }
 
 .msgMe {
@@ -165,4 +167,20 @@ footer p {
 .msgOthers {
   border-radius: 13px 13px 13px 0;
   background-color: #004e86;
+}
+
+.msgZone {
+  width: 100%;
+  position: fixed;
+  left: 160px;
+  bottom: 0;
+  right: 0;
+  background-color: #004e86;
+  display: flex;
+  align-items: center;
+}
+
+.msgZone > textarea {
+  width: 80%;
+  margin-right: 10px;
 }

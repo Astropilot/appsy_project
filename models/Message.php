@@ -55,7 +55,7 @@ class Message {
         $contacts = array();
 
         $req = Database::getInstance()->getPDO()->prepare(
-            "SELECT DISTINCT author, recipient, message, created_at
+            "SELECT author, recipient, message, created_at
              FROM tf_message
              WHERE author = :userid OR recipient = :userid2
              ORDER BY `created_at` DESC"

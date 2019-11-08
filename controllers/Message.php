@@ -58,7 +58,7 @@ $router->get(TESTIFY_API_ROOT . 'users/<user_id>/<contact_id>/messages', functio
     if(count($errors_arr) === 0) {
         $messages = Message::getInstance()->getUserContactMessages($user, $contact);
 
-        return json_encode(array("r" => True, "messages" => $messages));
+        return json_encode(array("r" => True, "contact" => $contact, "messages" => $messages));
     }
 
     return json_encode(array("r" => False, "errors" => $errors_arr));

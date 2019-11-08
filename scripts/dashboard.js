@@ -101,3 +101,82 @@ function getUserContacts() {
     }
   });
 }
+
+function getUserContactMessages(contact_id) {
+  var user = JSON.parse(localStorage.getItem('user'));
+
+  $.ajax({
+    type: 'GET',
+    url: `/appsy_project/api/users/${user.id}/${contact_id}/messages`,
+    dataType: 'json',
+    success: function(data) {
+      $('#messages-wait').hide();
+      if (data.r) {
+        $('#messages').empty();
+        if (data.messages.length == 0) {
+          $('#nomessage').show();
+          return;
+        }
+        $('#contact').empty();
+        $('#contact').append(`${data.contact.firstname} ${data.contact.lastname}`);
+        data.messages.forEach(function(message) {
+          var message_class = (message.author.id == user.id) ? 'msgMe' : 'msgOthers';
+          $('#messages').append(
+            `<div class="message ${message_class}">
+              <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
+              <p>${message.message}</p>
+              <small>${message.created_at}</small>
+             </div>`
+          );
+        });
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function sendMessageTo(contact_id, message) {
+  var user = JSON.parse(localStorage.getItem('user'));
+  $('#wait-send-message').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/appsy_project/api/users/${user.id}/${contact_id}/messages`,
+    data: {message: message},
+    dataType: 'json',
+    success: function(data) {
+      $('#wait-send-message').hide();
+      if (data.r) {
+        var message = data.message;
+
+        $('#text-message').val('');
+        $('#messages').prepend(
+          `<div class="message msgMe">
+            <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
+            <p>${message.message}</p>
+            <small>${message.created_at}</small>
+           </div>`
+        );
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
