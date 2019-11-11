@@ -65,16 +65,17 @@ function disconnect() {
   });
 }
 
-function getUserContacts() {
+function getUserContacts(contactPage, contactPageSize, paginatorContacts) {
   var user = JSON.parse(localStorage.getItem('user'));
 
   $.ajax({
     type: 'GET',
-    url: '/appsy_project/api/users/' + user.id + '/contacts',
+    url: '/appsy_project/api/users/' + user.id + '/contacts?page=' + contactPage + '&pageSize=' + contactPageSize,
     dataType: 'json',
     success: function(data) {
       $('#contacts-wait').hide();
       if (data.r) {
+        $('#contacts').empty();
         if (data.contacts.length == 0) {
           $('#nocontact').show();
           return;
@@ -89,6 +90,11 @@ function getUserContacts() {
              </div>`
           );
         });
+        paginatorContacts.paginate(
+          data.paginator.page,
+          data.paginator.pageSize,
+          data.paginator.total
+        );
       } else {
         data.errors.forEach(function(error) {
           new Noty({
@@ -115,12 +121,12 @@ function getUserContactMessages(contact_id) {
       $('#messages-wait').hide();
       if (data.r) {
         $('#messages').empty();
+        $('#contact').empty();
+        $('#contact').append(`${data.contact.firstname} ${data.contact.lastname}`);
         if (data.messages.length == 0) {
           $('#nomessage').show();
           return;
         }
-        $('#contact').empty();
-        $('#contact').append(`${data.contact.firstname} ${data.contact.lastname}`);
         data.messages.forEach(function(message) {
           var message_class = (message.author.id == user.id) ? 'msgMe' : 'msgOthers';
           $('#messages').append(

@@ -8,6 +8,10 @@ Messagerie
 Messagerie
 {% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="/appsy_project/styles/paginator.css">
+{% endblock %}
+
 {% block body %}
 
 <section>
@@ -15,9 +19,12 @@ Messagerie
     <div class="row text-center">
       <h2>Messagerie - Vos discussions</h2>
     </div>
-    <div class="row text-center" id="contacts">
-      <i id="contacts-wait" class="fas fa-circle-notch fa-spin fa-2x"></i>
+    <div class="row text-center" id="contacts"></div>
+    <div class="row text-center" id="contacts-wait">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
     </div>
+    <div class="row text-center paginator" id="contact-pagination"></div>
+
     <div class="row text-center" id="nocontact" style="display: none">
       <h3>Vous n'avez pas encore de discussion !</h3>
     </div>
@@ -54,9 +61,18 @@ Messagerie
 
 {% block scripts %}
 
+<script type="text/javascript" src="/appsy_project/scripts/paginator.js" ></script>
+
 <script type="text/javascript">
   $(function() {
-    getUserContacts();
+    var contactPageSize = 4;
+    var paginatorContacts = new Paginator($('#contact-pagination'));
+
+    paginatorContacts.setOnPaginateChange(function(page) {
+      getUserContacts(page, contactPageSize, paginatorContacts);
+    });
+
+    getUserContacts(1, contactPageSize, paginatorContacts);
 
     $('#btn-search').on('click', function() {
       searchContact($('#contact-search').val());

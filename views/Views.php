@@ -26,6 +26,6 @@ $router->get(TESTIFY_ROOT . 'dashboard/chat', function($request) {
     return Response::fromView('/../../views/dashboard/chat.html');
 });
 
-$router->get(TESTIFY_ROOT . 'dashboard/chat_user?id=<uid>', function($request, $uid) {
+$router->get(TESTIFY_ROOT . 'dashboard/chat_user', function($request) {
     return Response::fromView('/../../views/dashboard/chat_user.html');
 });

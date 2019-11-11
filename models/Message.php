@@ -18,7 +18,7 @@ class Message {
         return self::$instance;
     }
 
-    public function getUserContactMessages($user, $contact) {
+    public function getUserContactMessages($user, $contact): array {
         $messages = array();
         $req = Database::getInstance()->getPDO()->prepare(
             "SELECT id, author, recipient, message, created_at
@@ -50,7 +50,7 @@ class Message {
         return ($messages);
     }
 
-    public function getContacts($user) {
+    public function getContacts($user): array {
         $contacts_id = array();
         $contacts = array();
 
