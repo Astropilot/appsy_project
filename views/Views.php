@@ -30,6 +30,6 @@ $router->get(TESTIFY_ROOT . 'dashboard/chat/user', function($request) {
     return Response::fromView('/../../views/dashboard/chat_user.html');
 });
 
-$router->get(TESTIFY_ROOT . 'dashboard/forums', function($request) {
-    return Response::fromView('/../../views/dashboard/forums.html');
+$router->get(TESTIFY_ROOT . 'dashboard/forum', function($request) {
+    return Response::fromView('/../../views/dashboard/forum.html');
 });

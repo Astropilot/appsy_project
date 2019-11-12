@@ -133,11 +133,16 @@ function getUserContactMessages(contact_id) {
         }
         data.messages.forEach(function(message) {
           var message_class = (message.author.id == user.id) ? 'msgMe' : 'msgOthers';
+          var offset_col = (message.author.id == user.id) ? 'offset-6' : '';
           $('#messages').append(
-            `<div class="message ${message_class}">
-              <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
-              <p>${message.message}</p>
-              <small>${message.created_at}</small>
+            `<div class="row">
+              <div class="col-6 ${offset_col}">
+                <div class="message ${message_class}">
+                  <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
+                  <p>${message.message}</p>
+                  <small>${message.created_at}</small>
+               </div>
+              </div>
              </div>`
           );
         });
