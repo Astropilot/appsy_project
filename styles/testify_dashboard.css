@@ -47,6 +47,10 @@ body {
   text-align: center;
 }
 
+.side-nav .nav-element > a.menu-active {
+  color: #ffa500 !important;
+}
+
 .side-nav .nav-bottom {
   margin-top: auto;
 }

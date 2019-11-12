@@ -41,6 +41,10 @@ function handleSideNavigation() {
     $('#subjects-nav').show();
   if (user.role >= 2)
     $('#examiners-nav').show();
+
+  var url = window.location;
+  var e = $('#home-nav .nav-element a').filter(function() {
+    return this.href == url}).addClass('menu-active');
 }
 
 function disconnect() {
@@ -216,6 +220,7 @@ function searchContact(search) {
              </tr>`
           );
         });
+        $('#contact-list-row').show();
       } else {
         data.errors.forEach(function(error) {
           new Noty({

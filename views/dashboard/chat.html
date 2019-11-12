@@ -40,7 +40,7 @@ Messagerie
         </button>
       </form>
     </div>
-    <div class="row">
+    <div class="row" id="contact-list-row" style="display: none">
       <table class="mx-auto">
         <thead>
           <tr>
@@ -74,6 +74,12 @@ Messagerie
 
     getUserContacts(1, contactPageSize, paginatorContacts);
 
+    $('#contact-search').keypress(function (e) {
+      if (e.which == 13) {
+        searchContact($(this).val());
+        return false;
+      }
+    });
     $('#btn-search').on('click', function() {
       searchContact($('#contact-search').val());
     });
