@@ -65,14 +65,22 @@ Messagerie
 
 <script type="text/javascript">
   $(function() {
+    var url = new URL(window.location.href);
+
+    var page = url.searchParams.get('page') || 1;
     var contactPageSize = 4;
     var paginatorContacts = new Paginator($('#contact-pagination'));
 
     paginatorContacts.setOnPaginateChange(function(page) {
+      history.pushState({page: page}, '', '?page=' + page);
       getUserContacts(page, contactPageSize, paginatorContacts);
     });
 
-    getUserContacts(1, contactPageSize, paginatorContacts);
+    window.onpopstate = function(event) {
+      getUserContacts(event.state.page, contactPageSize, paginatorContacts);
+    };
+
+    getUserContacts(page, contactPageSize, paginatorContacts);
 
     $('#contact-search').keypress(function (e) {
       if (e.which == 13) {

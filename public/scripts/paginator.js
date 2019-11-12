@@ -63,7 +63,7 @@ function Paginator(e) {
     if (this.onPaginateChange !== null) {
       var that = this;
 
-      $(this.element).on("click", "a", function() {
+      $(this.element).unbind().on("click", "a", function() {
         var askPage = $(this).attr('pn');
         that.onPaginateChange(askPage);
       });

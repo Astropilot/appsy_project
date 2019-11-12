@@ -88,7 +88,7 @@ function getUserContacts(contactPage, contactPageSize, paginatorContacts) {
           $('#contacts').append(
             `<div class="contact row bg-grey" style="display: flex; align-items: center; padding: 10px; margin-bottom: 5px">
               <b>${contact.user.firstname} ${contact.user.lastname}</b> : <span style="text-color: gray">${contact.message}</span>
-              <a href="/appsy_project/dashboard/chat_user?id=${contact.user.id}" class="btn btn-primary" style="margin-left: auto">
+              <a href="/appsy_project/dashboard/chat/user?id=${contact.user.id}" class="btn btn-primary" style="margin-left: auto">
                 Accéder aux messages
               </a>
              </div>`
@@ -214,7 +214,7 @@ function searchContact(search) {
               <td>${contact.firstname} ${contact.lastname}</td>
               <td>${contact.email}</td>
               <td>${ROLES[contact.role]}</td>
-              <td><a href="/appsy_project/dashboard/chat_user?id=${contact.id}" class="btn btn-primary">
+              <td><a href="/appsy_project/dashboard/chat/user?id=${contact.id}" class="btn btn-primary">
                 Envoyer un message
               </a></td>
              </tr>`
