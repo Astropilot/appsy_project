@@ -27,14 +27,17 @@ class Request implements IRequest {
     }
 
     public function getBody() {
-        if($this->requestMethod === "GET")
-            return;
+        $body = array();
+        if($this->requestMethod === "GET") {
+            foreach($_GET as $key => $value) {
+                $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            }
+        }
         if ($this->requestMethod == "POST") {
-            $body = array();
             foreach($_POST as $key => $value) {
                 $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
-            return $body;
         }
+        return $body;
     }
 }

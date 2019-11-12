@@ -6,6 +6,7 @@ include_once 'models/Message.php';
 include_once 'models/Role.php';
 include_once 'utils/Security.php';
 include_once 'utils/API.php';
+include_once 'utils/Paginator.php';
 
 
 $router = Router::getInstance();
@@ -20,6 +21,11 @@ $router->get(TESTIFY_API_ROOT . 'users/<user_id>/contacts', function($request, $
     if (intval($user_id) !== $_SESSION['id'])
         $errors_arr[] = "Vous n'avez pas accès aux informations de cet utilisateur !";
 
+    if(!isset($request->getBody()['page']) || empty($request->getBody()['page']))
+        $errors_arr[] = "Pas de page recu !";
+    if(!isset($request->getBody()['pageSize']) || empty($request->getBody()['pageSize']))
+        $errors_arr[] = "Pas de taille de page recu !";
+
     if(count($errors_arr) === 0) {
         $user = User::getInstance()->getUser($user_id);
         if($user === null)
@@ -27,9 +33,13 @@ $router->get(TESTIFY_API_ROOT . 'users/<user_id>/contacts', function($request, $
     }
 
     if(count($errors_arr) === 0) {
-        $contacts = Message::getInstance()->getContacts($user);
+        $page = Security::protect($request->getBody()['page']);
+        $pageSize = Security::protect($request->getBody()['pageSize']);
 
-        return json_encode(array("r" => True, "contacts" => $contacts));
+        $paginator = new Paginator($page, $pageSize);
+        $contacts = $paginator->paginate(Message::getInstance()->getContacts($user));
+
+        return json_encode(array("r" => True, "contacts" => $contacts['data'], "paginator" => $contacts['paginator']));
     }
 
     return json_encode(array("r" => False, "errors" => $errors_arr));

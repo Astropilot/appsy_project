@@ -63,7 +63,8 @@ class Router {
         $methodsList = array();
         if (property_exists($this, strtolower($this->request->requestMethod)))
             $methodsList = $this->{strtolower($this->request->requestMethod)};
-        $formatedRoute = $this->formatRoute($this->request->requestUri);
+        $formatedRoute = parse_url($this->request->requestUri, PHP_URL_PATH);
+        $formatedRoute = $this->formatRoute($formatedRoute);
 
         foreach ($methodsList as $method) {
             $route = $method['route'];

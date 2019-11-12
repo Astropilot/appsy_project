@@ -36,8 +36,21 @@ a.btn {
   padding: 12px 36px;
 }
 
+.btn-primary:disabled, .btn-primary.disabled {
+  background: #6875c8;
+  opacity: .65;
+}
+
+.btn-primary:disabled:hover, .btn-primary.disabled:hover {
+  background: #6875c8 !important;
+}
+
+.btn-primary:disabled:active, .btn-primary.disabled:active {
+  background: #6875c8 !important;
+}
+
 .btn-primary:hover {
-  background: darken(#7f8ff4, 4%);
+  background: #717fdb;
 }
 
 .btn-primary:active {

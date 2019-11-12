@@ -1,0 +1,12 @@
+.paginator {
+  padding-top: 15px;
+}
+
+.paginator a, .paginator span {
+  display: inline-block;
+  padding: 0px 9px;
+  margin-right: 4px;
+  font-size: .875em;
+  font-weight: bold;
+  text-decoration: none;
+}
