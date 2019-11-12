@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 05 nov. 2019 à 15:49
--- Version du serveur :  10.1.32-MariaDB
--- Version de PHP :  7.2.5
+-- Généré le :  mar. 12 nov. 2019 à 11:52
+-- Version du serveur :  10.4.8-MariaDB
+-- Version de PHP :  7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,7 +32,7 @@ CREATE TABLE `tf_faq` (
   `id` int(11) NOT NULL,
   `question` varchar(255) NOT NULL,
   `answer` text NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -43,7 +43,9 @@ CREATE TABLE `tf_faq` (
 
 CREATE TABLE `tf_forum_category` (
   `id` int(11) NOT NULL,
-  `titre` varchar(70) NOT NULL
+  `title` varchar(70) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -57,7 +59,8 @@ CREATE TABLE `tf_forum_post` (
   `author` int(11) NOT NULL,
   `title` varchar(70) DEFAULT NULL,
   `content` text NOT NULL,
-  `created_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL,
   `category` int(11) NOT NULL,
   `post_response` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -73,8 +76,21 @@ CREATE TABLE `tf_message` (
   `author` int(11) NOT NULL,
   `recipient` int(11) NOT NULL,
   `message` text NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `tf_message`
+--
+
+INSERT INTO `tf_message` (`id`, `author`, `recipient`, `message`, `created_at`) VALUES
+(1, 2, 3, 'Yep ca va merci ;-)', '2019-11-08 13:50:54'),
+(2, 2, 3, 'Hey petit test !', '2019-11-08 15:52:29'),
+(3, 3, 2, 'Yo', '2019-11-08 16:07:28'),
+(4, 2, 3, 'Ok ça m&#39;a l&#39;air de fonctionner :D', '2019-11-08 16:07:58'),
+(5, 3, 2, 'Ah nice', '2019-11-08 16:08:34'),
+(6, 2, 3, 'Salut !', '2019-11-08 16:10:18'),
+(7, 3, 2, 'Hey comment ca va ?', '2019-11-08 16:10:38');
 
 -- --------------------------------------------------------
 
@@ -88,7 +104,7 @@ CREATE TABLE `tf_ticket` (
   `title` varchar(70) NOT NULL,
   `content` text NOT NULL,
   `status` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -170,7 +186,7 @@ ALTER TABLE `tf_user`
 -- AUTO_INCREMENT pour la table `tf_faq`
 --
 ALTER TABLE `tf_faq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `tf_forum_category`
@@ -188,7 +204,7 @@ ALTER TABLE `tf_forum_post`
 -- AUTO_INCREMENT pour la table `tf_message`
 --
 ALTER TABLE `tf_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `tf_ticket`
