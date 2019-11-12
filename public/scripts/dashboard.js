@@ -235,3 +235,38 @@ function searchContact(search) {
     }
   });
 }
+
+function getCategories() {
+  $.ajax({
+    type: 'GET',
+    url: `/appsy_project/api/forums/categories`,
+    dataType: 'json',
+    success: function(data) {
+      $('#forums-wait').hide();
+      if (data.r) {
+        $('#forums').empty();
+        if (data.categories.length == 0) {
+          $('#noforums').show();
+          return;
+        }
+        data.categories.forEach(function(category) {
+          $('#forums').append(
+            `<div class="forum-category">
+              <h6><b>${category.title}</b></h6>
+             </div>`
+          );
+        });
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
