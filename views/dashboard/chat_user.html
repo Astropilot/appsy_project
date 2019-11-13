@@ -1,0 +1,63 @@
+{% extends '/../../views/base_dashboard.html' %}
+
+{% block title %}
+Discussion
+{% endblock %}
+
+{% block navtitle %}
+Discussion
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid" style="padding-bottom: 60px;">
+  <div class="row justify-content-center">
+    <h2>Discussion - <span id="contact"></span></h2>
+  </div>
+  <div class="row justify-content-center" id="messages-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row justify-content-center" id="nomessage" style="display: none">
+    <h3>Vous n'avez pas encore de conversation !</h3>
+  </div>
+  <div id="messages">
+  </div>
+</div>
+<div class="msgZone">
+  <textarea id="text-message" placeholder="Message"></textarea>
+  <button type="button" class="btn btn-primary" id="btn-send-message">
+    Envoyer <i id="wait-send-message" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+  </button>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  $(function() {
+    var url = new URL(window.location.href);
+    var contact_id = url.searchParams.get('id');
+
+    function getMessages() {
+      getUserContactMessages(contact_id);
+
+      setTimeout(getMessages, 10000);
+    }
+
+    getMessages();
+
+    $('#text-message').keypress(function (e) {
+      if (e.which == 13) {
+        sendMessageTo(contact_id, $('#text-message').val());
+        return false;
+      }
+    });
+
+    $('#btn-send-message').on('click', function() {
+      sendMessageTo(contact_id, $('#text-message').val());
+    });
+  });
+</script>
+
+{% endblock %}

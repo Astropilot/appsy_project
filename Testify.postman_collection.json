@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "b11a7383-e74c-4700-9227-b660b6feef45",
+		"name": "Testify",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "demo@testify.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "testify",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/appsy_project/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsy_project",
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Logoff",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/appsy_project/api/users/logoff",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsy_project",
+								"api",
+								"users",
+								"logoff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/appsy_project/api/users/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsy_project",
+								"api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "FAQ",
+			"item": [
+				{
+					"name": "Get FAQ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/appsy_project/api/faq/questions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsy_project",
+								"api",
+								"faq",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create FAQ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "question",
+									"value": "Comment se connecter au site ?",
+									"type": "text"
+								},
+								{
+									"key": "answer",
+									"value": "Vous devez utiliser la page de connexion disponible via le menu principal",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/appsy_project/api/faq/questions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsy_project",
+								"api",
+								"faq",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete FAQ",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/appsy_project/api/faq/questions/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsy_project",
+								"api",
+								"faq",
+								"questions",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Message",
+			"item": [
+				{
+					"name": "Get User Contacts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/appsy_project/api/users/2/contacts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsy_project",
+								"api",
+								"users",
+								"2",
+								"contacts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contact Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/appsy_project/api/users/2/3/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsy_project",
+								"api",
+								"users",
+								"2",
+								"3",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Contact Message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "message",
+									"value": "Yep ca va merci ;-)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/appsy_project/api/users/2/3/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"appsy_project",
+								"api",
+								"users",
+								"2",
+								"3",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	]
+}

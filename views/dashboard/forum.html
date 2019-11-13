@@ -1,0 +1,88 @@
+{% extends '/../../views/base_dashboard.html' %}
+
+{% block title %}
+Forum
+{% endblock %}
+
+{% block navtitle %}
+Forum
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="offset-5 col-2">
+      <h2>Forum</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="offset-10 col-2">
+      <button type="button" class="btn btn-success btn-sm" id="btn-new-category" style="display: none">
+        <i class="fas fa-plus"></i> Ajouter une catégorie
+      </button>
+    </div>
+  </div>
+  <div class="row justify-content-center" id="forums-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row justify-content-center" id="noforums" style="display: none">
+    <h3>Il n'y a pas encore de forum disponible !</h3>
+  </div>
+  <div class="row" id="forums">
+  </div>
+</div>
+
+<div id="modal-new-category" class="modal">
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Modal Header</h2>
+    </div>
+    <div class="modal-body">
+      <p>TODO: Le formulaire d'ajout d'une catégorie</p>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm">
+        <i class="fas fa-plus"></i> Ajouter
+      </button>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  $(function() {
+    var modal = $('#modal-new-category');
+    var btn = $('#btn-new-category');
+    var span = $('#modal-new-category .close');
+    var user = JSON.parse(localStorage.getItem('user'));
+
+    if (user.role >= 2) {
+      btn.show();
+    }
+
+    btn.on("click", function() {
+      modal.css('display', 'block');;
+    });
+
+    span.on("click", function() {
+      modal.css('display', 'none');
+    });
+
+    window.onclick = function(event) {
+      if (event.target == modal.get(0)) {
+        modal.css('display', 'none');
+      }
+    }
+
+    getCategories();
+  });
+</script>
+
+{% endblock %}
