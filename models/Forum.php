@@ -1,6 +1,8 @@
 <?php
 
-include_once 'Database.php';
+namespace Testify\Model;
+
+use Testify\Model\Database;
 
 class Forum {
 

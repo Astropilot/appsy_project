@@ -1,9 +1,10 @@
 <?php
 
-include_once 'Database.php';
-include_once 'User.php';
+namespace Testify\Model;
 
-include_once 'utils/Arrays.php';
+use Testify\Model\Database;
+use Testify\Model\User;
+use Testify\Utils\Arrays;
 
 class Message {
 

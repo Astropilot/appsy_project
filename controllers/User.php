@@ -1,11 +1,12 @@
 <?php
 
 include_once 'Configuration.php';
-include_once 'models/User.php';
-include_once 'models/Role.php';
-include_once 'utils/Security.php';
-include_once 'utils/API.php';
 
+use Testify\Utils\Router\Router;
+use Testify\Model\User;
+use Testify\Model\Role;
+use Testify\Utils\Security;
+use Testify\Utils\API;
 
 $router = Router::getInstance();
 
@@ -13,7 +14,7 @@ $router = Router::getInstance();
 $router->post(TESTIFY_API_ROOT . 'users/login', function($request) {
     $errors_arr = array();
 
-    setAPIHeaders();
+    API::setAPIHeaders();
 
     if(!isset($request->getBody()['email']) || empty($request->getBody()['email']))
         $errors_arr[] = "L'identifiant est vide !";
@@ -22,7 +23,7 @@ $router->post(TESTIFY_API_ROOT . 'users/login', function($request) {
 
     if(count($errors_arr) === 0) {
         $email = Security::protect($request->getBody()['email']);
-        $password = Security::hasPass($request->getBody()['password']);
+        $password = Security::hashPass($request->getBody()['password']);
 
         if(!User::getInstance()->userExist($email, $password)) {
             $errors_arr[] = "Le couple identifiant/mot de passe est incorrect !";
@@ -44,7 +45,7 @@ $router->post(TESTIFY_API_ROOT . 'users/login', function($request) {
 $router->get(TESTIFY_API_ROOT . 'users/<userid>', function($request, $user_id) {
     $errors_arr = array();
 
-    setAPIHeaders();
+    API::setAPIHeaders();
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
@@ -63,7 +64,7 @@ $router->get(TESTIFY_API_ROOT . 'users/<userid>', function($request, $user_id) {
 $router->post(TESTIFY_API_ROOT . 'contacts/search', function($request) {
     $errors_arr = array();
 
-    setAPIHeaders();
+    API::setAPIHeaders();
     Security::checkAPIConnected();
 
     if(!isset($request->getBody()['search']) || empty($request->getBody()['search']))
@@ -79,7 +80,7 @@ $router->post(TESTIFY_API_ROOT . 'contacts/search', function($request) {
 });
 
 $router->get(TESTIFY_API_ROOT . 'users/logoff', function($request) {
-    setAPIHeaders();
+    API::setAPIHeaders();
 
     if(isset($_SESSION['email']) && isset($_SESSION['id'])) {
         unset($_SESSION['email']);

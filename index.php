@@ -1,8 +1,14 @@
 <?php
 
-include_once 'utils/router/Request.php';
-include_once 'utils/router/Response.php';
-include_once 'utils/router/Router.php';
+namespace Testify;
+
+error_reporting(-1);
+
+include_once 'utils/autoload.php';
+
+use Testify\Utils\Router\Request;
+use Testify\Utils\Router\Router;
+use Testify\Utils\Router\Response;
 
 session_start();
 

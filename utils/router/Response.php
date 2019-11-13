@@ -1,10 +1,8 @@
 <?php
 
-include_once 'Configuration.php';
+namespace Testify\Utils\Router;
 
 class Response {
-
-    function __construct() {}
 
     public static function fromView(string $file) : string {
         $file_contents = file_get_contents(__DIR__ . $file);

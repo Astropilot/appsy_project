@@ -1,7 +1,9 @@
 <?php
 
 include_once 'Configuration.php';
-include_once 'utils/router/Response.php';
+
+use Testify\Utils\Router\Router;
+use Testify\Utils\Router\Response;
 
 $router = Router::getInstance();
 

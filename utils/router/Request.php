@@ -1,6 +1,8 @@
 <?php
 
-include_once 'IRequest.php';
+namespace Testify\Utils\Router;
+
+use Testify\Utils\Router\IRequest;
 
 
 class Request implements IRequest {

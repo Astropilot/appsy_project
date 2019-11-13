@@ -1,10 +1,10 @@
 <?php
 
-error_reporting(-1);
+namespace Testify\Utils;
 
 class Security {
 
-    public static function hasPass(string $pass) : string {
+    public static function hashPass(string $pass) : string {
         $salt = "a3t=Xc7G?xyUR!YP";
         return hash("sha256",($salt.$pass));
     }

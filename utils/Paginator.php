@@ -1,5 +1,7 @@
 <?php
 
+namespace Testify\Utils;
+
 class Paginator {
 
     private $page;

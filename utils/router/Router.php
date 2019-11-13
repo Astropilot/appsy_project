@@ -1,5 +1,9 @@
 <?php
 
+namespace Testify\Utils\Router;
+
+include_once 'Configuration.php';
+
 class Router {
 
     private static $_instance = null;

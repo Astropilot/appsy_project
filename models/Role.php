@@ -1,5 +1,7 @@
 <?php
 
+namespace Testify\Model;
+
 class Role {
 
     public static $ROLES = array('USER' => 0, 'EXAMINATOR' => 1, 'ADMINISTRATOR' => 2);

@@ -1,13 +1,14 @@
 <?php
 
 include_once 'Configuration.php';
-include_once 'models/User.php';
-include_once 'models/Message.php';
-include_once 'models/Role.php';
-include_once 'utils/Security.php';
-include_once 'utils/API.php';
-include_once 'utils/Paginator.php';
 
+use Testify\Utils\Router\Router;
+use Testify\Model\User;
+use Testify\Model\Message;
+use Testify\Model\Role;
+use Testify\Utils\Security;
+use Testify\Utils\API;
+use Testify\Utils\Paginator;
 
 $router = Router::getInstance();
 
@@ -15,7 +16,7 @@ $router = Router::getInstance();
 $router->get(TESTIFY_API_ROOT . 'users/<user_id>/contacts', function($request, $user_id) {
     $errors_arr = array();
 
-    setAPIHeaders();
+    API::setAPIHeaders();
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
@@ -48,7 +49,7 @@ $router->get(TESTIFY_API_ROOT . 'users/<user_id>/contacts', function($request, $
 $router->get(TESTIFY_API_ROOT . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
 
-    setAPIHeaders();
+    API::setAPIHeaders();
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
@@ -77,7 +78,7 @@ $router->get(TESTIFY_API_ROOT . 'users/<user_id>/<contact_id>/messages', functio
 $router->post(TESTIFY_API_ROOT . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
 
-    setAPIHeaders();
+    API::setAPIHeaders();
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
