@@ -23,13 +23,15 @@ A school project to propose a complete system for psychomotor testing</h4>
   <a href="#license">License</a>
 </p>
 
-## Getting Started
+## About
 
 Testify is a school project where we need to design a complete system for training centres and driving schools to enable them to perform psychomotor tests.
 
 This repository contains the files of the entire IT part of the project, i.e. the website used by the examination subjects, examiners and those in charge of the centre or driving school.
 
 The website must be created with PHP without any framework. Only the JQuery library for the frontend is allowed. We chose to develop the project under PHP 7.+ under an MVC architecture with a RestFull API.
+
+## Getting Started
 
 ### Prerequisites
 
