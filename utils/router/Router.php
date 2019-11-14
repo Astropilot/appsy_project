@@ -2,8 +2,6 @@
 
 namespace Testify\Utils\Router;
 
-include_once 'Configuration.php';
-
 class Router {
 
     private static $_instance = null;
@@ -20,7 +18,7 @@ class Router {
     private function __construct(IRequest $request) {
         $this->request = $request;
 
-        $this->get(TESTIFY_ROOT . '404', function($request) {
+        $this->get('/404', function($request) {
             header("{$this->request->serverProtocol} 404 Not Found");
 
             if ($this->noRouteHandler !== null)
@@ -60,7 +58,7 @@ class Router {
     }
 
     private function defaultRequestHandler() {
-        header('Location: ' . TESTIFY_ROOT . '404');
+        header('Location: /404');
     }
 
     private function resolve() {

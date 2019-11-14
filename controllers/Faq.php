@@ -1,7 +1,5 @@
 <?php
 
-include_once 'Configuration.php';
-
 use Testify\Utils\Router\Router;
 use Testify\Model\Faq;
 use Testify\Model\Role;
@@ -11,7 +9,7 @@ use Testify\Utils\API;
 $router = Router::getInstance();
 
 
-$router->get(TESTIFY_API_ROOT . 'faq/questions', function($request) {
+$router->get('/api/faq/questions', function($request) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
@@ -19,7 +17,7 @@ $router->get(TESTIFY_API_ROOT . 'faq/questions', function($request) {
     return json_encode(array("r" => True, "faq" => $faq));
 });
 
-$router->post(TESTIFY_API_ROOT . 'faq/questions', function($request) {
+$router->post('/api/faq/questions', function($request) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
@@ -41,7 +39,7 @@ $router->post(TESTIFY_API_ROOT . 'faq/questions', function($request) {
         return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->delete(TESTIFY_API_ROOT . 'faq/questions/<question_id>', function($request, $question_id) {
+$router->delete('/api/faq/questions/<question_id>', function($request, $question_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);

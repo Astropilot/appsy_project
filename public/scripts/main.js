@@ -4,14 +4,14 @@ function connexion(email, password) {
 
   $.ajax({
     type: 'POST',
-    url: '/appsy_project/api/users/login',
+    url: '/api/users/login',
     data: {email: email, password: password},
     dataType: 'json',
     success: function(data) {
       $('#wait-login').hide();
       if (data.r) {
         localStorage.setItem('user',  JSON.stringify(data.user));
-        window.location.replace('dashboard');
+        window.location.replace('/dashboard');
       } else {
         data.errors.forEach(function(error) {
           new Noty({

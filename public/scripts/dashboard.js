@@ -12,19 +12,19 @@ function checkIsLogged() {
   var user = localStorage.getItem('user');
 
   if (!user)
-    window.location.replace('/appsy_project/connexion');
+    window.location.replace('connexion');
   else {
     user = JSON.parse(user);
     $.ajax({
       type: 'GET',
-      url: '/appsy_project/api/users/' + user.id,
+      url: '/api/users/' + user.id,
       dataType: 'json',
       success: function(data) {
         if (data.r) {
           localStorage.setItem('user',  JSON.stringify(data.user));
           handleSideNavigation();
         } else {
-          window.location.replace('/appsy_project/connexion');
+          window.location.replace('/connexion');
         }
       }
     });
@@ -50,12 +50,12 @@ function handleSideNavigation() {
 function disconnect() {
   $.ajax({
     type: 'GET',
-    url: '/appsy_project/api/users/logoff',
+    url: '/api/users/logoff',
     dataType: 'json',
     success: function(data) {
       if (data.r) {
         localStorage.clear();
-        window.location.replace('/appsy_project/connexion');
+        window.location.replace('connexion');
       } else {
         new Noty({
           theme: 'metroui',
@@ -74,7 +74,7 @@ function getUserContacts(contactPage, contactPageSize, paginatorContacts) {
 
   $.ajax({
     type: 'GET',
-    url: '/appsy_project/api/users/' + user.id + '/contacts?page=' + contactPage + '&pageSize=' + contactPageSize,
+    url: '/api/users/' + user.id + '/contacts?page=' + contactPage + '&pageSize=' + contactPageSize,
     dataType: 'json',
     success: function(data) {
       $('#contacts-wait').hide();
@@ -88,7 +88,7 @@ function getUserContacts(contactPage, contactPageSize, paginatorContacts) {
           $('#contacts').append(
             `<div class="contact row bg-grey" style="display: flex; align-items: center; padding: 10px; margin-bottom: 5px">
               <b>${contact.user.firstname} ${contact.user.lastname}</b> : <span style="text-color: gray">${contact.message}</span>
-              <a href="/appsy_project/dashboard/chat/user?id=${contact.user.id}" class="btn btn-primary" style="margin-left: auto">
+              <a href="/dashboard/chat/user?id=${contact.user.id}" class="btn btn-primary" style="margin-left: auto">
                 Accéder aux messages
               </a>
              </div>`
@@ -119,7 +119,7 @@ function getUserContactMessages(contact_id) {
 
   $.ajax({
     type: 'GET',
-    url: `/appsy_project/api/users/${user.id}/${contact_id}/messages`,
+    url: `/api/users/${user.id}/${contact_id}/messages`,
     dataType: 'json',
     success: function(data) {
       $('#messages-wait').hide();
@@ -167,7 +167,7 @@ function sendMessageTo(contact_id, message) {
 
   $.ajax({
     type: 'POST',
-    url: `/appsy_project/api/users/${user.id}/${contact_id}/messages`,
+    url: `/api/users/${user.id}/${contact_id}/messages`,
     data: {message: message},
     dataType: 'json',
     success: function(data) {
@@ -204,7 +204,7 @@ function searchContact(search) {
 
   $.ajax({
     type: 'POST',
-    url: `/appsy_project/api/contacts/search`,
+    url: `/api/contacts/search`,
     data: {search: search},
     dataType: 'json',
     success: function(data) {
@@ -219,7 +219,7 @@ function searchContact(search) {
               <td>${contact.firstname} ${contact.lastname}</td>
               <td>${contact.email}</td>
               <td>${ROLES[contact.role]}</td>
-              <td><a href="/appsy_project/dashboard/chat/user?id=${contact.id}" class="btn btn-primary">
+              <td><a href="/dashboard/chat/user?id=${contact.id}" class="btn btn-primary">
                 Envoyer un message
               </a></td>
              </tr>`
@@ -244,7 +244,7 @@ function searchContact(search) {
 function getCategories() {
   $.ajax({
     type: 'GET',
-    url: `/appsy_project/api/forums/categories`,
+    url: `/api/forums/categories`,
     dataType: 'json',
     success: function(data) {
       $('#forums-wait').hide();

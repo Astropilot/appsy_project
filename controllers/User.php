@@ -1,7 +1,5 @@
 <?php
 
-include_once 'Configuration.php';
-
 use Testify\Utils\Router\Router;
 use Testify\Model\User;
 use Testify\Model\Role;
@@ -11,7 +9,7 @@ use Testify\Utils\API;
 $router = Router::getInstance();
 
 
-$router->post(TESTIFY_API_ROOT . 'users/login', function($request) {
+$router->post('/api/users/login', function($request) {
     $errors_arr = array();
 
     API::setAPIHeaders();
@@ -42,7 +40,7 @@ $router->post(TESTIFY_API_ROOT . 'users/login', function($request) {
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get(TESTIFY_API_ROOT . 'users/<userid>', function($request, $user_id) {
+$router->get('/api/users/<userid>', function($request, $user_id) {
     $errors_arr = array();
 
     API::setAPIHeaders();
@@ -61,7 +59,7 @@ $router->get(TESTIFY_API_ROOT . 'users/<userid>', function($request, $user_id) {
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->post(TESTIFY_API_ROOT . 'contacts/search', function($request) {
+$router->post('/api/contacts/search', function($request) {
     $errors_arr = array();
 
     API::setAPIHeaders();
@@ -79,7 +77,7 @@ $router->post(TESTIFY_API_ROOT . 'contacts/search', function($request) {
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get(TESTIFY_API_ROOT . 'users/logoff', function($request) {
+$router->get('/api/users/logoff', function($request) {
     API::setAPIHeaders();
 
     if(isset($_SESSION['email']) && isset($_SESSION['id'])) {

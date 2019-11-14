@@ -45,6 +45,17 @@ To make this project work you will need:
 ### Installing
 
 * Put all the files in your site directory
+* Configure your web server to serve the appsy_project folder directly.
+
+A example with Apache:
+```ini
+DocumentRoot "/path/to/appsy_project"
+<Directory "/path/to/appsy_project">
+    Options -Indexes
+    AllowOverride All
+    Require all granted
+</Directory>
+```
 * On your MySQL server create a database called `testify`. Import the `tools/testify.sql` script into your MySQL server to get the different tables needed by the project.
 * Everything is ready you can now access your site! (usually locally: http://localhost/appsy_project)
 

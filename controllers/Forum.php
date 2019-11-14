@@ -1,7 +1,5 @@
 <?php
 
-include_once 'Configuration.php';
-
 use Testify\Utils\Router\Router;
 use Testify\Model\Forum;
 use Testify\Model\Role;
@@ -11,7 +9,7 @@ use Testify\Utils\API;
 $router = Router::getInstance();
 
 
-$router->get(TESTIFY_API_ROOT . 'forums/categories', function($request) {
+$router->get('/api/forums/categories', function($request) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 

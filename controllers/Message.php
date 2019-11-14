@@ -1,7 +1,5 @@
 <?php
 
-include_once 'Configuration.php';
-
 use Testify\Utils\Router\Router;
 use Testify\Model\User;
 use Testify\Model\Message;
@@ -13,7 +11,7 @@ use Testify\Utils\Paginator;
 $router = Router::getInstance();
 
 
-$router->get(TESTIFY_API_ROOT . 'users/<user_id>/contacts', function($request, $user_id) {
+$router->get('/api/users/<user_id>/contacts', function($request, $user_id) {
     $errors_arr = array();
 
     API::setAPIHeaders();
@@ -46,7 +44,7 @@ $router->get(TESTIFY_API_ROOT . 'users/<user_id>/contacts', function($request, $
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get(TESTIFY_API_ROOT . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
+$router->get('/api/users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
 
     API::setAPIHeaders();
@@ -75,7 +73,7 @@ $router->get(TESTIFY_API_ROOT . 'users/<user_id>/<contact_id>/messages', functio
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->post(TESTIFY_API_ROOT . 'users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
+$router->post('/api/users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
 
     API::setAPIHeaders();
