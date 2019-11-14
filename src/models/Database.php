@@ -8,16 +8,16 @@ class Database {
 
     private static $instance = null;
 
-    const DEFAULT_SQL_USER = 'root';
-    const DEFAULT_SQL_HOST = 'localhost';
-    const DEFAULT_SQL_PASS = '';
-    const DEFAULT_SQL_DTB = 'testify';
+    private function __construct($config) {
+        $DEFAULT_SQL_USER = $config::SQL_USER;
+        $DEFAULT_SQL_HOST = $config::SQL_HOST;
+        $DEFAULT_SQL_PASS = $config::SQL_PASS;
+        $DEFAULT_SQL_DTB = $config::SQL_DTB;
 
-    private function __construct() {
         $this->PDOInstance = new \PDO(
-            'mysql:dbname='.self::DEFAULT_SQL_DTB.';host='.self::DEFAULT_SQL_HOST,
-            self::DEFAULT_SQL_USER,
-            self::DEFAULT_SQL_PASS,
+            'mysql:dbname='.$DEFAULT_SQL_DTB.';host='.$DEFAULT_SQL_HOST,
+            $DEFAULT_SQL_USER,
+            $DEFAULT_SQL_PASS,
             array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
         );
         $this->PDOInstance->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
@@ -25,9 +25,9 @@ class Database {
         $this->PDOInstance->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
     }
 
-    public static function getInstance() : Database {
+    public static function getInstance($config=NULL) : Database {
         if(is_null(self::$instance)) {
-            self::$instance = new Database();
+            self::$instance = new Database($config);
         }
         return self::$instance;
     }

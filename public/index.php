@@ -7,8 +7,12 @@ include_once '../app/autoload.php';
 use Testify\Router\Request;
 use Testify\Router\Router;
 use Testify\Router\Response;
+use Testify\Model\Database;
+use Testify\Config;
 
 session_start();
+
+Database::getInstance(new Config);
 
 Router::getInstance(new Request);
 

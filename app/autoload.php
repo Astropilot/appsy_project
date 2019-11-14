@@ -69,6 +69,7 @@ $loader = new Psr4AutoloaderClass();
 
 $loader->register();
 
+$loader->addNamespace('Testify', 'src/');
 $loader->addNamespace('Testify\Model', 'src/models/');
 $loader->addNamespace('Testify\Component', 'app/components/');
 $loader->addNamespace('Testify\Router', 'app/router/');
