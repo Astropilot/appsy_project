@@ -10,20 +10,22 @@
     convertWarningsToExceptions="true"
     processIsolation="false"
     stopOnFailure="false"
-    bootstrap="utils/autoload.php">
+    bootstrap="app/autoload.php">
 
     <testsuites>
-        <testsuite name="Test Suite">
-            <directory suffix=".php">./tests</directory>
+        <testsuite name="Test Source">
+            <directory suffix=".php">./tests/src</directory>
+        </testsuite>
+
+        <testsuite name="Test App">
+            <directory suffix=".php">./tests/app</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">./controllers</directory>
-            <directory suffix=".php">./models</directory>
-            <directory suffix=".php">./utils</directory>
-            <directory suffix=".php">./views</directory>
+            <directory suffix=".php">./app</directory>
+            <directory suffix=".php">./src/models</directory>
         </whitelist>
     </filter>
 </phpunit>

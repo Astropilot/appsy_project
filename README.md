@@ -45,13 +45,13 @@ To make this project work you will need:
 ### Installing
 
 * Put all the files in your site directory
-* Configure your web server to serve the appsy_project folder directly.
+* Configure your web server to serve the `appsy_project/public/` folder directly.
 
 A example with Apache:
 ```ini
-DocumentRoot "/path/to/appsy_project"
-<Directory "/path/to/appsy_project">
-    Options -Indexes
+DocumentRoot "path/to/appsy_project/public"
+<Directory "path/to/appsy_project/public">
+    Options FollowSymLinks Includes ExecCGI
     AllowOverride All
     Require all granted
 </Directory>

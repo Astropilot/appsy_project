@@ -1,0 +1,98 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+Messagerie
+{% endblock %}
+
+{% block navtitle %}
+Messagerie
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/styles/paginator.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <h2>Messagerie - Vos discussions</h2>
+  </div>
+  <div class="row flex-column justify-content-center" id="contacts"></div>
+  <div class="row justify-content-center" id="contacts-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row justify-content-center paginator" id="contact-pagination"></div>
+
+  <div class="row justify-content-center" id="nocontact" style="display: none">
+    <h3>Vous n'avez pas encore de discussion !</h3>
+  </div>
+
+  <div class="row justify-content-center">
+    <h2>Trouver un contact</h2>
+  </div>
+  <div class="row justify-content-center">
+    <form class="form">
+      <input type="text" class="form-field" name="contact-search" id="contact-search" placeholder="Ex: John Doe">
+      <button id="btn-search" type="button" class="btn btn-primary">
+        Chercher <i id="wait-searching" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </form>
+  </div>
+  <div class="row justify-content-center" id="contact-list-row" style="display: none">
+    <table class="mx-auto">
+      <thead>
+        <tr>
+          <th>Nom / Prénom</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="contact-list">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="/scripts/paginator.js" ></script>
+
+<script type="text/javascript">
+  $(function() {
+    var url = new URL(window.location.href);
+
+    var page = url.searchParams.get('page') || 1;
+    var contactPageSize = 4;
+    var paginatorContacts = new Paginator($('#contact-pagination'));
+
+    paginatorContacts.setOnPaginateChange(function(page) {
+      history.pushState({page: page}, '', '?page=' + page);
+      getUserContacts(page, contactPageSize, paginatorContacts);
+    });
+
+    window.onpopstate = function(event) {
+      var page = 1;
+      if (event.state !== null)
+        page = event.state.page;
+      getUserContacts(page, contactPageSize, paginatorContacts);
+    };
+
+    getUserContacts(page, contactPageSize, paginatorContacts);
+
+    $('#contact-search').keypress(function (e) {
+      if (e.which == 13) {
+        searchContact($(this).val());
+        return false;
+      }
+    });
+    $('#btn-search').on('click', function() {
+      searchContact($('#contact-search').val());
+    });
+  });
+</script>
+
+{% endblock %}
