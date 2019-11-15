@@ -1,0 +1,44 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+Forum
+{% endblock %}
+
+{% block navtitle %}
+Forum
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid" style="padding-bottom: 60px;">
+  <div class="row justify-content-center">
+    <h2>Forum - <span id="category"></span></h2>
+  </div>
+  <div class="row justify-content-center" id="posts-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row flex-column justify-content-center align-items-center" id="nopost" style="display: none">
+    <h3>Cette catégorie ne dispose pas encore de conversations !</h3>
+    <div class="row">
+      <button type="button" class="btn btn-primary" id="btn-new-post">
+        Créer la première conversation
+      </button>
+    </div>
+  </div>
+  <div id="posts">
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  $(function() {
+    var category_id = {{ category_id }};
+
+    getPosts(category_id);
+  });
+</script>
+
+{% endblock %}

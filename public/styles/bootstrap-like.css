@@ -225,6 +225,10 @@
   justify-content: flex-end !important;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
 @media (min-width: 576px) {
   .container {
     max-width: 540px;

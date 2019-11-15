@@ -35,3 +35,20 @@ $router->post('/api/forum/categories', function($request) {
     } else
         return json_encode(array("r" => False, "errors" => $errors_arr));
 });
+
+$router->get('/api/forum/categories/<category_id>/posts', function($request, $category_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+
+    $errors_arr=array();
+
+    $category = Forum::getInstance()->getCategory($category_id);
+    if ($category === null)
+        $errors_arr[] = "La catégorie est introuvable !";
+
+    if (count($errors_arr) === 0) {
+        $posts = Forum::getInstance()->getPosts($category_id);
+        return json_encode(array("r" => True, "category" => $category, "posts" => $posts));
+    }
+    return json_encode(array("r" => False, "errors" => $errors_arr));
+});

@@ -4,7 +4,7 @@ namespace Testify\Router;
 
 class Response {
 
-    public static function fromView(string $file) : string {
+    public static function fromView(string $file, $context=NULL) : string {
         $path = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR;
         $file_contents = file_get_contents($path . $file);
         $file_extends_contents = null;
@@ -15,7 +15,7 @@ class Response {
         }
 
         if (!$file_extends_contents)
-            return $file_contents;
+            return self::computeContext($file_contents, $context);
         else {
             $file_blocks = self::getBlocks($file_contents);
             $file_extends_blocks_id = self::getBlocksID($file_extends_contents);
@@ -45,8 +45,32 @@ class Response {
                 }
             }
 
-            return $file_extends_contents;
+            return self::computeContext($file_extends_contents, $context);
         }
+    }
+
+    private static function computeContext(string $file_contents, $context) : string {
+        if ($context === NULL) return $file_contents;
+
+        while (preg_match('/{{ *?([a-z_0-9]*) *?}}/m', $file_contents, $matches, PREG_OFFSET_CAPTURE)) {
+            $var = $matches[0];
+            $var_name = $matches[1][0];
+
+            if (array_key_exists($var_name, $context)) {
+                $var_start = $var[1];
+                $var_len = strlen($var[0]);
+
+                $file_contents = substr_replace(
+                    $file_contents,
+                    $context[$var_name],
+                    $var_start,
+                    $var_len
+                );
+            } else {
+                throw new \Exception("The view context do not contains the key $var_name");
+            }
+        }
+        return $file_contents;
     }
 
     private static function getBlocks(string $file_contents) {
@@ -81,8 +105,6 @@ class Response {
     }
 
     private static function getBlock(string $file_contents, string $id) {
-        $block = null;
-
         if (preg_match_all('/{% *?block *?([a-z_0-9]*) *?%}([\S\s]*?){% *?endblock *?%}/m', $file_contents, $matches, PREG_OFFSET_CAPTURE)) {
             $blocks = $matches[0];
             $blocks_id = $matches[1];
@@ -91,25 +113,24 @@ class Response {
             for ($i = 0; $i < count($blocks); $i++) {
                 $block_id = $blocks_id[$i][0];
 
-                if ($block_id !== $id)
-                    continue;
+                if ($block_id === $id) {
+                    $block_len = strlen($blocks[$i][0]);
+                    $block_contents_len = strlen($blocks_content[$i][0]);
 
-                $block_len = strlen($blocks[$i][0]);
-                $block_contents_len = strlen($blocks_content[$i][0]);
+                    $block_start = $blocks[$i][1];
+                    $block_contents_start = $blocks_content[$i][1];
 
-                $block_start = $blocks[$i][1];
-                $block_contents_start = $blocks_content[$i][1];
-
-                $block = array(
-                    'id' => $block_id,
-                    'start' => $block_start,
-                    'length' => $block_len,
-                    'content_start' => $block_contents_start,
-                    'content_length' => $block_contents_len
-                );
+                    return array(
+                        'id' => $block_id,
+                        'start' => $block_start,
+                        'length' => $block_len,
+                        'content_start' => $block_contents_start,
+                        'content_length' => $block_contents_len
+                    );
+                }
             }
         }
-        return $block;
+        return null;
     }
 
     private static function getBlocksID(string $file_contents) {

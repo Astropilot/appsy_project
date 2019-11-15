@@ -66,16 +66,21 @@ Forum
 <script type="text/javascript">
   $(function() {
     var modal = $('#modal-new-category');
-    var btn = $('#btn-new-category');
+
+    // Admin actions
+    var btnNewCategory = $('#btn-new-category');
+    var btnsDeleteCategory = $('.btn-delete-category');
+
     var user = JSON.parse(localStorage.getItem('user'));
 
     if (user.role >= 2) {
-      btn.show();
+      btnNewCategory.show();
+      btnsDeleteCategory.show();
     }
 
     getCategories();
 
-    btn.on("click", function() {
+    btnNewCategory.on("click", function() {
       modal.showModal();
     });
     $('#btn-create-category').on('click', function() {

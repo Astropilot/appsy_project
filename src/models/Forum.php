@@ -19,7 +19,13 @@ class Forum {
 
     public function getCategories() {
         $req = Database::getInstance()->getPDO()->prepare(
-            "SELECT * FROM tf_forum_category ORDER BY `created_at`"
+            "SELECT tf_forum_category.*, COUNT(tf_forum_post.category) AS count_posts
+             FROM tf_forum_category
+             LEFT JOIN tf_forum_post
+             ON tf_forum_category.id = tf_forum_post.category
+             GROUP BY tf_forum_category.id, tf_forum_category.title,
+                tf_forum_category.created_at, tf_forum_category.updated_at
+             ORDER BY tf_forum_category.created_at"
         );
         $req->execute();
         return ($req->fetchAll());
@@ -27,7 +33,12 @@ class Forum {
 
     public function getCategory($category_id) {
         $req = Database::getInstance()->getPDO()->prepare(
-            "SELECT id, title, created_at, updated_at FROM tf_forum_category WHERE `id`=:cid"
+            "SELECT tf_forum_category.*, COUNT(tf_forum_post.category) AS count_posts
+            FROM tf_forum_category
+            LEFT JOIN tf_forum_post
+            ON tf_forum_category.id = tf_forum_post.category AND tf_forum_category.id=:cid
+            GROUP BY tf_forum_category.id, tf_forum_category.title,
+               tf_forum_category.created_at, tf_forum_category.updated_at"
         );
         $req->execute(array(
             'cid'=> $category_id
@@ -43,5 +54,16 @@ class Forum {
 
         $category_id = Database::getInstance()->getPDO()->lastInsertId();
         return self::getCategory($category_id);
+    }
+
+    public function getPosts($category_id) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "SELECT *
+             FROM tf_forum_post
+             WHERE `category`=:cid
+             ORDER BY `updated_at`"
+        );
+        $req->execute(array('cid' => $category_id));
+        return ($req->fetchAll());
     }
 }

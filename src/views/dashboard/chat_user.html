@@ -36,8 +36,7 @@ Discussion
 
 <script type="text/javascript">
   $(function() {
-    var url = new URL(window.location.href);
-    var contact_id = url.searchParams.get('id');
+    var contact_id = {{ contact_id }};
 
     function getMessages() {
       getUserContactMessages(contact_id);

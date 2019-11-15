@@ -26,10 +26,18 @@ $router->get('/dashboard/chat', function($request) {
     return Response::fromView('dashboard/chat.html');
 });
 
-$router->get('/dashboard/chat/user', function($request) {
-    return Response::fromView('dashboard/chat_user.html');
+$router->get('/dashboard/chat/user/<user_id>', function($request, $user_id) {
+    $context = array('contact_id' => $user_id);
+
+    return Response::fromView('dashboard/chat_user.html', $context);
 });
 
 $router->get('/dashboard/forum', function($request) {
     return Response::fromView('dashboard/forum.html');
+});
+
+$router->get('/dashboard/forum/category/<cat_id>', function($request, $cat_id) {
+    $context = array('category_id' => $cat_id);
+
+    return Response::fromView('dashboard/forum_category.html', $context);
 });

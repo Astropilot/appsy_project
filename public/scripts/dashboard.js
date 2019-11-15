@@ -88,7 +88,7 @@ function getUserContacts(contactPage, contactPageSize, paginatorContacts) {
           $('#contacts').append(
             `<div class="contact row bg-grey" style="display: flex; align-items: center; padding: 10px; margin-bottom: 5px">
               <b>${contact.user.firstname} ${contact.user.lastname}</b> : <span style="text-color: gray">${contact.message}</span>
-              <a href="/dashboard/chat/user?id=${contact.user.id}" class="btn btn-primary" style="margin-left: auto">
+              <a href="/dashboard/chat/user/${contact.user.id}" class="btn btn-primary" style="margin-left: auto">
                 Accéder aux messages
               </a>
              </div>`
@@ -223,7 +223,7 @@ function searchContact(search) {
               <td>${contact.firstname} ${contact.lastname}</td>
               <td>${contact.email}</td>
               <td>${ROLES[contact.role]}</td>
-              <td><a href="/dashboard/chat/user?id=${contact.id}" class="btn btn-primary">
+              <td><a href="/dashboard/chat/user/${contact.id}" class="btn btn-primary">
                 Envoyer un message
               </a></td>
              </tr>`
@@ -263,13 +263,17 @@ function getCategories() {
           $('#forums').append(
             `<div class="row forum-category">
               <h2 class="col-3"><b>${category.title}</b></h2>
-              <h5 class="offset-7 col-2" style="align-self: end; margin-bottom: 0"><b>${category.updated_at}</b></h5>
+              <h5 class="offset-5 col-2" style="align-self: end; margin-bottom: 0">Posts: ${category.count_posts}</h5>
+              <h5 class="col-2" style="align-self: end; margin-bottom: 0"><b>${category.updated_at}</b></h5>
              </div>
              <hr>
              <div class="row">
-               <a href="/dashboard/forum/category?id=${category.id}" class="btn btn-primary" style="margin-left: auto">
+               <a href="/dashboard/forum/category/${category.id}" class="btn btn-primary" style="margin-left: auto">
                  Accéder aux posts
                </a>
+               <button class="btn btn-danger" style="margin-left: 5px">
+                 <i class="fas fa-trash-alt"></i>
+               </button>
              </div>`
           );
         });
@@ -303,6 +307,57 @@ function createCategory() {
         $('#modal-new-category').closeModal();
         $('#category-name').val('');
         getCategories();
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function getPosts(category_id) {
+  $.ajax({
+    type: 'GET',
+    url: `/api/forum/categories/${category_id}/posts`,
+    dataType: 'json',
+    success: function(data) {
+      $('#posts-wait').hide();
+      $('#nopost').hide();
+      if (data.r) {
+        $('#posts').empty();
+        $('#category').empty();
+        $('#category').append(data.category.title);
+        //$('#navtitle').text(`Forum - ${data.category.title}`);
+        document.title = `Forum - ${data.category.title}`;
+        if (data.posts.length == 0) {
+          $('#nopost').show();
+          return;
+        }
+        data.posts.forEach(function(category) {
+          $('#posts').append(
+            `<div class="row forum-category">
+              <h2 class="col-3"><b>${category.title}</b></h2>
+              <h5 class="offset-5 col-2" style="align-self: end; margin-bottom: 0">Posts: ${category.count_posts}</h5>
+              <h5 class="col-2" style="align-self: end; margin-bottom: 0"><b>${category.updated_at}</b></h5>
+             </div>
+             <hr>
+             <div class="row">
+               <a href="/dashboard/forum/category/${category.id}" class="btn btn-primary" style="margin-left: auto">
+                 Accéder aux posts
+               </a>
+               <button class="btn btn-danger" style="margin-left: 5px">
+                 <i class="fas fa-trash-alt"></i>
+               </button>
+             </div>`
+          );
+        });
       } else {
         data.errors.forEach(function(error) {
           new Noty({

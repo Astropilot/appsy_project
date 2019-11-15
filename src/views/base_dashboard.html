@@ -17,7 +17,7 @@
   <body>
 
     <nav class="side-nav">
-      <a href="dashboard">
+      <a href="/dashboard">
         <img src="/images/logo_testify.png" width="70px" height="70px">
       </a>
 
@@ -74,7 +74,7 @@
 
     <div class="main">
       <nav class="header-nav">
-        <h1>{% block navtitle %}{% endblock %}</h1>
+        <h1 id="navtitle">{% block navtitle %}{% endblock %}</h1>
       </nav>
 
       {% block body %}
