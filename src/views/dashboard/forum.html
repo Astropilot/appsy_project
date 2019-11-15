@@ -29,7 +29,7 @@ Forum
   <div class="row justify-content-center" id="noforums" style="display: none">
     <h3>Il n'y a pas encore de forum disponible !</h3>
   </div>
-  <div class="row" id="forums">
+  <div id="forums">
   </div>
 </div>
 
@@ -37,14 +37,21 @@ Forum
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Modal Header</h2>
+      <h2>Nouvelle catégorie</h2>
     </div>
     <div class="modal-body">
-      <p>TODO: Le formulaire d'ajout d'une catégorie</p>
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row">
+            <label class="col-4 col-form-label" for="category-name">Nom de la catégorie</label><br>
+            <input type="text" class="form-field col-8" name="category-name" id="category-name" placeholder="Ex: Ma catégorie">
+          </div>
+        </form>
+      </div>
     </div>
     <div class="modal-footer d-flex justify-content-end">
-      <button type="button" class="btn btn-success btn-sm">
-        <i class="fas fa-plus"></i> Ajouter
+      <button type="button" class="btn btn-success btn-sm" id="btn-create-category">
+        <i class="fas fa-plus"></i> Ajouter <i id="wait-creating-category" class="fas fa-circle-notch fa-spin" style="display: none"></i>
       </button>
     </div>
   </div>
@@ -66,11 +73,14 @@ Forum
       btn.show();
     }
 
+    getCategories();
+
     btn.on("click", function() {
       modal.showModal();
     });
-
-    getCategories();
+    $('#btn-create-category').on('click', function() {
+      createCategory();
+    });
   });
 </script>
 

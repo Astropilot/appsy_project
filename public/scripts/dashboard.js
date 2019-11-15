@@ -244,10 +244,11 @@ function searchContact(search) {
 function getCategories() {
   $.ajax({
     type: 'GET',
-    url: `/api/forums/categories`,
+    url: `/api/forum/categories`,
     dataType: 'json',
     success: function(data) {
       $('#forums-wait').hide();
+      $('#noforums').hide();
       if (data.r) {
         $('#forums').empty();
         if (data.categories.length == 0) {
@@ -256,11 +257,42 @@ function getCategories() {
         }
         data.categories.forEach(function(category) {
           $('#forums').append(
-            `<div class="forum-category">
-              <h6><b>${category.title}</b></h6>
-             </div>`
+            `<div class="row forum-category">
+              <h2 class="col-12"><b>${category.title}</b></h2>
+             </div>
+             <hr>`
           );
         });
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function createCategory() {
+  var category_name = $('#category-name').val();
+  $('#wait-creating-category').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/api/forum/categories`,
+    data: {name: category_name},
+    dataType: 'json',
+    success: function(data) {
+      $('#wait-creating-category').hide();
+      if (data.r) {
+        $('#modal-new-category').closeModal();
+        $('#category-name').val('');
+        getCategories();
       } else {
         data.errors.forEach(function(error) {
           new Noty({

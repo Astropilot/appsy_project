@@ -19,4 +19,12 @@
     return that.addClass('modal-active');
   };
 
+  $.fn.closeModal = function() {
+    var that = this;
+
+    $(that).find('.close').off('click.close');
+    $(window).off('click.window');
+    return that.removeClass('modal-active');
+  }
+
 }( jQuery ));
