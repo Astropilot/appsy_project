@@ -55,7 +55,7 @@ function disconnect() {
     success: function(data) {
       if (data.r) {
         localStorage.clear();
-        window.location.replace('connexion');
+        window.location.replace('/connexion');
       } else {
         new Noty({
           theme: 'metroui',
@@ -177,10 +177,14 @@ function sendMessageTo(contact_id, message) {
 
         $('#text-message').val('');
         $('#messages').prepend(
-          `<div class="message msgMe">
-            <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
-            <p>${message.message}</p>
-            <small>${message.created_at}</small>
+          `<div class="row">
+            <div class="col-6 offset-6">
+              <div class="message msgMe">
+                <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
+                <p>${message.message}</p>
+                <small>${message.created_at}</small>
+             </div>
+            </div>
            </div>`
         );
       } else {
@@ -258,9 +262,15 @@ function getCategories() {
         data.categories.forEach(function(category) {
           $('#forums').append(
             `<div class="row forum-category">
-              <h2 class="col-12"><b>${category.title}</b></h2>
+              <h2 class="col-3"><b>${category.title}</b></h2>
+              <h5 class="offset-7 col-2" style="align-self: end; margin-bottom: 0"><b>${category.updated_at}</b></h5>
              </div>
-             <hr>`
+             <hr>
+             <div class="row">
+               <a href="/dashboard/forum/category?id=${category.id}" class="btn btn-primary" style="margin-left: auto">
+                 Accéder aux posts
+               </a>
+             </div>`
           );
         });
       } else {
