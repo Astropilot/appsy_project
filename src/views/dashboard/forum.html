@@ -34,7 +34,6 @@ Forum
 </div>
 
 <div id="modal-new-category" class="modal">
-
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
@@ -49,18 +48,18 @@ Forum
       </button>
     </div>
   </div>
-
 </div>
 
 {% endblock %}
 
 {% block scripts %}
 
+<script type="text/javascript" src="/scripts/modal.js" ></script>
+
 <script type="text/javascript">
   $(function() {
     var modal = $('#modal-new-category');
     var btn = $('#btn-new-category');
-    var span = $('#modal-new-category .close');
     var user = JSON.parse(localStorage.getItem('user'));
 
     if (user.role >= 2) {
@@ -68,18 +67,8 @@ Forum
     }
 
     btn.on("click", function() {
-      modal.css('display', 'block');;
+      modal.showModal();
     });
-
-    span.on("click", function() {
-      modal.css('display', 'none');
-    });
-
-    window.onclick = function(event) {
-      if (event.target == modal.get(0)) {
-        modal.css('display', 'none');
-      }
-    }
 
     getCategories();
   });
