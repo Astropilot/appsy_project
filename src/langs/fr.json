@@ -1,0 +1,14 @@
+{
+    "LANGUAGE_NAME": "Français",
+
+    "HOME_MENU_PRODUCT": "Notre produit",
+    "HOME_MENU_OFFERS": "Nos offres",
+
+    "HOME_CONNECT_CONNECTION": "Connexion",
+    "HOME_CONNECT_EMAIL": "Votre email",
+    "HOME_CONNECT_PASSWORD": "Mot de passe",
+    "HOME_CONNECT_BUTTON": "Se connecter",
+
+    "API_USER_NO_USERNAME_PROVIDED": "L'identifiant est vide !",
+    "API_USER_NO_PASSWORD_PROVIDED": "Le mot de passe est vide !"
+}

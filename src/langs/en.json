@@ -1,0 +1,14 @@
+{
+    "LANGUAGE_NAME": "English",
+
+    "HOME_MENU_PRODUCT": "Our product",
+    "HOME_MENU_OFFERS": "Our offers",
+
+    "HOME_CONNECT_CONNECTION": "Connection",
+    "HOME_CONNECT_EMAIL": "Your email",
+    "HOME_CONNECT_PASSWORD": "Your password",
+    "HOME_CONNECT_BUTTON": "Login",
+
+    "API_USER_NO_USERNAME_PROVIDED": "The email was not provided !",
+    "API_USER_NO_PASSWORD_PROVIDED": "The password was not provided !"
+}

@@ -76,3 +76,8 @@ $RECYCLE.BIN/
 # PHPUnit
 
 .phpunit.result.cache
+
+# Cache
+
+/app/cache/*
+!/app/cache/.gitkeep

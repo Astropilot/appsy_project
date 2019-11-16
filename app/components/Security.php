@@ -4,8 +4,7 @@ namespace Testify\Component;
 
 class Security {
 
-    public static function hashPass(string $pass) : string {
-        $salt = "a3t=Xc7G?xyUR!YP";
+    public static function hashPass(string $pass, string $salt) : string {
         return hash("sha256",($salt.$pass));
     }
 

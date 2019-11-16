@@ -1,11 +1,11 @@
 {% extends 'base_home.html' %}
 
 {% block title %}
-Connexion
+{{ translate 'HOME_CONNECT_CONNECTION' }}
 {% endblock %}
 
 {% block navtitle %}
-Connexion
+{{ translate 'HOME_CONNECT_CONNECTION' }}
 {% endblock %}
 
 {% block body %}
@@ -13,24 +13,24 @@ Connexion
 <section>
   <div class="container">
     <div class="row justify-content-center">
-      <h2>Connexion</h2>
+      <h2>{{ translate 'HOME_CONNECT_CONNECTION' }}</h2>
     </div>
     <div class="row justify-content-center">
       <form class="form text-center">
         <div>
-          <input type="email" class="form-field" name="email" id="email" placeholder="Votre email">
+          <input type="email" class="form-field" name="email" id="email" placeholder="{{ translate 'HOME_CONNECT_EMAIL' }}">
         </div>
 
         <br>
 
         <div>
-          <input type="password" class="form-field" name="password" id="password" placeholder="Mot de passe">
+          <input type="password" class="form-field" name="password" id="password" placeholder="{{ translate 'HOME_CONNECT_PASSWORD' }}">
         </div>
 
         <br>
 
         <button id="btn-login" type="button" class="btn btn-primary">
-          Se connecter <i id="wait-login" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+          {{ translate 'HOME_CONNECT_BUTTON' }} <i id="wait-login" class="fas fa-circle-notch fa-spin" style="display: none"></i>
         </button>
 
       </form>

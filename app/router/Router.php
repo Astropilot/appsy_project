@@ -2,6 +2,8 @@
 
 namespace Testify\Router;
 
+use Testify\Component\I18n;
+
 class Router {
 
     private static $_instance = null;
@@ -67,6 +69,7 @@ class Router {
             $methodsList = $this->{strtolower($this->request->requestMethod)};
         $formatedRoute = parse_url($this->request->requestUri, PHP_URL_PATH);
         $formatedRoute = $this->formatRoute($formatedRoute);
+        $formatedRoute = I18n::getInstance()->setLangFromURL($formatedRoute);
 
         foreach ($methodsList as $method) {
             $route = $method['route'];

@@ -2,6 +2,8 @@
 
 namespace Testify\Router;
 
+use Testify\Component\I18n;
+
 class Response {
 
     public static function fromView(string $file, $context=NULL) : string {
@@ -29,7 +31,11 @@ class Response {
                 if ($block_in_file_index === FALSE) {
                     $file_extends_contents = substr_replace(
                         $file_extends_contents,
-                        substr($file_extends_contents, $block['content_start'], $block['content_length']),
+                        substr(
+                            $file_extends_contents,
+                            $block['content_start'],
+                            $block['content_length']
+                        ),
                         $block['start'],
                         $block['length']
                     );
@@ -38,13 +44,18 @@ class Response {
 
                     $file_extends_contents = substr_replace(
                         $file_extends_contents,
-                        substr($file_contents, $block_in_file['content_start'], $block_in_file['content_length']),
+                        substr(
+                            $file_contents,
+                            $block_in_file['content_start'],
+                            $block_in_file['content_length']
+                        ),
                         $block['start'],
                         $block['length']
                     );
                 }
             }
 
+            $file_extends_contents = I18n::getInstance()->computeTranslations($file_extends_contents, $context);
             return self::computeContext($file_extends_contents, $context);
         }
     }

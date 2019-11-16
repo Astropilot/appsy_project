@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ lang }}">
   <head>
     <title>Testify Dashboard - {% block title %}{% endblock %}</title>
     <meta charset="UTF-8">
@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/vendor/noty/noty.css">
     <link rel="stylesheet" href="/vendor/noty/themes/metroui.css">
     <link rel="stylesheet" href="/vendor/fontawesome/all.min.css">
+    <link rel="stylesheet" href="/styles/dropdown.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
 
     {% block styles %}
@@ -75,6 +76,13 @@
     <div class="main">
       <nav class="header-nav">
         <h1 id="navtitle">{% block navtitle %}{% endblock %}</h1>
+        <div class="dropdown">
+          <button class="dropbtn">{{ translate 'LANGUAGE_NAME' }} <i class="fas fa-caret-down"></i></button>
+          <div class="dropdown-content">
+            <a href="/fr/dashboard">Français</a>
+            <a href="/en/dashboard">English</a>
+          </div>
+        </div>
       </nav>
 
       {% block body %}
@@ -85,6 +93,18 @@
     <script type="text/javascript" src="/vendor/jquery/jquery-3.4.1.min.js" ></script>
     <script type="text/javascript" src="/vendor/noty/noty.min.js" ></script>
     <script type="text/javascript" src="/scripts/dashboard.js" ></script>
+
+    <script>
+      $('.dropbtn').on('click', function() {
+        $(this).next().toggleClass('show');
+      });
+
+      $(window).on('click.windowdropdown', function (event) {
+        if (!event.target.matches('.dropbtn')) {
+          $('.dropdown-content').removeClass('show');
+        }
+      });
+    </script>
 
     {% block scripts %}
     {% endblock %}

@@ -14,7 +14,7 @@
         $(this).off('click.window');
         $(that, '.close').off('click.close');
       }
-    })
+    });
 
     return that.addClass('modal-active');
   };

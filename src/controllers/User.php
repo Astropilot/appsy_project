@@ -5,6 +5,9 @@ use Testify\Model\User;
 use Testify\Model\Role;
 use Testify\Component\Security;
 use Testify\Component\API;
+use Testify\Component\I18n;
+
+use Testify\Config;
 
 $router = Router::getInstance();
 
@@ -15,13 +18,13 @@ $router->post('/api/users/login', function($request) {
     API::setAPIHeaders();
 
     if(!isset($request->getBody()['email']) || empty($request->getBody()['email']))
-        $errors_arr[] = "L'identifiant est vide !";
+        $errors_arr[] = I18n::getInstance()->getTranslation('API_USER_NO_USERNAME_PROVIDED');
     if(!isset($request->getBody()['password']) || empty($request->getBody()['password']))
-        $errors_arr[] = "Le mot de passe est vide !";
+        $errors_arr[] = I18n::getInstance()->getTranslation('API_USER_NO_PASSWORD_PROVIDED');
 
     if(count($errors_arr) === 0) {
         $email = Security::protect($request->getBody()['email']);
-        $password = Security::hashPass($request->getBody()['password']);
+        $password = Security::hashPass($request->getBody()['password'], Config::HASH_SALT);
 
         if(!User::getInstance()->userExist($email, $password)) {
             $errors_arr[] = "Le couple identifiant/mot de passe est incorrect !";
