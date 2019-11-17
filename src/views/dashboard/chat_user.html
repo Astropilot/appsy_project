@@ -1,24 +1,24 @@
 {% extends 'base_dashboard.html' %}
 
 {% block title %}
-Discussion
+{{ translate 'DASHBOARD_USERCHAT_TITLE' }}
 {% endblock %}
 
 {% block navtitle %}
-Discussion
+{{ translate 'DASHBOARD_USERCHAT_TITLE' }}
 {% endblock %}
 
 {% block body %}
 
 <div class="container-fluid" style="padding-bottom: 60px;">
   <div class="row justify-content-center">
-    <h2>Discussion - <span id="contact"></span></h2>
+    <h2>{{ translate 'DASHBOARD_USERCHAT_TITLE' }} - <span id="contact"></span></h2>
   </div>
   <div class="row justify-content-center" id="messages-wait">
     <i class="fas fa-circle-notch fa-spin fa-2x"></i>
   </div>
   <div class="row justify-content-center" id="nomessage" style="display: none">
-    <h3>Vous n'avez pas encore de conversation !</h3>
+    <h3>{{ translate 'DASHBOARD_USERCHAT_NODISCUSSION' }}</h3>
   </div>
   <div id="messages">
   </div>
@@ -26,7 +26,7 @@ Discussion
 <div class="msgZone">
   <textarea id="text-message" placeholder="Message"></textarea>
   <button type="button" class="btn btn-primary" id="btn-send-message">
-    Envoyer <i id="wait-send-message" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+    {{ translate 'DASHBOARD_USERCHAT_SENDBTN' }} <i id="wait-send-message" class="fas fa-circle-notch fa-spin" style="display: none"></i>
   </button>
 </div>
 

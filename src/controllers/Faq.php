@@ -5,6 +5,7 @@ use Testify\Model\Faq;
 use Testify\Model\Role;
 use Testify\Component\Security;
 use Testify\Component\API;
+use Testify\Component\I18n;
 
 $router = Router::getInstance();
 
@@ -25,9 +26,9 @@ $router->post('/api/faq/questions', function($request) {
     $errors_arr=array();
 
     if(!isset($request->getBody()['question']) || empty($request->getBody()['question']))
-        $errors_arr[] = "Pas de question donnée !";
+        $errors_arr[] = I18n::getInstance()->translate('API_FAQ_NO_QUESTION_GIVEN');
     if(!isset($request->getBody()['answer']) || empty($request->getBody()['answer']))
-        $errors_arr[] = "Pas de réponse donnée !";
+        $errors_arr[] = I18n::getInstance()->translate('API_FAQ_NO_ANSWER_GIVEN');
 
     if(count($errors_arr) === 0) {
         $question = Security::protect($request->getBody()['question']);

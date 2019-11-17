@@ -26,7 +26,7 @@
         <div class="nav-element">
           <a href="/dashboard">
             <i class="fas fa-home"></i>
-            Accueil
+            {{ translate 'DASHBOARD_MENU_ROOT' }}
           </a>
         </div>
         <div class="nav-element" id="wait-nav">
@@ -37,32 +37,32 @@
         <div class="nav-element" id="tests-nav" style="display: none">
           <a href="/dashboard/tests">
             <i class="fas fa-tasks"></i>
-            Tests
+            {{ translate 'DASHBOARD_MENU_TESTS' }}
           </a>
         </div>
         <div class="nav-element" id="subjects-nav" style="display: none">
           <a href="/dashboard/subjects">
             <i class="fas fa-users"></i>
-            Sujets
+            {{ translate 'DASHBOARD_MENU_SUBJECTS' }}
           </a>
         </div>
         <div class="nav-element" id="examiners-nav" style="display: none">
           <a href="/dashboard/examiners">
             <i class="fas fa-users-cog"></i>
-            Examinateurs
+            {{ translate 'DASHBOARD_MENU_EXAMINERS' }}
           </a>
         </div>
 
         <div class="nav-element nav-bottom" id="chat-nav">
           <a href="/dashboard/forum">
             <i class="fas fa-comments"></i>
-            Forum
+            {{ translate 'DASHBOARD_MENU_FORUM' }}
           </a>
         </div>
         <div class="nav-element" id="chat-nav">
           <a href="/dashboard/chat">
             <i class="fas fa-comment-dots"></i>
-            Messagerie
+            {{ translate 'DASHBOARD_MENU_CHAT' }}
           </a>
         </div>
         <div class="nav-element" id="logout-nav">
@@ -79,8 +79,8 @@
         <div class="dropdown">
           <button class="dropbtn">{{ translate 'LANGUAGE_NAME' }} <i class="fas fa-caret-down"></i></button>
           <div class="dropdown-content">
-            <a href="/fr/dashboard">Français</a>
-            <a href="/en/dashboard">English</a>
+            <a href="/fr" class="translation" id-tr="fr">Français</a>
+            <a href="/en" class="translation" id-tr="en">English</a>
           </div>
         </div>
       </nav>
@@ -92,6 +92,7 @@
 
     <script type="text/javascript" src="/vendor/jquery/jquery-3.4.1.min.js" ></script>
     <script type="text/javascript" src="/vendor/noty/noty.min.js" ></script>
+    <script type="text/javascript" src="/scripts/main.js" ></script>
     <script type="text/javascript" src="/scripts/dashboard.js" ></script>
 
     <script>

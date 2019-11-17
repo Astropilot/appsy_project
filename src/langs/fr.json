@@ -1,14 +1,83 @@
 {
     "LANGUAGE_NAME": "Français",
 
+    "CGV": "Conditions générales de ventes",
+
+    "404_OOPS": "Oops, la page n'a pas été trouvée !",
+    "404_DO_NOT_EXIST": "La page que vous cherchez n'existe pas ou plus. Revenez en arrière ou",
+    "404_BACK_HOME": "revenez à l'accueil",
+
+    "HOME_NAVBAR_CONNECT": "Inscription",
+    "HOME_NAVBAR_SUBSCRIBE": "Connexion",
+
+    "HOME_TABTITLE_HOME": "Accueil",
+    "HOME_NAVTITLE_HOME": "Découvrir Testify",
     "HOME_MENU_PRODUCT": "Notre produit",
     "HOME_MENU_OFFERS": "Nos offres",
+    "HOME_MENU_CLIENTS": "Nos clients",
+    "HOME_MENU_REVIEW": "On en parle",
 
     "HOME_CONNECT_CONNECTION": "Connexion",
-    "HOME_CONNECT_EMAIL": "Votre email",
-    "HOME_CONNECT_PASSWORD": "Mot de passe",
+    "HOME_CONNECT_EMAIL": "Votre adresse email",
+    "HOME_CONNECT_PASSWORD": "Votre mot de passe",
     "HOME_CONNECT_BUTTON": "Se connecter",
 
-    "API_USER_NO_USERNAME_PROVIDED": "L'identifiant est vide !",
-    "API_USER_NO_PASSWORD_PROVIDED": "Le mot de passe est vide !"
+    "API_USER_NO_USERNAME_PROVIDED": "L'adresse e-mail n'a pas été fournie !",
+    "API_USER_NO_PASSWORD_PROVIDED": "Le mot de passe n'a pas été fourni !",
+    "API_USER_NO_USER": "Le couple identifiant/mot de passe est incorrect !",
+    "API_USER_NOACCESS": "Vous n'avez pas accès aux informations de cet utilisateur !",
+    "API_USER_NOT_FOUND": "L'utilisateur est introuvable !",
+    "API_USER_SEARCH_NO_CRITERIA": "Pas de critère donné !",
+    "API_USER_DECONNECT_ERROR": "Une erreur est survenue pendant la deconnexion !",
+
+    "API_MESSAGE_NOACCESS": "Vous n'avez pas accès aux informations de cet utilisateur !",
+    "API_MESSAGE_NOPAGE": "Pas de page recu !",
+    "API_MESSAGE_NOSIZEPAGE": "Pas de taille de page recu !",
+    "API_MESSAGE_USER_NOT_FOUND": "L'utilisateur est introuvable !",
+    "API_MESSAGE_CONTACT_NOT_FOUND": "Le contact est introuvable !",
+    "API_MESSAGE_NO_MESSAGE_GIVEN": "Pas de message donné !",
+
+    "API_FORUM_NO_NAME_GIVEN": "Pas de nom de catégorie donné !",
+    "API_FORUM_CATEGORY_NOT_FOUND": "La catégorie est introuvable !",
+
+    "API_FAQ_NO_QUESTION_GIVEN": "Pas de question donnée !",
+    "API_FAQ_NO_ANSWER_GIVEN": "Pas de réponse donnée !",
+
+    "DASHBOARD_MENU_ROOT": "Accueil",
+    "DASHBOARD_MENU_TESTS": "Tests",
+    "DASHBOARD_MENU_SUBJECTS": "Sujets",
+    "DASHBOARD_MENU_EXAMINERS": "Examinateurs",
+    "DASHBOARD_MENU_FORUM": "Forum",
+    "DASHBOARD_MENU_CHAT": "Messagerie",
+
+    "DASHBOARD_HOME_TITLE": "Accueil",
+
+    "DASHBOARD_CHAT_TITLE": "Messagerie",
+    "DASHBOARD_CHAT_MAINTITLE": "Messagerie - Vos discussions",
+    "DASHBOARD_CHAT_NODISCUSSION": "Vous n'avez pas encore de discussion !",
+    "DASHBOARD_CHAT_MESSAGESBTN": "Accéder aux messages",
+    "DASHBOARD_CHAT_SENDMESSAGEBTN": "Envoyer un message",
+    "DASHBOARD_CHAT_SEARCHCONTACT": "Trouver un contact",
+    "DASHBOARD_CHAT_SEARCHBTN": "Chercher",
+    "DASHBOARD_CHAT_TABLE_NAME": "Nom / Prénom",
+    "DASHBOARD_CHAT_TABLE_EMAIL": "Email",
+    "DASHBOARD_CHAT_TABLE_ROLE": "Role",
+    "DASHBOARD_CHAT_TABLE_ACTION": "Action",
+
+    "DASHBOARD_USERCHAT_TITLE": "Discussion",
+    "DASHBOARD_USERCHAT_NODISCUSSION": "Vous n'avez pas encore de conversation !",
+    "DASHBOARD_USERCHAT_SENDBTN": "Envoyer",
+
+    "DASHBOARD_FORUM_TITLE": "Forum",
+    "DASHBOARD_FORUM_ADDCATEGORYBTN": "Ajouter une catégorie",
+    "DASHBOARD_FORUM_NOCATEGORY": "Il n'y a pas encore de catégories disponible !",
+    "DASHBOARD_FORUM_GOPOSTSBTN": "Accéder aux posts",
+    "DASHBOARD_FORUM_MODAL_NEWCATEGORY_TITLE": "Nouvelle catégorie",
+    "DASHBOARD_FORUM_MODAL_NAME": "Nom de la catégorie",
+    "DASHBOARD_FORUM_MODAL_NAME_EXAMPLE": "Ex: Ma catégorie",
+    "DASHBOARD_FORUM_MODAL_ADDBTN": "Ajouter",
+
+    "DASHBOARD_FORUMCATEGORY_TITLE": "Forum",
+    "DASHBOARD_FORUMCATEGORY_NOPOST": "Cette catégorie ne dispose pas encore de conversations !",
+    "DASHBOARD_FORUMCATEGORY_NEWPOSTBTN": "Créer la première conversation"
 }

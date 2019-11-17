@@ -1,11 +1,11 @@
 {% extends 'base_dashboard.html' %}
 
 {% block title %}
-Forum
+{{ translate 'DASHBOARD_FORUM_TITLE' }}
 {% endblock %}
 
 {% block navtitle %}
-Forum
+{{ translate 'DASHBOARD_FORUM_TITLE' }}
 {% endblock %}
 
 {% block body %}
@@ -13,13 +13,13 @@ Forum
 <div class="container">
   <div class="row">
     <div class="offset-5 col-2">
-      <h2>Forum</h2>
+      <h2>{{ translate 'DASHBOARD_FORUM_TITLE' }}</h2>
     </div>
   </div>
   <div class="row">
     <div class="offset-10 col-2">
       <button type="button" class="btn btn-success btn-sm" id="btn-new-category" style="display: none">
-        <i class="fas fa-plus"></i> Ajouter une catégorie
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_FORUM_ADDCATEGORYBTN' }}
       </button>
     </div>
   </div>
@@ -27,7 +27,7 @@ Forum
     <i class="fas fa-circle-notch fa-spin fa-2x"></i>
   </div>
   <div class="row justify-content-center" id="noforums" style="display: none">
-    <h3>Il n'y a pas encore de forum disponible !</h3>
+    <h3>{{ translate 'DASHBOARD_FORUM_NOCATEGORY' }}</h3>
   </div>
   <div id="forums">
   </div>
@@ -37,24 +37,38 @@ Forum
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Nouvelle catégorie</h2>
+      <h2>{{ translate 'DASHBOARD_FORUM_MODAL_NEWCATEGORY_TITLE' }}</h2>
     </div>
     <div class="modal-body">
       <div class="row justify-content-center" style="margin-top: 30px;">
         <form class="form">
           <div class="row">
-            <label class="col-4 col-form-label" for="category-name">Nom de la catégorie</label><br>
-            <input type="text" class="form-field col-8" name="category-name" id="category-name" placeholder="Ex: Ma catégorie">
+            <label class="col-4 col-form-label" for="category-name">{{ translate 'DASHBOARD_FORUM_MODAL_NAME' }}</label><br>
+            <input type="text" class="form-field col-8" name="category-name" id="category-name" placeholder="{{ translate 'DASHBOARD_FORUM_MODAL_NAME_EXAMPLE' }}">
           </div>
         </form>
       </div>
     </div>
     <div class="modal-footer d-flex justify-content-end">
       <button type="button" class="btn btn-success btn-sm" id="btn-create-category">
-        <i class="fas fa-plus"></i> Ajouter <i id="wait-creating-category" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_FORUM_MODAL_ADDBTN' }} <i id="wait-creating-category" class="fas fa-circle-notch fa-spin" style="display: none"></i>
       </button>
     </div>
   </div>
+</div>
+
+<div id="category-first-template" class="row d-none">
+  <h2 class="col-3"><b class="category-title"></b></h2>
+  <h5 class="offset-5 col-2" style="align-self: end; margin-bottom: 0">Posts: <span class="category-posts"></span></h5>
+  <h5 class="col-2" style="align-self: end; margin-bottom: 0"><b class="category-date">${category.updated_at}</b></h5>
+</div>
+<div id="category-second-template" class="row d-none">
+  <a href="/dashboard/forum/category/${category.id}" class="btn btn-primary" style="margin-left: auto">
+    {{ translate 'DASHBOARD_FORUM_GOPOSTSBTN' }}
+  </a>
+  <button class="btn btn-danger" style="margin-left: 5px">
+    <i class="fas fa-trash-alt"></i>
+  </button>
 </div>
 
 {% endblock %}

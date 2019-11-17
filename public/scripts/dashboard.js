@@ -12,7 +12,7 @@ function checkIsLogged() {
   var user = localStorage.getItem('user');
 
   if (!user)
-    window.location.replace('connexion');
+    window.location.replace('/connexion');
   else {
     user = JSON.parse(user);
     $.ajax({
@@ -62,7 +62,7 @@ function disconnect() {
           type: 'error',
           layout: 'centerRight',
           timeout: 4000,
-          text: 'Une erreur est survenue pendant la deconnexion !'
+          text: data.errors[0]
         }).show();
       }
     }
@@ -85,13 +85,14 @@ function getUserContacts(contactPage, contactPageSize, paginatorContacts) {
           return;
         }
         data.contacts.forEach(function(contact) {
+          var contact_template = $('#contact-template').clone().removeClass('d-none');
+
+          contact_template.find('b').text(`${contact.user.firstname} ${contact.user.lastname}`);
+          contact_template.find('span').text(contact.message);
+          contact_template.find('a').attr('href', `/dashboard/chat/user/${contact.user.id}`);
+
           $('#contacts').append(
-            `<div class="contact row bg-grey" style="display: flex; align-items: center; padding: 10px; margin-bottom: 5px">
-              <b>${contact.user.firstname} ${contact.user.lastname}</b> : <span style="text-color: gray">${contact.message}</span>
-              <a href="/dashboard/chat/user/${contact.user.id}" class="btn btn-primary" style="margin-left: auto">
-                Accéder aux messages
-              </a>
-             </div>`
+            contact_template
           );
         });
         paginatorContacts.paginate(
@@ -203,7 +204,6 @@ function sendMessageTo(contact_id, message) {
 }
 
 function searchContact(search) {
-  //var user = JSON.parse(localStorage.getItem('user'));
   $('#wait-searching').show();
 
   $.ajax({
@@ -218,15 +218,15 @@ function searchContact(search) {
 
         $('#contact-list').empty();
         data.contacts.forEach(function(contact) {
+          var contact_template = $('#contactsearch-template tr').clone().removeClass('d-none');
+
+          contact_template.find('.contact-name').text(`${contact.firstname} ${contact.lastname}`);
+          contact_template.find('.contact-email').text(contact.email);
+          contact_template.find('.contact-role').text(ROLES[contact.role]);
+          contact_template.find('a').attr('href', `/dashboard/chat/user/${contact.id}`);
+
           $('#contact-list').append(
-            `<tr>
-              <td>${contact.firstname} ${contact.lastname}</td>
-              <td>${contact.email}</td>
-              <td>${ROLES[contact.role]}</td>
-              <td><a href="/dashboard/chat/user/${contact.id}" class="btn btn-primary">
-                Envoyer un message
-              </a></td>
-             </tr>`
+            contact_template
           );
         });
         $('#contact-list-row').show();
@@ -260,22 +260,18 @@ function getCategories() {
           return;
         }
         data.categories.forEach(function(category) {
-          $('#forums').append(
-            `<div class="row forum-category">
-              <h2 class="col-3"><b>${category.title}</b></h2>
-              <h5 class="offset-5 col-2" style="align-self: end; margin-bottom: 0">Posts: ${category.count_posts}</h5>
-              <h5 class="col-2" style="align-self: end; margin-bottom: 0"><b>${category.updated_at}</b></h5>
-             </div>
-             <hr>
-             <div class="row">
-               <a href="/dashboard/forum/category/${category.id}" class="btn btn-primary" style="margin-left: auto">
-                 Accéder aux posts
-               </a>
-               <button class="btn btn-danger" style="margin-left: 5px">
-                 <i class="fas fa-trash-alt"></i>
-               </button>
-             </div>`
-          );
+          var first_cat_template = $('#category-first-template').clone().removeClass('d-none');
+          var second_cat_template = $('#category-second-template').clone().removeClass('d-none');
+
+          first_cat_template.find('.category-title').text(category.title);
+          first_cat_template.find('.category-posts').text(category.count_posts);
+          first_cat_template.find('.category-date').text(category.updated_at);
+
+          second_cat_template.find('a').attr('href', `/dashboard/forum/category/${category.id}`);
+
+          $('#forums').append(first_cat_template);
+          $('#forums').append('<hr>');
+          $('#forums').append(second_cat_template);
         });
       } else {
         data.errors.forEach(function(error) {
@@ -334,7 +330,6 @@ function getPosts(category_id) {
         $('#posts').empty();
         $('#category').empty();
         $('#category').append(data.category.title);
-        //$('#navtitle').text(`Forum - ${data.category.title}`);
         document.title = `Forum - ${data.category.title}`;
         if (data.posts.length == 0) {
           $('#nopost').show();
@@ -342,20 +337,7 @@ function getPosts(category_id) {
         }
         data.posts.forEach(function(category) {
           $('#posts').append(
-            `<div class="row forum-category">
-              <h2 class="col-3"><b>${category.title}</b></h2>
-              <h5 class="offset-5 col-2" style="align-self: end; margin-bottom: 0">Posts: ${category.count_posts}</h5>
-              <h5 class="col-2" style="align-self: end; margin-bottom: 0"><b>${category.updated_at}</b></h5>
-             </div>
-             <hr>
-             <div class="row">
-               <a href="/dashboard/forum/category/${category.id}" class="btn btn-primary" style="margin-left: auto">
-                 Accéder aux posts
-               </a>
-               <button class="btn btn-danger" style="margin-left: 5px">
-                 <i class="fas fa-trash-alt"></i>
-               </button>
-             </div>`
+            ``
           );
         });
       } else {

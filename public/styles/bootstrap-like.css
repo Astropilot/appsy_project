@@ -337,3 +337,7 @@
 .modal-footer {
   padding: 2px 16px;
 }
+
+a, button {
+  outline : none;
+}

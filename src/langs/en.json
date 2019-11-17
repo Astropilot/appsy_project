@@ -1,8 +1,21 @@
 {
     "LANGUAGE_NAME": "English",
 
+    "CGV": "General terms and conditions of sale",
+
+    "404_OOPS": "Oops, the page was not found!",
+    "404_DO_NOT_EXIST": "The page you are looking for does not exist or no longer exists. Go back or",
+    "404_BACK_HOME": "come back to home",
+
+    "HOME_NAVBAR_CONNECT": "Sign Up",
+    "HOME_NAVBAR_SUBSCRIBE": "Sign In",
+
+    "HOME_TABTITLE_HOME": "Home",
+    "HOME_NAVTITLE_HOME": "Discover Testify",
     "HOME_MENU_PRODUCT": "Our product",
     "HOME_MENU_OFFERS": "Our offers",
+    "HOME_MENU_CLIENTS": "Our clients",
+    "HOME_MENU_REVIEW": "Our reviews",
 
     "HOME_CONNECT_CONNECTION": "Connection",
     "HOME_CONNECT_EMAIL": "Your email",
@@ -10,5 +23,61 @@
     "HOME_CONNECT_BUTTON": "Login",
 
     "API_USER_NO_USERNAME_PROVIDED": "The email was not provided !",
-    "API_USER_NO_PASSWORD_PROVIDED": "The password was not provided !"
+    "API_USER_NO_PASSWORD_PROVIDED": "The password was not provided !",
+    "API_USER_NO_USER": "The login/password pair is incorrect!",
+    "API_USER_NOACCESS": "You do not have access to this user's information!",
+    "API_USER_NOT_FOUND": "The user is not found!",
+    "API_USER_SEARCH_NO_CRITERIA": "No criteria given!",
+    "API_USER_DECONNECT_ERROR": "An error occurred during the disconnection!",
+
+    "API_MESSAGE_NOACCESS": "You do not have access to this user's information!",
+    "API_MESSAGE_NOPAGE": "No page received!",
+    "API_MESSAGE_NOSIZEPAGE": "No page size received!",
+    "API_MESSAGE_USER_NOT_FOUND": "The user is not found!",
+    "API_MESSAGE_CONTACT_NOT_FOUND": "The contact is not found!",
+    "API_MESSAGE_NO_MESSAGE_GIVEN": "No message given!",
+
+    "API_FORUM_NO_NAME_GIVEN": "No category name given!",
+    "API_FORUM_CATEGORY_NOT_FOUND": "The category is not found!",
+
+    "API_FAQ_NO_QUESTION_GIVEN": "No given question!",
+    "API_FAQ_NO_ANSWER_GIVEN": "No answer given!",
+
+    "DASHBOARD_MENU_ROOT": "Home",
+    "DASHBOARD_MENU_TESTS": "Tests",
+    "DASHBOARD_MENU_SUBJECTS": "Subjects",
+    "DASHBOARD_MENU_EXAMINERS": "Examiners",
+    "DASHBOARD_MENU_FORUM": "Forum",
+    "DASHBOARD_MENU_CHAT": "Messaging",
+
+    "DASHBOARD_HOME_TITLE": "Home",
+
+    "DASHBOARD_CHAT_TITLE": "Messaging",
+    "DASHBOARD_CHAT_MAINTITLE": "Messaging - Your discussions",
+    "DASHBOARD_CHAT_NODISCUSSION": "You don't have a discussion yet!",
+    "DASHBOARD_CHAT_MESSAGESBTN": "Go to messages",
+    "DASHBOARD_CHAT_SENDMESSAGEBTN": "Send message",
+    "DASHBOARD_CHAT_SEARCHCONTACT": "Find a contact",
+    "DASHBOARD_CHAT_SEARCHBTN": "Search",
+    "DASHBOARD_CHAT_TABLE_NAME": "Last name / First name",
+    "DASHBOARD_CHAT_TABLE_EMAIL": "Email",
+    "DASHBOARD_CHAT_TABLE_ROLE": "Role",
+    "DASHBOARD_CHAT_TABLE_ACTION": "Action",
+
+    "DASHBOARD_USERCHAT_TITLE": "Discussion",
+    "DASHBOARD_USERCHAT_NODISCUSSION": "You don't have a discussion yet!",
+    "DASHBOARD_USERCHAT_SENDBTN": "Send",
+
+    "DASHBOARD_FORUM_TITLE": "Forum",
+    "DASHBOARD_FORUM_ADDCATEGORYBTN": "Add a category",
+    "DASHBOARD_FORUM_NOCATEGORY": "There are no categories available yet!",
+    "DASHBOARD_FORUM_GOPOSTSBTN": "Go to posts",
+    "DASHBOARD_FORUM_MODAL_NEWCATEGORY_TITLE": "New category",
+    "DASHBOARD_FORUM_MODAL_NAME": "Name of the category",
+    "DASHBOARD_FORUM_MODAL_NAME_EXAMPLE": "Eg: My category",
+    "DASHBOARD_FORUM_MODAL_ADDBTN": "Create",
+
+    "DASHBOARD_FORUMCATEGORY_TITLE": "Forum",
+    "DASHBOARD_FORUMCATEGORY_NOPOST": "This category does not have any conversations yet!",
+    "DASHBOARD_FORUMCATEGORY_NEWPOSTBTN": "Create the first conversation"
 }

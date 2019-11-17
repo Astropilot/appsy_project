@@ -7,8 +7,9 @@ class I18n {
     private static $_instance = null;
     private $langsFolder = '';
     private $defaultLang = '';
-    private $active = false;
     private $cacheID = '';
+    public $notCached = false;
+    public $active = false;
 
     private function __construct($langsFolder, $default) {
         if ($default !== null)
@@ -67,7 +68,7 @@ class I18n {
         return '/' . $url;
     }
 
-    public function getTranslation(string $key): string {
+    public function translate(string $key): string {
         if (!$this->active)
             return 'TRANSLATION_NOT_INITIALIZED';
 
@@ -93,7 +94,7 @@ class I18n {
         $cache_file = $path_cache. $lang . '_' . $this->cacheID . '.php';
         require($cache_file);
 
-        while (preg_match('/{{ *?translate *?\'([A-Z_]*)\' *?}}/m', $file_contents, $matches, PREG_OFFSET_CAPTURE)) {
+        while (preg_match('/{{ *?translate *?\'([A-Z0-9_]*)\' *?}}/m', $file_contents, $matches, PREG_OFFSET_CAPTURE)) {
             $translation_command = $matches[0];
             $translation_key = $matches[1][0];
 
@@ -112,13 +113,17 @@ class I18n {
             );
         }
 
+        $this->setLangToContext($context);
+
+        unset($strings);
+        return $file_contents;
+    }
+
+    public function setLangToContext(&$context) {
         if ($context === null) {
             $context = array('lang' => $_SESSION['lang']);
         } else
             $context['lang'] = $_SESSION['lang'];
-
-        unset($strings);
-        return $file_contents;
     }
 
     private function cacheTranslationFile() {
@@ -132,6 +137,7 @@ class I18n {
         $cache_file = $path_cache. $lang . '_' . filemtime($lang_file) . '.php';
 
         if (!file_exists($cache_file)) {
+            $this->notCached = true;
             file_put_contents($cache_file, '<?php $strings='.
                 var_export(json_decode(file_get_contents($lang_file)), true).';', LOCK_EX);
         }

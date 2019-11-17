@@ -1,11 +1,11 @@
 {% extends 'base_dashboard.html' %}
 
 {% block title %}
-Messagerie
+{{ translate 'DASHBOARD_CHAT_TITLE' }}
 {% endblock %}
 
 {% block navtitle %}
-Messagerie
+{{ translate 'DASHBOARD_CHAT_TITLE' }}
 {% endblock %}
 
 {% block styles %}
@@ -16,7 +16,7 @@ Messagerie
 
 <div class="container">
   <div class="row justify-content-center">
-    <h2>Messagerie - Vos discussions</h2>
+    <h2>{{ translate 'DASHBOARD_CHAT_MAINTITLE' }}</h2>
   </div>
   <div class="row flex-column justify-content-center" id="contacts"></div>
   <div class="row justify-content-center" id="contacts-wait">
@@ -25,17 +25,17 @@ Messagerie
   <div class="row justify-content-center paginator" id="contact-pagination"></div>
 
   <div class="row justify-content-center" id="nocontact" style="display: none">
-    <h3>Vous n'avez pas encore de discussion !</h3>
+    <h3>{{ translate 'DASHBOARD_CHAT_NODISCUSSION' }}</h3>
   </div>
 
   <div class="row justify-content-center">
-    <h2>Trouver un contact</h2>
+    <h2>{{ translate 'DASHBOARD_CHAT_SEARCHCONTACT' }}</h2>
   </div>
   <div class="row justify-content-center">
     <form class="form">
       <input type="text" class="form-field" name="contact-search" id="contact-search" placeholder="Ex: John Doe">
       <button id="btn-search" type="button" class="btn btn-primary">
-        Chercher <i id="wait-searching" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        {{ translate 'DASHBOARD_CHAT_SEARCHBTN' }} <i id="wait-searching" class="fas fa-circle-notch fa-spin" style="display: none"></i>
       </button>
     </form>
   </div>
@@ -43,10 +43,10 @@ Messagerie
     <table class="mx-auto">
       <thead>
         <tr>
-          <th>Nom / Prénom</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Action</th>
+          <th>{{ translate 'DASHBOARD_CHAT_TABLE_NAME' }}</th>
+          <th>{{ translate 'DASHBOARD_CHAT_TABLE_EMAIL' }}</th>
+          <th>{{ translate 'DASHBOARD_CHAT_TABLE_ROLE' }}</th>
+          <th>{{ translate 'DASHBOARD_CHAT_TABLE_ACTION' }}</th>
         </tr>
       </thead>
       <tbody id="contact-list">
@@ -54,6 +54,24 @@ Messagerie
     </table>
   </div>
 </div>
+
+<div id="contact-template" class="contact row bg-grey d-none" style="display: flex; align-items: center; padding: 10px; margin-bottom: 5px">
+  <b></b> : <span style="text-color: gray"></span>
+  <a href="" class="btn btn-primary" style="margin-left: auto">
+    {{ translate 'DASHBOARD_CHAT_MESSAGESBTN' }}
+  </a>
+</div>
+
+<table id="contactsearch-template" class="d-none">
+  <tr>
+    <td class="contact-name"></td>
+    <td class="contact-email"></td>
+    <td class="contact-role"></td>
+    <td><a href="" class="btn btn-primary">
+      {{ translate 'DASHBOARD_CHAT_SENDMESSAGEBTN' }}
+    </a></td>
+  </tr>
+</table>
 
 {% endblock %}
 

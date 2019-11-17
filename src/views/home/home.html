@@ -1,11 +1,11 @@
 {% extends 'base_home.html' %}
 
 {% block title %}
-Accueil
+{{ translate 'HOME_TABTITLE_HOME' }}
 {% endblock %}
 
 {% block navtitle %}
-Découvrir Testify
+{{ translate 'HOME_NAVTITLE_HOME' }}
 {% endblock %}
 
 {% block body %}
@@ -15,8 +15,8 @@ Découvrir Testify
   <ul class="btn-group-2">
     <li><a href="#product">{{ translate 'HOME_MENU_PRODUCT' }}</a></li>
     <li><a href="#offers">{{ translate 'HOME_MENU_OFFERS' }}</a></li>
-    <li><a href="#clients">Nos clients</a></li>
-    <li><a href="#review">On en parle</a></li>
+    <li><a href="#clients">{{ translate 'HOME_MENU_CLIENTS' }}</a></li>
+    <li><a href="#review">{{ translate 'HOME_MENU_REVIEW' }}</a></li>
     <li><a href="#client">Infinite Measures</a></li>
   </ul>
 </div>

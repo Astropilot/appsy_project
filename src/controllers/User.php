@@ -18,16 +18,16 @@ $router->post('/api/users/login', function($request) {
     API::setAPIHeaders();
 
     if(!isset($request->getBody()['email']) || empty($request->getBody()['email']))
-        $errors_arr[] = I18n::getInstance()->getTranslation('API_USER_NO_USERNAME_PROVIDED');
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_NO_USERNAME_PROVIDED');
     if(!isset($request->getBody()['password']) || empty($request->getBody()['password']))
-        $errors_arr[] = I18n::getInstance()->getTranslation('API_USER_NO_PASSWORD_PROVIDED');
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_NO_PASSWORD_PROVIDED');
 
     if(count($errors_arr) === 0) {
         $email = Security::protect($request->getBody()['email']);
         $password = Security::hashPass($request->getBody()['password'], Config::HASH_SALT);
 
         if(!User::getInstance()->userExist($email, $password)) {
-            $errors_arr[] = "Le couple identifiant/mot de passe est incorrect !";
+            $errors_arr[] = I18n::getInstance()->translate('API_USER_NO_USER');
         }
 
         if(count($errors_arr) === 0) {
@@ -50,12 +50,12 @@ $router->get('/api/users/<userid>', function($request, $user_id) {
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
-        $errors_arr[] = "Vous n'avez pas accès aux informations de cet utilisateur !";
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_NOACCESS');
 
     if(count($errors_arr) === 0) {
         $user = User::getInstance()->getUser($user_id);
         if($user === null) {
-            $errors_arr[] = "L'utilisateur est introuvable !";
+            $errors_arr[] = I18n::getInstance()->translate('API_USER_NOT_FOUND');
         } else
             return json_encode(array("r" => True, "user" => $user));
     }
@@ -69,7 +69,7 @@ $router->post('/api/contacts/search', function($request) {
     Security::checkAPIConnected();
 
     if(!isset($request->getBody()['search']) || empty($request->getBody()['search']))
-        $errors_arr[] = "Pas de critère donné !";
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_SEARCH_NO_CRITERIA');
 
     if(count($errors_arr) === 0) {
         $search = Security::protect($request->getBody()['search']);
@@ -91,5 +91,5 @@ $router->get('/api/users/logoff', function($request) {
         return json_encode(array("r" => True));
     }
     else
-        return json_encode(array("r" => False));
+        return json_encode(array("r" => False, "errors" => array(I18n::getInstance()->translate('API_USER_DECONNECT_ERROR'))));
 });

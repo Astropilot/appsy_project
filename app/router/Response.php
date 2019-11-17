@@ -16,9 +16,42 @@ class Response {
             $file_extends_contents = file_get_contents($path . $matches[1]);
         }
 
-        if (!$file_extends_contents)
+        if (!$file_extends_contents) {
+            $file_contents = I18n::getInstance()->computeTranslations(
+                $file_contents,
+                $context
+            );
             return self::computeContext($file_contents, $context);
-        else {
+        } else {
+            $translation_not_cached = I18n::getInstance()->notCached;
+            $path_cache = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
+            $view_name = basename($file, '.html');
+            $extends_name = basename($matches[1], '.html');
+
+            $lang = '';
+            if (I18n::getInstance()->active) {
+                $lang = '_' . $_SESSION['lang'];
+            }
+
+            $cache_file = $path_cache. $view_name . '_' . $extends_name .
+                '_' . filemtime($path. $file) . '_' . filemtime($path. $matches[1]) .
+                $lang . '_t.chtml';
+            $cache_untranslated_file = $path_cache. $view_name . '_' . $extends_name .
+                '_' . filemtime($path. $file) . '_' . filemtime($path. $matches[1]) .
+                $lang . '.chtml';
+
+            if (file_exists($cache_file) && !$translation_not_cached) {
+                I18n::getInstance()->setLangToContext($context);
+                return self::computeContext(file_get_contents($cache_file), $context);
+            } elseif (file_exists($cache_file) && $translation_not_cached) {
+                $file_extends_contents = I18n::getInstance()->computeTranslations(
+                    file_get_contents($cache_untranslated_file),
+                    $context
+                );
+                file_put_contents($cache_file, $file_extends_contents, LOCK_EX);
+                return self::computeContext($file_extends_contents, $context);
+            }
+
             $file_blocks = self::getBlocks($file_contents);
             $file_extends_blocks_id = self::getBlocksID($file_extends_contents);
 
@@ -55,7 +88,9 @@ class Response {
                 }
             }
 
+            file_put_contents($cache_untranslated_file, $file_extends_contents, LOCK_EX);
             $file_extends_contents = I18n::getInstance()->computeTranslations($file_extends_contents, $context);
+            file_put_contents($cache_file, $file_extends_contents, LOCK_EX);
             return self::computeContext($file_extends_contents, $context);
         }
     }

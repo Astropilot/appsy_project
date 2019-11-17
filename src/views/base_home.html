@@ -23,14 +23,14 @@
       </a>
       <h1>{% block navtitle %}{% endblock %}</h1>
       <ul class="btn-group-1">
-        <li><a href="/inscription">Inscription</a></li>
-        <li><a href="/connexion">Connexion</a></li>
+        <li><a href="/inscription">{{ translate 'HOME_NAVBAR_CONNECT' }}</a></li>
+        <li><a href="/connexion">{{ translate 'HOME_NAVBAR_SUBSCRIBE' }}</a></li>
       </ul>
       <div class="dropdown">
         <button class="dropbtn">{{ translate 'LANGUAGE_NAME' }} <i class="fas fa-caret-down"></i></button>
         <div class="dropdown-content">
-          <a href="/fr">Français</a>
-          <a href="/en">English</a>
+          <a href="/fr" class="translation" id-tr="fr">Français</a>
+          <a href="/en" class="translation" id-tr="en">English</a>
         </div>
       </div>
     </nav>
@@ -40,13 +40,14 @@
 
     <footer>
       <p>
-        <a href="/conditions_generales_de_ventes">Conditions générales de ventes</a> &#xa9; 2019, Testify.fr Powered by our own skills
+        <a href="/conditions_generales_de_ventes">{{ translate 'CGV' }}</a> &#xa9; 2019, Testify.fr Powered by our own skills
       </p>
     </footer>
 
     <script type="text/javascript" src="/vendor/jquery/jquery-3.4.1.min.js" ></script>
     <script type="text/javascript" src="/vendor/noty/noty.min.js" ></script>
     <script type="text/javascript" src="/scripts/main.js" ></script>
+    <script type="text/javascript" src="/scripts/home.js" ></script>
     <script type="text/javascript" src="/scripts/scrolling.js" ></script>
 
     <script>

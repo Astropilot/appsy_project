@@ -7,6 +7,7 @@ use Testify\Model\Role;
 use Testify\Component\Security;
 use Testify\Component\API;
 use Testify\Component\Paginator;
+use Testify\Component\I18n;
 
 $router = Router::getInstance();
 
@@ -18,17 +19,17 @@ $router->get('/api/users/<user_id>/contacts', function($request, $user_id) {
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
-        $errors_arr[] = "Vous n'avez pas accès aux informations de cet utilisateur !";
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOACCESS');
 
     if(!isset($request->getBody()['page']) || empty($request->getBody()['page']))
-        $errors_arr[] = "Pas de page recu !";
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOPAGE');
     if(!isset($request->getBody()['pageSize']) || empty($request->getBody()['pageSize']))
-        $errors_arr[] = "Pas de taille de page recu !";
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOSIZEPAGE');
 
     if(count($errors_arr) === 0) {
         $user = User::getInstance()->getUser($user_id);
         if($user === null)
-            $errors_arr[] = "L'utilisateur est introuvable !";
+            $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND');
     }
 
     if(count($errors_arr) === 0) {
@@ -51,16 +52,16 @@ $router->get('/api/users/<user_id>/<contact_id>/messages', function($request, $u
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
-        $errors_arr[] = "Vous n'avez pas accès aux informations de cet utilisateur !";
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOACCESS');
 
     if(count($errors_arr) === 0) {
         $user = User::getInstance()->getUser($user_id);
         if($user === null)
-            $errors_arr[] = "L'utilisateur est introuvable !";
+            $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND');
         else {
             $contact = User::getInstance()->getUser($contact_id);
             if ($contact === null)
-                $errors_arr[] = "Le contact est introuvable !";
+                $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_CONTACT_NOT_FOUND');
         }
     }
 
@@ -80,21 +81,21 @@ $router->post('/api/users/<user_id>/<contact_id>/messages', function($request, $
     Security::checkAPIConnected();
 
     if (intval($user_id) !== $_SESSION['id'])
-        $errors_arr[] = "Vous n'avez pas accès aux informations de cet utilisateur !";
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOACCESS');
 
     if(count($errors_arr) === 0) {
         $user = User::getInstance()->getUser($user_id);
         if($user === null)
-            $errors_arr[] = "L'utilisateur est introuvable !";
+            $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND');
         else {
             $contact = User::getInstance()->getUser($contact_id);
             if ($contact === null)
-                $errors_arr[] = "Le contact est introuvable !";
+                $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_CONTACT_NOT_FOUND');
         }
     }
 
     if(!isset($request->getBody()['message']) || empty($request->getBody()['message']))
-        $errors_arr[] = "Pas de message donné !";
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
 
     if(count($errors_arr) === 0) {
         $message = Security::protect($request->getBody()['message']);

@@ -1,27 +1,27 @@
 {% extends 'base_dashboard.html' %}
 
 {% block title %}
-Forum
+{{ translate 'DASHBOARD_FORUMCATEGORY_TITLE' }}
 {% endblock %}
 
 {% block navtitle %}
-Forum
+{{ translate 'DASHBOARD_FORUMCATEGORY_TITLE' }}
 {% endblock %}
 
 {% block body %}
 
 <div class="container-fluid" style="padding-bottom: 60px;">
   <div class="row justify-content-center">
-    <h2>Forum - <span id="category"></span></h2>
+    <h2>{{ translate 'DASHBOARD_FORUMCATEGORY_TITLE' }} - <span id="category"></span></h2>
   </div>
   <div class="row justify-content-center" id="posts-wait">
     <i class="fas fa-circle-notch fa-spin fa-2x"></i>
   </div>
   <div class="row flex-column justify-content-center align-items-center" id="nopost" style="display: none">
-    <h3>Cette catégorie ne dispose pas encore de conversations !</h3>
+    <h3>{{ translate 'DASHBOARD_FORUMCATEGORY_NOPOST' }}</h3>
     <div class="row">
       <button type="button" class="btn btn-primary" id="btn-new-post">
-        Créer la première conversation
+        {{ translate 'DASHBOARD_FORUMCATEGORY_NEWPOSTBTN' }}
       </button>
     </div>
   </div>

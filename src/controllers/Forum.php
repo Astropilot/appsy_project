@@ -5,6 +5,7 @@ use Testify\Model\Forum;
 use Testify\Model\Role;
 use Testify\Component\Security;
 use Testify\Component\API;
+use Testify\Component\I18n;
 
 $router = Router::getInstance();
 
@@ -25,7 +26,7 @@ $router->post('/api/forum/categories', function($request) {
     $errors_arr=array();
 
     if(!isset($request->getBody()['name']) || empty($request->getBody()['name']))
-        $errors_arr[] = "Pas de nom de catégorie donné !";
+        $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NO_NAME_GIVEN');
 
     if(count($errors_arr) === 0) {
         $name = Security::protect($request->getBody()['name']);
@@ -44,7 +45,7 @@ $router->get('/api/forum/categories/<category_id>/posts', function($request, $ca
 
     $category = Forum::getInstance()->getCategory($category_id);
     if ($category === null)
-        $errors_arr[] = "La catégorie est introuvable !";
+        $errors_arr[] = I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND');
 
     if (count($errors_arr) === 0) {
         $posts = Forum::getInstance()->getPosts($category_id);

@@ -13,16 +13,16 @@
 
     <div class="container-fluid">
       <h1 style="text-align: center; font-size: 5em">404</h1>
-      <h1 style="text-align: center">Oops, la page n'a pas été trouvée !</h1>
+      <h1 style="text-align: center">{{ translate '404_OOPS' }}</h1>
       <h2 style="text-align: center">
-        La page que vous cherchez n'existe pas ou plus. Revenez en arrière ou
-        <a href="/">revenez à l'accueil</a>
+        {{ translate '404_DO_NOT_EXIST' }}
+        <a href="/">{{ translate '404_BACK_HOME' }}</a>
       </h2>
     </div>
 
     <footer>
       <p>
-        <a href="/conditions_generales_de_ventes">Conditions générales de ventes</a> &#xa9; 2019, Testify.fr Powered by our own skills
+        <a href="/conditions_generales_de_ventes">{{ translate 'CGV' }}</a> &#xa9; 2019, Testify.fr Powered by our own skills
       </p>
     </footer>
   </body>
