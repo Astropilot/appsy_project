@@ -71,3 +71,37 @@ $router->get('/api/forum/categories/<category_id>/posts', function($request, $ca
     }
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
+
+$router->get('/api/forum/posts/<post_id>/responses', function($request, $post_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+
+    $errors_arr=array();
+
+    if(!isset($request->getBody()['page']) || empty($request->getBody()['page']))
+        $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOPAGE');
+    if(!isset($request->getBody()['pageSize']) || empty($request->getBody()['pageSize']))
+        $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOSIZEPAGE');
+
+    if (count($errors_arr) === 0) {
+        $post = Forum::getInstance()->getPost($post_id);
+        if ($post === null)
+            $errors_arr[] = I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND');
+    }
+
+    if (count($errors_arr) === 0) {
+        $page = Security::protect($request->getBody()['page']);
+        $pageSize = Security::protect($request->getBody()['pageSize']);
+
+        $paginator = new Paginator($page, $pageSize);
+        $responses = $paginator->paginate(Forum::getInstance()->getPostResponses($post_id));
+
+        return json_encode(array(
+            "r" => True,
+            "post" => $post,
+            "responses" => $responses['data'],
+            "paginator" => $responses['paginator']
+        ));
+    }
+    return json_encode(array("r" => False, "errors" => $errors_arr));
+});

@@ -169,26 +169,26 @@ footer p {
   margin-right: 10px;
 }
 
-#post-list-row > table {
+table {
   border-collapse: collapse;
   width: 100%;
 }
 
-#post-list-row > table td,
-#post-list-row > table th {
+table td,
+table th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-#post-list-row > table tr:nth-child(even) {
+table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-#post-list-row > table tr:hover {
+table tr:hover {
   background-color: #ddd;
 }
 
-#post-list-row > table th {
+table th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;

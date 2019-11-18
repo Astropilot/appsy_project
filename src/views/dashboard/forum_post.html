@@ -1,28 +1,89 @@
 {% extends 'base_dashboard.html' %}
 
 {% block title %}
-Forum - Demande d'assistance
+{{ translate 'DASHBOARD_FORUM_TITLE' }}
 {% endblock %}
 
 {% block navtitle %}
-Discussion - Demande d'assistance
+{{ translate 'DASHBOARD_FORUMPOST_TITLE' }}
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/styles/paginator.css">
 {% endblock %}
 
 {% block body %}
 
 <div class="container-fluid" style="padding-bottom: 60px;">
   <div class="row justify-content-center">
-    <h2>Discussion - <span id="post"></span></h2>
+    <h2>{{ translate 'DASHBOARD_FORUMPOST_TITLE' }} - <span id="post-title"><i class="fas fa-circle-notch fa-spin fa-2x"></i></span></h2>
   </div>
+  <div class="row" style="justify-content: end; margin-bottom: 15px">
+    <button type="button" class="btn btn-primary btn-sm" id="btn-new-response" style="margin-right: 5px">
+      Répondre
+    </button>
+    <button type="button" class="btn btn-danger btn-sm" id="btn-new-response">
+      <i class="fas fa-trash-alt"></i>
+    </button>
+  </div>
+
+  <div class="row justify-content-center" id="responses-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row" id="responses-list-row" style="display: none">
+    <table>
+      <thead>
+        <tr>
+          <th>{{ translate 'DASHBOARD_FORUMPOST_AUTHOR' }}</th>
+          <th width="60%">{{ translate 'DASHBOARD_FORUMPOST_CONTENT' }}</th>
+          <th>{{ translate 'DASHBOARD_FORUMPOST_CREATEDAT' }}</th>
+          <th>{{ translate 'DASHBOARD_FORUMPOST_CREATEDAT' }}</th>
+        </tr>
+      </thead>
+      <tbody id="response-list">
+      </tbody>
+    </table>
+  </div>
+  <div class="row justify-content-center paginator" id="response-pagination"></div>
 </div>
+
+<table id="response-template" class="d-none">
+  <tr>
+    <td class="response-author"></td>
+    <td class="response-content"></td>
+    <td class="response-created"></td>
+    <td class="response-updated"></td>
+  </tr>
+</table>
 
 {% endblock %}
 
 {% block scripts %}
 
+<script type="text/javascript" src="/scripts/paginator.js" ></script>
+
 <script type="text/javascript">
   $(function() {
     var post_id = {{ post_id }};
+
+    var url = new URL(window.location.href);
+    var page = url.searchParams.get('page') || 1;
+    var responsePageSize = 15;
+    var paginatorResponses = new Paginator($('#response-pagination'));
+
+    paginatorResponses.setOnPaginateChange(function(page) {
+      history.pushState({page: page}, '', '?page=' + page);
+      getPostResponses(post_id, page, responsePageSize, paginatorResponses);
+    });
+
+    window.onpopstate = function(event) {
+      var page = 1;
+      if (event.state !== null)
+        page = event.state.page;
+      getPostResponses(post_id, page, responsePageSize, paginatorResponses);
+    };
+
+    getPostResponses(post_id, page, responsePageSize, paginatorResponses);
   });
 </script>
 

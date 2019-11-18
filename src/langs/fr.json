@@ -85,5 +85,11 @@
     "DASHBOARD_FORUMCATEGORY_NEWPOSTBTN": "Créer la première conversation",
     "DASHBOARD_FORUMCATEGORY_SUBJECT": "Sujet du post",
     "DASHBOARD_FORUMCATEGORY_LASTMESSAGE": "Dernier message",
-    "DASHBOARD_FORUMCATEGORY_COUNT": "Nombre de messages"
+    "DASHBOARD_FORUMCATEGORY_COUNT": "Nombre de messages",
+
+    "DASHBOARD_FORUMPOST_TITLE": "Discussion",
+    "DASHBOARD_FORUMPOST_AUTHOR": "Auteur",
+    "DASHBOARD_FORUMPOST_CONTENT": "Message",
+    "DASHBOARD_FORUMPOST_CREATEDAT": "Date de création",
+    "DASHBOARD_FORUMPOST_CREATEDAT": "Date de mise à jour"
 }

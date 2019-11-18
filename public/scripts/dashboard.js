@@ -326,7 +326,6 @@ function getPosts(category_id, postPage, postPageSize, paginatorPosts) {
     success: function(data) {
       $('#posts-wait').hide();
       $('#nopost').hide();
-      $('#post-header').hide();
       if (data.r) {
         $('#post-list').empty();
         $('#category').empty();
@@ -336,7 +335,6 @@ function getPosts(category_id, postPage, postPageSize, paginatorPosts) {
           $('#nopost').show();
           return;
         }
-        //$('#post-header').show();
         data.posts.forEach(function(post) {
           var post_template = $('#post-template tr').clone().removeClass('d-none');
 
@@ -350,6 +348,51 @@ function getPosts(category_id, postPage, postPageSize, paginatorPosts) {
         });
         $('#post-list-row').show();
         paginatorPosts.paginate(
+          data.paginator.page,
+          data.paginator.pageSize,
+          data.paginator.total
+        );
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function getPostResponses(post_id, responsePage, responsePageSize, paginatorResponses) {
+  $.ajax({
+    type: 'GET',
+    url: `/api/forum/posts/${post_id}/responses?page=${responsePage}&pageSize=${responsePageSize}`,
+    dataType: 'json',
+    success: function(data) {
+      $('#responses-wait').hide();
+      if (data.r) {
+        $('#response-list').empty();
+        $('#post-title').empty();
+        $('#post-title').append(data.post.title);
+        document.title = `Forum - ${data.post.title}`;
+        data.responses.forEach(function(response) {
+          var response_template = $('#response-template tr').clone().removeClass('d-none');
+
+          response_template.find('.response-author').append(
+            `${response.author.lastname} ${response.author.firstname}`
+          );
+          response_template.find('.response-content').text(response.content).attr('width', '60%');
+          response_template.find('.response-created').text(response.created_at);
+          response_template.find('.response-updated').text(response.updated_at);
+
+          $('#response-list').append(response_template);
+        });
+        $('#responses-list-row').show();
+        paginatorResponses.paginate(
           data.paginator.page,
           data.paginator.pageSize,
           data.paginator.total
