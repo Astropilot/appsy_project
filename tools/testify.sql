@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 12 nov. 2019 à 11:52
+-- Généré le :  lun. 18 nov. 2019 à 22:40
 -- Version du serveur :  10.4.8-MariaDB
 -- Version de PHP :  7.3.11
 
@@ -33,7 +33,7 @@ CREATE TABLE `tf_faq` (
   `question` varchar(255) NOT NULL,
   `answer` text NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -46,7 +46,14 @@ CREATE TABLE `tf_forum_category` (
   `title` varchar(70) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `tf_forum_category`
+--
+
+INSERT INTO `tf_forum_category` (`id`, `title`, `created_at`, `updated_at`) VALUES
+(1, 'Assistance', '2019-11-18 19:42:40', '2019-11-18 19:42:40');
 
 -- --------------------------------------------------------
 
@@ -63,7 +70,14 @@ CREATE TABLE `tf_forum_post` (
   `updated_at` datetime NOT NULL,
   `category` int(11) NOT NULL,
   `post_response` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `tf_forum_post`
+--
+
+INSERT INTO `tf_forum_post` (`id`, `author`, `title`, `content`, `created_at`, `updated_at`, `category`, `post_response`) VALUES
+(1, 2, 'Petit test', '&#60;span style=&#34;font-weight: bold;&#34;&#62;Bonjour &#60;/span&#62;tout le &#60;span style=&#34;color: rgb(204, 0, 0);&#34;&#62;&#60;span style=&#34;text-decoration: underline;&#34;&#62;monde &#60;/span&#62;&#60;/span&#62;!&#60;br&#62;', '2019-11-18 20:00:34', '2019-11-18 20:00:34', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -77,7 +91,7 @@ CREATE TABLE `tf_message` (
   `recipient` int(11) NOT NULL,
   `message` text NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `tf_message`
@@ -106,7 +120,7 @@ CREATE TABLE `tf_ticket` (
   `status` int(11) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -120,16 +134,32 @@ CREATE TABLE `tf_user` (
   `password` varchar(64) NOT NULL,
   `lastname` varchar(75) NOT NULL,
   `firstname` varchar(75) NOT NULL,
-  `role` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
+  `role` int(11) NOT NULL,
+  `banned` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `tf_user`
 --
 
-INSERT INTO `tf_user` (`id`, `email`, `password`, `lastname`, `firstname`, `role`) VALUES
-(2, 'demo@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'John', 'Doe', 2),
-(3, 'demo2@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Alice', 'O\'connel', 0);
+INSERT INTO `tf_user` (`id`, `email`, `password`, `lastname`, `firstname`, `role`, `banned`) VALUES
+(2, 'demo@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'John', 'Doe', 2, 0),
+(3, 'demo2@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Alice', 'O\'connel', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `tf_user_invited`
+--
+
+CREATE TABLE `tf_user_invited` (
+  `id` int(11) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `firstname` varchar(75) NOT NULL,
+  `lastname` varchar(75) NOT NULL,
+  `invite_token` varchar(64) NOT NULL,
+  `expire_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Index pour les tables déchargées
@@ -179,6 +209,13 @@ ALTER TABLE `tf_user`
   ADD UNIQUE KEY `username` (`email`);
 
 --
+-- Index pour la table `tf_user_invited`
+--
+ALTER TABLE `tf_user_invited`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `invite_token` (`invite_token`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -192,13 +229,13 @@ ALTER TABLE `tf_faq`
 -- AUTO_INCREMENT pour la table `tf_forum_category`
 --
 ALTER TABLE `tf_forum_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `tf_forum_post`
 --
 ALTER TABLE `tf_forum_post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `tf_message`
@@ -217,6 +254,12 @@ ALTER TABLE `tf_ticket`
 --
 ALTER TABLE `tf_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `tf_user_invited`
+--
+ALTER TABLE `tf_user_invited`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Contraintes pour les tables déchargées

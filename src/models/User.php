@@ -50,7 +50,7 @@ class User {
 
     public function getUser($user_id) {
         $req = Database::getInstance()->getPDO()->prepare(
-            "SELECT id, email, lastname, firstname, role FROM tf_user WHERE `id`=:userid"
+            "SELECT id, email, lastname, firstname, role, banned FROM tf_user WHERE `id`=:userid"
         );
         $req->execute(array(
             'userid'=> $user_id
@@ -62,15 +62,21 @@ class User {
         $exclude_users = '';
         if (!$include_users)
             $exclude_users = ' AND `role` > 0';
-        $req = Database::getInstance()->getPDO()->prepare(
-            "SELECT id, email, lastname, firstname, role
-            FROM tf_user
-            WHERE (tf_user.email LIKE :search1
-                    OR
-                  tf_user.firstname LIKE :search2
-                    OR
-                  tf_user.lastname LIKE :search3)" . $exclude_users
-        );
+
+        $req_sql = "SELECT id, email, lastname, firstname, role, banned
+                    FROM tf_user ";
+        if (strlen($search) > 0) {
+            $req_sql .= "WHERE (tf_user.email LIKE :search1
+                                    OR
+                                tf_user.firstname LIKE :search2
+                                    OR
+                                tf_user.lastname LIKE :search3)";
+        } else {
+            $req_sql .= "WHERE 1=1 ";
+        }
+        $req_sql .= $exclude_users;
+
+        $req = Database::getInstance()->getPDO()->prepare($req_sql);
         $req->bindValue(':search1', '%' . $search . '%');
         $req->bindValue(':search2', '%' . $search . '%');
         $req->bindValue(':search3', '%' . $search . '%');

@@ -68,7 +68,7 @@ $router->post('/api/contacts/search', function($request) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
-    if(!isset($request->getBody()['search']) || empty($request->getBody()['search']))
+    if(!isset($request->getBody()['search']))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_SEARCH_NO_CRITERIA');
 
     if(count($errors_arr) === 0) {

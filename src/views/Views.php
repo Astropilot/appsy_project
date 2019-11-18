@@ -32,6 +32,10 @@ $router->get('/dashboard/chat/user/<user_id>', function($request, $user_id) {
     return Response::fromView('dashboard/chat_user.html', $context);
 });
 
+$router->get('/dashboard/admin', function($request) {
+    return Response::fromView('dashboard/admin.html');
+});
+
 $router->get('/dashboard/forum', function($request) {
     return Response::fromView('dashboard/forum.html');
 });

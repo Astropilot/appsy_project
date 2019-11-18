@@ -1,0 +1,105 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_ADMIN_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_ADMIN_TITLE' }}
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/styles/tabs.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+  <div class="tab row">
+    <button type="button" class="tablinks" data-tab="user-tab">Users</button>
+    <button type="button" class="tablinks" data-tab="tickets-tab">Tickets</button>
+    <button type="button" class="tablinks" data-tab="forum-tab">Forum</button>
+    <button type="button" class="tablinks" data-tab="faq-tab">FAQ</button>
+  </div>
+  <div id="user-tab" class="row tabcontent">
+    <div class="d-flex" style="justify-content: end; margin-bottom: 15px">
+      <button type="button" class="btn btn-success btn-sm btn-new-member" style="margin-right: 5px">
+        <i class="fas fa-plus"></i> Inviter une personne
+      </button>
+    </div>
+    <div class="d-flex justify-content-center" style="margin-bottom: 15px">
+      <form class="form" style="width: 100%;margin: 0 55px">
+        <input type="text" style="width: 100%" class="form-field" name="member-search" id="member-search" placeholder="Ex: John Doe">
+      </form>
+    </div>
+    <div class="d-flex justify-content-center">
+      <table class="mx-auto">
+        <thead>
+          <tr>
+            <th>Nom / Prénom</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Banni ?</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="member-list">
+        </tbody>
+      </table>
+    </div>
+    <div class="row justify-content-center" id="wait-search-member" style="margin-top: 15px">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+  </div>
+  <div id="tickets-tab" class="row tabcontent">
+    Tickets Tab
+  </div>
+  <div id="forum-tab" class="row tabcontent">
+    Forum Tab
+  </div>
+  <div id="faq-tab" class="row tabcontent">
+    FAQ Tab
+  </div>
+</div>
+
+<table id="member-template" class="d-none">
+  <tr>
+    <td class="member-name"></td>
+    <td class="member-email"></td>
+    <td class="member-role"></td>
+    <td class="member-banned"></td>
+    <td>
+      <button class="btn btn-primary btn-sm">
+        Modifier
+      </button>
+      <button class="btn btn-danger btn-sm">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </td>
+  </tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="/scripts/tabs.js" ></script>
+<script type="text/javascript" src="/scripts/dashboard-admin.js" ></script>
+
+<script>
+  $(function() {
+
+    $("#member-search").bind("input", function () {
+      var that = this;
+      window.clearTimeout($(this).data('timeout'));
+      $(this).data('timeout', setTimeout(function () {
+        searchMember($(that).val());
+      }, 500));
+    });
+
+    searchMember($('#member-search').val());
+
+  });
+</script>
+
+{% endblock %}

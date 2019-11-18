@@ -39,8 +39,10 @@ function handleSideNavigation() {
     $('#tests-nav').show();
   if (user.role >= 1)
     $('#subjects-nav').show();
-  if (user.role >= 2)
+  if (user.role >= 2) {
     $('#examiners-nav').show();
+    $('#admin-nav').show();
+  }
 
   var url = window.location;
   var e = $('#home-nav .nav-element a').filter(function() {
