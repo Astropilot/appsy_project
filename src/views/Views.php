@@ -41,3 +41,9 @@ $router->get('/dashboard/forum/category/<cat_id>', function($request, $cat_id) {
 
     return Response::fromView('dashboard/forum_category.html', $context);
 });
+
+$router->get('/dashboard/forum/post/<post_id>', function($request, $post_id) {
+    $context = array('post_id' => $post_id);
+
+    return Response::fromView('dashboard/forum_post.html', $context);
+});

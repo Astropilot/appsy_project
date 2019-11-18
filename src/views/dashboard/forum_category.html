@@ -8,6 +8,10 @@
 {{ translate 'DASHBOARD_FORUMCATEGORY_TITLE' }}
 {% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="/styles/paginator.css">
+{% endblock %}
+
 {% block body %}
 
 <div class="container-fluid" style="padding-bottom: 60px;">
@@ -25,19 +29,59 @@
       </button>
     </div>
   </div>
-  <div id="posts">
+  <div class="row" id="post-list-row" style="display: none">
+    <table>
+      <thead>
+        <tr>
+          <th width="70%">{{ translate 'DASHBOARD_FORUMCATEGORY_SUBJECT' }}</th>
+          <th>{{ translate 'DASHBOARD_FORUMCATEGORY_LASTMESSAGE' }}</th>
+          <th>{{ translate 'DASHBOARD_FORUMCATEGORY_COUNT' }}</th>
+        </tr>
+      </thead>
+      <tbody id="post-list">
+      </tbody>
+    </table>
   </div>
+  <div class="row justify-content-center paginator" id="posts-pagination"></div>
 </div>
+
+
+<table id="post-template" class="d-none">
+  <tr>
+    <td class="post-title"></td>
+    <td class="post-updated"></td>
+    <td class="post-count"></td>
+  </tr>
+</table>
 
 {% endblock %}
 
 {% block scripts %}
 
+<script type="text/javascript" src="/scripts/paginator.js" ></script>
+
 <script type="text/javascript">
   $(function() {
     var category_id = {{ category_id }};
 
-    getPosts(category_id);
+    var url = new URL(window.location.href);
+    var page = url.searchParams.get('page') || 1;
+    var postPageSize = 15;
+    var paginatorPosts = new Paginator($('#posts-pagination'));
+
+    paginatorPosts.setOnPaginateChange(function(page) {
+      history.pushState({page: page}, '', '?page=' + page);
+      getPosts(category_id, page, postPageSize, paginatorPosts);
+    });
+
+    window.onpopstate = function(event) {
+      var page = 1;
+      if (event.state !== null)
+        page = event.state.page;
+      getPosts(category_id, page, postPageSize, paginatorPosts);
+    };
+
+    getPosts(category_id, page, postPageSize, paginatorPosts);
   });
 </script>
 

@@ -39,7 +39,11 @@ $router->get('/api/users/<user_id>/contacts', function($request, $user_id) {
         $paginator = new Paginator($page, $pageSize);
         $contacts = $paginator->paginate(Message::getInstance()->getContacts($user));
 
-        return json_encode(array("r" => True, "contacts" => $contacts['data'], "paginator" => $contacts['paginator']));
+        return json_encode(array(
+            "r" => True,
+            "contacts" => $contacts['data'],
+            "paginator" => $contacts['paginator']
+        ));
     }
 
     return json_encode(array("r" => False, "errors" => $errors_arr));

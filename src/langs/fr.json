@@ -79,5 +79,8 @@
 
     "DASHBOARD_FORUMCATEGORY_TITLE": "Forum",
     "DASHBOARD_FORUMCATEGORY_NOPOST": "Cette catégorie ne dispose pas encore de conversations !",
-    "DASHBOARD_FORUMCATEGORY_NEWPOSTBTN": "Créer la première conversation"
+    "DASHBOARD_FORUMCATEGORY_NEWPOSTBTN": "Créer la première conversation",
+    "DASHBOARD_FORUMCATEGORY_SUBJECT": "Sujet du post",
+    "DASHBOARD_FORUMCATEGORY_LASTMESSAGE": "Dernier message",
+    "DASHBOARD_FORUMCATEGORY_COUNT": "Nombre de messages"
 }

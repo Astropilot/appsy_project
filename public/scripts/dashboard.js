@@ -318,16 +318,17 @@ function createCategory() {
   });
 }
 
-function getPosts(category_id) {
+function getPosts(category_id, postPage, postPageSize, paginatorPosts) {
   $.ajax({
     type: 'GET',
-    url: `/api/forum/categories/${category_id}/posts`,
+    url: `/api/forum/categories/${category_id}/posts?page=${postPage}&pageSize=${postPageSize}`,
     dataType: 'json',
     success: function(data) {
       $('#posts-wait').hide();
       $('#nopost').hide();
+      $('#post-header').hide();
       if (data.r) {
-        $('#posts').empty();
+        $('#post-list').empty();
         $('#category').empty();
         $('#category').append(data.category.title);
         document.title = `Forum - ${data.category.title}`;
@@ -335,11 +336,24 @@ function getPosts(category_id) {
           $('#nopost').show();
           return;
         }
-        data.posts.forEach(function(category) {
-          $('#posts').append(
-            ``
-          );
+        //$('#post-header').show();
+        data.posts.forEach(function(post) {
+          var post_template = $('#post-template tr').clone().removeClass('d-none');
+
+          post_template.find('.post-title').append(
+            `<a href="/dashboard/forum/post/${post.id}">${post.title}</a>`
+          ).attr('width', '70%');
+          post_template.find('.post-updated').text(post.updated_at);
+          post_template.find('.post-count').text(post.count_responses);
+
+          $('#post-list').append(post_template);
         });
+        $('#post-list-row').show();
+        paginatorPosts.paginate(
+          data.paginator.page,
+          data.paginator.pageSize,
+          data.paginator.total
+        );
       } else {
         data.errors.forEach(function(error) {
           new Noty({

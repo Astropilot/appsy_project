@@ -168,3 +168,30 @@ footer p {
   width: 80%;
   margin-right: 10px;
 }
+
+#post-list-row > table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#post-list-row > table td,
+#post-list-row > table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#post-list-row > table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#post-list-row > table tr:hover {
+  background-color: #ddd;
+}
+
+#post-list-row > table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #004e86;
+  color: white;
+}

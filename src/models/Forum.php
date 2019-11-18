@@ -36,9 +36,11 @@ class Forum {
             "SELECT tf_forum_category.*, COUNT(tf_forum_post.category) AS count_posts
             FROM tf_forum_category
             LEFT JOIN tf_forum_post
-            ON tf_forum_category.id = tf_forum_post.category AND tf_forum_category.id=:cid
+            ON tf_forum_category.id = tf_forum_post.category
+            WHERE tf_forum_category.id=:cid
             GROUP BY tf_forum_category.id, tf_forum_category.title,
-               tf_forum_category.created_at, tf_forum_category.updated_at"
+               tf_forum_category.created_at, tf_forum_category.updated_at
+            LIMIT 1"
         );
         $req->execute(array(
             'cid'=> $category_id
@@ -58,10 +60,16 @@ class Forum {
 
     public function getPosts($category_id) {
         $req = Database::getInstance()->getPDO()->prepare(
-            "SELECT *
+            "SELECT tf_forum_post.*, COUNT(tf_post_2.post_response) AS count_responses
              FROM tf_forum_post
-             WHERE `category`=:cid
-             ORDER BY `updated_at`"
+             LEFT JOIN tf_forum_post AS tf_post_2
+             ON tf_forum_post.id = tf_post_2.post_response
+             WHERE tf_forum_post.category=:cid AND tf_forum_post.post_response IS NULL
+             GROUP BY tf_forum_post.id, tf_forum_post.author, tf_forum_post.title,
+                tf_forum_post.content,
+                tf_forum_post.created_at, tf_forum_post.updated_at,
+                tf_forum_post.category, tf_forum_post.post_response
+             ORDER BY tf_forum_post.updated_at"
         );
         $req->execute(array('cid' => $category_id));
         return ($req->fetchAll());
