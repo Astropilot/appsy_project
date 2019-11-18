@@ -77,6 +77,9 @@
     "DASHBOARD_FORUM_MODAL_NAME_EXAMPLE": "Eg: My category",
     "DASHBOARD_FORUM_MODAL_ADDBTN": "Create",
 
+    "API_FORUM_NOPAGE": "No page received!",
+    "API_FORUM_NOSIZEPAGE": "No page size received!",
+
     "DASHBOARD_FORUMCATEGORY_TITLE": "Forum",
     "DASHBOARD_FORUMCATEGORY_NOPOST": "This category does not have any conversations yet!",
     "DASHBOARD_FORUMCATEGORY_NEWPOSTBTN": "Create the first conversation",

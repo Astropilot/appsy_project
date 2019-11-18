@@ -45,9 +45,9 @@ $router->get('/api/forum/categories/<category_id>/posts', function($request, $ca
     $errors_arr=array();
 
     if(!isset($request->getBody()['page']) || empty($request->getBody()['page']))
-        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOPAGE');
+        $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOPAGE');
     if(!isset($request->getBody()['pageSize']) || empty($request->getBody()['pageSize']))
-        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOSIZEPAGE');
+        $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOSIZEPAGE');
 
     if (count($errors_arr) === 0) {
         $category = Forum::getInstance()->getCategory($category_id);
