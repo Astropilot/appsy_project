@@ -57,7 +57,13 @@ DocumentRoot "path/to/appsy_project/public"
 </Directory>
 ```
 * On your MySQL server create a database called `testify`. Import the `tools/testify.sql` script into your MySQL server to get the different tables needed by the project.
-* Everything is ready you can now access your site! (usually locally: http://localhost/appsy_project)
+* Everything is ready you can now access your site!
+
+### Utils CLI
+
+We provide a mini PHP cli application with some util commands.
+Here the list of the different commands available:
+- `clear-cache` : Clear the cache within `app/cache` folder. (Basically it delete all .php and .chtml files)
 
 ### Running the tests
 
