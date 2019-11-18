@@ -72,6 +72,27 @@ $router->get('/api/forum/categories/<category_id>/posts', function($request, $ca
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
+$router->post('/api/forum/categories/<category_id>/posts', function($request, $category_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+
+    $errors_arr=array();
+
+    if(!isset($request->getBody()['title']) || empty($request->getBody()['title']))
+        $errors_arr[] = "";
+    if(!isset($request->getBody()['content']) || empty($request->getBody()['content']))
+        $errors_arr[] = "";
+
+    if(count($errors_arr) === 0) {
+        $title = Security::protect($request->getBody()['title']);
+        $content = $request->getBody()['content'];
+
+        $post = Forum::getInstance()->createPost($_SESSION['id'], $category_id, $title, $content);
+        return json_encode(array("r" => True, "post" => $post));
+    } else
+        return json_encode(array("r" => False, "errors" => $errors_arr));
+});
+
 $router->get('/api/forum/posts/<post_id>/responses', function($request, $post_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();

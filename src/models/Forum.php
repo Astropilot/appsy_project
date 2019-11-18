@@ -61,6 +61,8 @@ class Forum {
     }
 
     public function getPosts($category_id) {
+        $posts = array();
+
         $req = Database::getInstance()->getPDO()->prepare(
             "SELECT tf_forum_post.*, COUNT(tf_post_2.post_response) AS count_responses
              FROM tf_forum_post
@@ -74,7 +76,13 @@ class Forum {
              ORDER BY tf_forum_post.updated_at"
         );
         $req->execute(array('cid' => $category_id));
-        return ($req->fetchAll());
+
+        while ($row = $req->fetch()) {
+            $row['content'] = html_entity_decode($row['content']);
+            array_push($posts, $row);
+        }
+
+        return ($posts);
     }
 
     public function getPost($post_id) {
@@ -92,7 +100,26 @@ class Forum {
              LIMIT 1"
         );
         $req->execute(array('pid' => $post_id));
-        return ($req->fetch());
+
+        $post = $req->fetch();
+        $post['content'] = html_entity_decode($post['content']);
+        return ($post);
+    }
+
+    public function createPost($author, $category_id, $title, $content) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "INSERT INTO tf_forum_post SET `author`=:uid, `title`=:title,
+            `content`=:content, `updated_at`=NOW(), `category`=:cid"
+        );
+        $req->execute(array(
+            'uid' => $author,
+            'title' => $title,
+            'content' => $content,
+            'cid' => $category_id
+        ));
+
+        $post_id = Database::getInstance()->getPDO()->lastInsertId();
+        return self::getPost($post_id);
     }
 
     public function getPostResponses($post_id) {
@@ -110,6 +137,7 @@ class Forum {
 
         while ($row = $req->fetch()) {
             $row['author'] = User::getInstance()->getUser($row['author']);
+            $row['content'] = html_entity_decode($row['content']);
             array_push($responses, $row);
         }
         return $responses;

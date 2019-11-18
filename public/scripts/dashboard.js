@@ -385,7 +385,7 @@ function getPostResponses(post_id, responsePage, responsePageSize, paginatorResp
           response_template.find('.response-author').append(
             `${response.author.lastname} ${response.author.firstname}`
           );
-          response_template.find('.response-content').text(response.content).attr('width', '60%');
+          response_template.find('.response-content').append($.parseHTML(response.content)).attr('width', '60%');
           response_template.find('.response-created').text(response.created_at);
           response_template.find('.response-updated').text(response.updated_at);
 
@@ -397,6 +397,36 @@ function getPostResponses(post_id, responsePage, responsePageSize, paginatorResp
           data.paginator.pageSize,
           data.paginator.total
         );
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function createPost(category_id, title, content) {
+  $('#wait-creating-post').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/api/forum/categories/${category_id}/posts`,
+    data: {title: title, content: content},
+    dataType: 'json',
+    success: function(data) {
+      $('#wait-creating-post').hide();
+      if (data.r) {
+        $('#modal-new-post').closeModal();
+        $('#post-title').val('');
+        $('.wysiwyg .editor').html('');
+        getPosts(category_id, 1, postPageSize, paginatorPosts);
       } else {
         data.errors.forEach(function(error) {
           new Noty({
