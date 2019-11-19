@@ -52,3 +52,36 @@ function searchMember(search) {
     }
   });
 }
+
+function inviteMember(email, firstname, lastname, role) {
+  $('#wait-invite-member').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/admin/api/users`,
+    data: {email: email, firstname: firstname, lastname: lastname, role: role},
+    dataType: 'json',
+    success: function(data) {
+      $('#wait-invite-member').hide();
+      if (data.r) {
+        new Noty({
+          theme: 'metroui',
+          type: 'success',
+          layout: 'centerRight',
+          timeout: 4000,
+          text: data.message
+        }).show();
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}

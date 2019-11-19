@@ -16,15 +16,15 @@
 
 <div class="container-fluid">
   <div class="tab row">
-    <button type="button" class="tablinks" data-tab="user-tab">Users</button>
-    <button type="button" class="tablinks" data-tab="tickets-tab">Tickets</button>
-    <button type="button" class="tablinks" data-tab="forum-tab">Forum</button>
-    <button type="button" class="tablinks" data-tab="faq-tab">FAQ</button>
+    <button type="button" class="tablinks" data-tab="user-tab">{{ translate 'DASHBOARD_ADMIN_USERTAB' }}</button>
+    <button type="button" class="tablinks" data-tab="tickets-tab">{{ translate 'DASHBOARD_ADMIN_TICKETSTAB' }}</button>
+    <button type="button" class="tablinks" data-tab="forum-tab">{{ translate 'DASHBOARD_ADMIN_FORUMTAB' }}</button>
+    <button type="button" class="tablinks" data-tab="faq-tab">{{ translate 'DASHBOARD_ADMIN_FAQTAB' }}</button>
   </div>
   <div id="user-tab" class="row tabcontent">
     <div class="d-flex" style="justify-content: end; margin-bottom: 15px">
       <button type="button" class="btn btn-success btn-sm btn-new-member" style="margin-right: 5px">
-        <i class="fas fa-plus"></i> Inviter une personne
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_ADMIN_INVITEBTN' }}
       </button>
     </div>
     <div class="d-flex justify-content-center" style="margin-bottom: 15px">
@@ -36,11 +36,11 @@
       <table class="mx-auto">
         <thead>
           <tr>
-            <th>Nom / Prénom</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Banni ?</th>
-            <th>Actions</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_NAME' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_EMAIL' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_ROLE' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_BANNED' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_ACTIONS' }}</th>
           </tr>
         </thead>
         <tbody id="member-list">
@@ -62,6 +62,46 @@
   </div>
 </div>
 
+<div id="modal-new-member" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_INVITE_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="member-email">{{ translate 'DASHBOARD_ADMIN_INVITE_EMAIL' }}</label><br>
+            <input type="email" class="form-field col-8" name="member-email" id="member-email" placeholder="">
+          </div>
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="member-firstname">{{ translate 'DASHBOARD_ADMIN_INVITE_FIRSTNAME' }}</label><br>
+            <input type="text" class="form-field col-8" name="member-firstname" id="member-firstname" placeholder="">
+          </div>
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="member-lastname">{{ translate 'DASHBOARD_ADMIN_INVITE_LASTNAME' }}</label><br>
+            <input type="text" class="form-field col-8" name="member-lastname" id="member-lastname" placeholder="">
+          </div>
+          <div class="row">
+            <label class="col-4 col-form-label" for="member-role">{{ translate 'DASHBOARD_ADMIN_INVITE_ROLE' }}</label><br>
+            <select class="form-field col-8" name="member-role" id="member-role">
+              <option value="0" selected>Utilisateur</option>
+              <option value="1">Examinateur</option>
+              <option value="2">Administrateur</option>
+             </select>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm" id="btn-invite-member">
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_ADMIN_INVITE_ADDBTN' }} <i id="wait-invite-member" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
 <table id="member-template" class="d-none">
   <tr>
     <td class="member-name"></td>
@@ -70,7 +110,7 @@
     <td class="member-banned"></td>
     <td>
       <button class="btn btn-primary btn-sm">
-        Modifier
+        {{ translate 'DASHBOARD_ADMIN_SEARCH_EDITBTN' }}
       </button>
       <button class="btn btn-danger btn-sm">
         <i class="fas fa-trash-alt"></i>
@@ -83,11 +123,13 @@
 
 {% block scripts %}
 
+<script type="text/javascript" src="/scripts/modal.js" ></script>
 <script type="text/javascript" src="/scripts/tabs.js" ></script>
 <script type="text/javascript" src="/scripts/dashboard-admin.js" ></script>
 
 <script>
   $(function() {
+    var modal = $('#modal-new-member');
 
     $("#member-search").bind("input", function () {
       var that = this;
@@ -95,6 +137,19 @@
       $(this).data('timeout', setTimeout(function () {
         searchMember($(that).val());
       }, 500));
+    });
+
+    $('.btn-new-member').on("click", function() {
+      modal.showModal();
+    });
+
+    $('#btn-invite-member').on('click', function() {
+      inviteMember(
+        $('#member-email').val(),
+        $('#member-firstname').val(),
+        $('#member-lastname').val(),
+        $('#member-role').val()
+      );
     });
 
     searchMember($('#member-search').val());

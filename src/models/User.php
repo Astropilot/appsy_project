@@ -83,4 +83,20 @@ class User {
         $req->execute();
         return ($req->fetchAll());
     }
+
+    public function createInvite($email, $firstname, $lastname, $role, $token, $expire_date): bool {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "INSERT INTO tf_user_invited
+             SET `email`=:email, `firstname`=:firstname, `lastname`=:lastname,
+             `role`=:role, `invite_token`=:token, `expire_date`=:expire"
+        );
+        return $req->execute(array(
+            'email' => $email,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'role' => $role,
+            'token' => $token,
+            'expire' => $expire_date
+        ));
+    }
 }
