@@ -124,17 +124,17 @@ $router->post('/api/users', function($request) {
     API::setAPIHeaders();
 
     if(!isset($request->getBody()['token']) || empty($request->getBody()['token']))
-        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_TOKEN');
     if(!isset($request->getBody()['email']) || empty($request->getBody()['email']))
-        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_EMAIL');
     if(!isset($request->getBody()['firstname']) || empty($request->getBody()['firstname']))
-        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_FIRSTNAME');
     if(!isset($request->getBody()['lastname']) || empty($request->getBody()['lastname']))
-        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_LASTNAME');
     if(!isset($request->getBody()['password']) || empty($request->getBody()['password']))
-        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_PASSWORD');
     if(!isset($request->getBody()['password_check']) || empty($request->getBody()['password_check']))
-        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_PASSWORDCHECK');
 
     if(count($errors_arr) === 0) {
         $token = Security::protect($request->getBody()['token']);
@@ -145,13 +145,13 @@ $router->post('/api/users', function($request) {
         $password_check = Security::protect($request->getBody()['password_check']);
 
         if ($password !== $password_check)
-            $errors_arr[] = "The password verification do not match with the password!";
+            $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_PASSWORD_NOT_MATCH');
     }
 
     if (count($errors_arr) === 0) {
         $invite = UserInvite::getInstance()->getValidInvite($token, $email);
         if($invite === null)
-            $errors_arr[] = "Invitation not found or expired!";
+            $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_INVITE_EXPIRED');
         else {
             $res = User::getInstance()->createUser(
                 $invite['email'],
@@ -162,9 +162,9 @@ $router->post('/api/users', function($request) {
             );
             if ($res) {
                 UserInvite::getInstance()->unActiveInvite($invite['id']);
-                return json_encode(array("r" => True, "message" => "Congratulation ! You are now registered ! You can connect now on the Sign In page"));
+                return json_encode(array("r" => True, "message" => I18n::getInstance()->translate('API_USER_CREATE_USER_SUCCESS')));
             } else
-                $errors_arr[] = "A error occured while creating user!";
+                $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_USER_ERROR');
         }
     }
     return json_encode(array("r" => False, "errors" => $errors_arr));

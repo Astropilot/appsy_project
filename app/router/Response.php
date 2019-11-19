@@ -6,10 +6,17 @@ use Testify\Component\I18n;
 
 class Response {
 
-    public static function fromView(string $file, $context=NULL) : string {
+    public static function fromView(string $file, $context=NULL, $setLang=NULL) : string {
         $path = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR;
         $file_contents = file_get_contents($path . $file);
         $file_extends_contents = null;
+
+        $lang = '';
+        if (I18n::getInstance()->active && $setLang === null) {
+            $lang = $_SESSION['lang'];
+        } elseif (I18n::getInstance()->active) {
+            $lang = $setLang;
+        }
 
         // On vérifie la présence d'une commande extends
         if (preg_match('/{% *?extends *?\'(.*)\' *?%}/m', $file_contents, $matches)) {
@@ -19,7 +26,8 @@ class Response {
         if (!$file_extends_contents) {
             $file_contents = I18n::getInstance()->computeTranslations(
                 $file_contents,
-                $context
+                $context,
+                $lang
             );
             return self::computeContext($file_contents, $context);
         } else {
@@ -28,20 +36,15 @@ class Response {
             $view_name = basename($file, '.html');
             $extends_name = basename($matches[1], '.html');
 
-            $lang = '';
-            if (I18n::getInstance()->active) {
-                $lang = '_' . $_SESSION['lang'];
-            }
-
             $cache_file = $path_cache. $view_name . '_' . $extends_name .
                 '_' . filemtime($path. $file) . '_' . filemtime($path. $matches[1]) .
-                $lang . '_t.chtml';
+                '_' . $lang . '_t.chtml';
             $cache_untranslated_file = $path_cache. $view_name . '_' . $extends_name .
                 '_' . filemtime($path. $file) . '_' . filemtime($path. $matches[1]) .
-                $lang . '.chtml';
+                '_' . $lang . '.chtml';
 
             if (file_exists($cache_file) && !$translation_not_cached) {
-                I18n::getInstance()->setLangToContext($context);
+                I18n::getInstance()->setLangToContext($context, $lang);
                 return self::computeContext(file_get_contents($cache_file), $context);
             } elseif (file_exists($cache_file) && $translation_not_cached) {
                 $file_extends_contents = I18n::getInstance()->computeTranslations(

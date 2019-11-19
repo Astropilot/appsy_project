@@ -21,13 +21,32 @@
     "HOME_CONNECT_PASSWORD": "Your password",
     "HOME_CONNECT_BUTTON": "Login",
 
-    "API_USER_NO_USERNAME_PROVIDED": "The email was not provided !",
-    "API_USER_NO_PASSWORD_PROVIDED": "The password was not provided !",
+    "HOME_REGISTER_TITLE": "Register",
+    "HOME_REGISTER_EMAIL": "Your email",
+    "HOME_REGISTER_LASTNAME": "Your lastname",
+    "HOME_REGISTER_FIRSTNAME": "Your firstname",
+    "HOME_REGISTER_PASSWORD": "Your password",
+    "HOME_REGISTER_PASSWORDCHECK": "Password verification",
+    "HOME_REGISTER_REGISTERBTN": "Sign Up",
+
+    "API_USER_NO_USERNAME_PROVIDED": "The email was not provided!",
+    "API_USER_NO_PASSWORD_PROVIDED": "The password was not provided!",
     "API_USER_NO_USER": "The login/password pair is incorrect!",
     "API_USER_NOACCESS": "You do not have access to this user's information!",
     "API_USER_NOT_FOUND": "The user is not found!",
     "API_USER_SEARCH_NO_CRITERIA": "No criteria given!",
     "API_USER_DECONNECT_ERROR": "An error occurred during the disconnection!",
+    "API_USER_CREATE_NO_TOKEN": "The invite code was not provided!",
+    "API_USER_CREATE_NO_EMAIL": "The invite email was not provided!",
+    "API_USER_CREATE_NO_FIRSTNAME": "The firstname was not provided!",
+    "API_USER_CREATE_NO_LASTNAME": "The lastname was not provided!",
+    "API_USER_CREATE_NO_PASSWORD": "The password was not provided!",
+    "API_USER_CREATE_NO_PASSWORDCHECK": "The password check was not provided!",
+    "API_USER_CREATE_PASSWORD_NOT_MATCH": "The password verification do not match with the password!",
+    "API_USER_CREATE_INVITE_EXPIRED": "The invitation is not found or has been expired!",
+    "API_USER_CREATE_USER_ERROR": "A unexcepted error occured while creating the user!",
+    "API_USER_CREATE_USER_SUCCESS": "Congratulation! You are now registered! You can connect now on the Sign In page",
+
 
     "API_MESSAGE_NOACCESS": "You do not have access to this user's information!",
     "API_MESSAGE_NOPAGE": "No page received!",
@@ -110,6 +129,22 @@
     "DASHBOARD_ADMIN_INVITE_FIRSTNAME": "Member's firstname",
     "DASHBOARD_ADMIN_INVITE_LASTNAME": "Member's lastname",
     "DASHBOARD_ADMIN_INVITE_ROLE": "Member's role",
-    "DASHBOARD_ADMIN_INVITE_ADDBTN": "Invite"
+    "DASHBOARD_ADMIN_INVITE_LANG": "Mail lang",
+    "DASHBOARD_ADMIN_INVITE_ADDBTN": "Invite",
+
+    "API_ADMIN_INVITE_NO_EMAIL": "No email given!",
+    "API_ADMIN_INVITE_NO_FIRSTNAME": "No firstname given!",
+    "API_ADMIN_INVITE_NO_LASTNAME": "No lastname given!",
+    "API_ADMIN_INVITE_NO_ROLE": "No role given!",
+    "API_ADMIN_INVITE_NO_LANG": "No mail lang given!",
+    "API_ADMIN_INVITE_CREATE_ERROR": "A unexcepted error occured while creating the invite!",
+    "API_ADMIN_INVITE_SEND_ERROR": "A unexcepted error occured while sending the email invite!",
+
+    "API_ADMIN_INVITE_MAIL_TITLE": "Testify - Register",
+    "API_ADMIN_INVITE_MAIL_WELCOME": "Welcome",
+    "API_ADMIN_INVITE_MAIL_EXPLAIN": "You have been invited to register on the Testify platform by XXXX. This platform allows you to consult your psychomotor test results from your institution.",
+    "API_ADMIN_INVITE_MAIL_WARN": "You have 72 hours to respond to the invitation. If you do not register within the time limit, you will need to contact a person in charge of your test institution to request a new invitation.",
+    "API_ADMIN_INVITE_MAIL_REGISTERBTN": "REGISTER NOW",
+    "API_ADMIN_INVITE_MAIL_COPYRIGHT": "All rights reserved"
 
 }

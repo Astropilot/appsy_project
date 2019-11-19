@@ -83,12 +83,19 @@
             <label class="col-4 col-form-label" for="member-lastname">{{ translate 'DASHBOARD_ADMIN_INVITE_LASTNAME' }}</label><br>
             <input type="text" class="form-field col-8" name="member-lastname" id="member-lastname" placeholder="">
           </div>
-          <div class="row">
+          <div class="row" style="margin-bottom: 10px">
             <label class="col-4 col-form-label" for="member-role">{{ translate 'DASHBOARD_ADMIN_INVITE_ROLE' }}</label><br>
             <select class="form-field col-8" name="member-role" id="member-role">
               <option value="0" selected>Utilisateur</option>
               <option value="1">Examinateur</option>
               <option value="2">Administrateur</option>
+             </select>
+          </div>
+          <div class="row">
+            <label class="col-4 col-form-label" for="mail-lang">{{ translate 'DASHBOARD_ADMIN_INVITE_LANG' }}</label><br>
+            <select class="form-field col-8" name="mail-lang" id="mail-lang">
+              <option value="en" selected>English</option>
+              <option value="fr">Français</option>
              </select>
           </div>
         </form>
@@ -102,15 +109,38 @@
   </div>
 </div>
 
+<div id="modal-confirm-edit" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_FASTEDIT_CONFIRM_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-success" id="btn-confirm-edit">
+            <i class="fas fa-check"></i> {{ translate 'DASHBOARD_ADMIN_FASTEDIT_CONFIRMBTN' }}
+          </button>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-danger" id="btn-cancel-edit">
+            <i class="fas fa-ban"></i> {{ translate 'DASHBOARD_ADMIN_FASTEDIT_CANCELBTN' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <table id="member-template" class="d-none">
   <tr>
     <td class="member-name"></td>
     <td class="member-email"></td>
     <td class="member-role"></td>
     <td class="member-banned"></td>
-    <td>
+    <td width="15%">
       <button class="btn btn-primary btn-sm">
-        {{ translate 'DASHBOARD_ADMIN_SEARCH_EDITBTN' }}
+        <i class="fas fa-edit"></i>
       </button>
       <button class="btn btn-danger btn-sm">
         <i class="fas fa-trash-alt"></i>
@@ -143,12 +173,43 @@
       modal.showModal();
     });
 
+    $('#btn-cancel-edit').on('click', function() {
+      var member_id = $('#modal-confirm-edit').data('id');
+      var member_role = $('#modal-confirm-edit').data('role');
+      var member_banned = $('#modal-confirm-edit').data('banned');
+
+      if (member_role && !member_banned) {
+        var default_role = $('tr[data-id="' + member_id + '"]').find('.member-role select').attr('data-default');
+        $('tr[data-id="' + member_id + '"]').find('.member-role option').removeProp('selected');
+        $('tr[data-id=' + member_id + ']').find('.member-role option[value=' + default_role + ']').prop('selected', true);
+      } else {
+        var default_banned = $('tr[data-id="' + member_id + '"]').find('.member-banned select').attr('data-default');
+        $('tr[data-id="' + member_id + '"]').find('.member-banned option').removeProp('selected');
+        $('tr[data-id=' + member_id + ']').find('.member-banned option[value=' + default_banned + ']').prop('selected', true);
+      }
+      $('#modal-confirm-edit').closeModal();
+    });
+
+    $('#btn-confirm-edit').on('click', function() {
+      var member_id = $('#modal-confirm-edit').data('id');
+      var member_role = $('#modal-confirm-edit').data('role');
+      var member_banned = $('#modal-confirm-edit').data('banned');
+
+      if (member_role && !member_banned)
+        fastEditUser(member_id, member_role, null);
+      else
+        fastEditUser(member_id, null, member_banned);
+
+      $('#modal-confirm-edit').closeModal();
+    });
+
     $('#btn-invite-member').on('click', function() {
       inviteMember(
         $('#member-email').val(),
         $('#member-firstname').val(),
         $('#member-lastname').val(),
-        $('#member-role').val()
+        $('#member-role').val(),
+        $('#mail-lang').val()
       );
     });
 

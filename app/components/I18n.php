@@ -29,7 +29,7 @@ class I18n {
             $url_without_lang = substr($url, 2);
 
             $_SESSION['lang'] = $lang;
-            $this->cacheTranslationFile();
+            $this->cacheTranslationFile($lang);
             if ($url_without_lang === false || $url_without_lang === '')
                 return '/';
             return $url_without_lang;
@@ -61,20 +61,24 @@ class I18n {
                 } else
                     $_SESSION['lang'] = $this->defaultLang;
             }
-            $this->cacheTranslationFile();
+            $this->cacheTranslationFile($_SESSION['lang']);
         }
         if ($url === '')
             return '/';
         return '/' . $url;
     }
 
-    public function translate(string $key): string {
+    public function translate(string $key, $lang=null): string {
         if (!$this->active)
             return 'TRANSLATION_NOT_INITIALIZED';
 
-        $lang = $_SESSION['lang'];
+        if ($lang === null)
+            $lang = $_SESSION['lang'];
+        else
+            $this->cacheTranslationFile($lang);
+
         $path_cache = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
-        $cache_file = $path_cache. $lang . '_' . $this->cacheID . '.php';
+        $cache_file = $path_cache. $lang . '_' . $this->getCacheID($lang) . '.php';
         require($cache_file);
 
         $translation = 'TRANSLATION_NOT_FOUND';
@@ -85,13 +89,16 @@ class I18n {
         return $translation;
     }
 
-    public function computeTranslations(string $file_contents, &$context): string {
+    public function computeTranslations(string $file_contents, &$context, $lang=null): string {
         if (!$this->active)
             return $file_contents;
 
-        $lang = $_SESSION['lang'];
+        if ($lang === null)
+            $lang = $_SESSION['lang'];
+        else
+            $this->cacheTranslationFile($lang);
         $path_cache = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
-        $cache_file = $path_cache. $lang . '_' . $this->cacheID . '.php';
+        $cache_file = $path_cache. $lang . '_' . $this->getCacheID($lang) . '.php';
         require($cache_file);
 
         while (preg_match('/{{ *?translate *?\'([A-Z0-9_]*)\' *?}}/m', $file_contents, $matches, PREG_OFFSET_CAPTURE)) {
@@ -113,27 +120,27 @@ class I18n {
             );
         }
 
-        $this->setLangToContext($context);
+        $this->setLangToContext($context, $lang);
 
         unset($strings);
         return $file_contents;
     }
 
-    public function setLangToContext(&$context) {
+    public function setLangToContext(&$context, $lang) {
         if ($context === null) {
-            $context = array('lang' => $_SESSION['lang']);
+            $context = array('lang' => $lang);
         } else
-            $context['lang'] = $_SESSION['lang'];
+            $context['lang'] = $lang;
     }
 
-    private function cacheTranslationFile() {
-        $lang = $_SESSION['lang'];
+    private function cacheTranslationFile($lang) {
         $path_file = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'langs' . DIRECTORY_SEPARATOR;
         $path_cache = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
-        if (!file_exists($path_file . $_SESSION['lang'] . '.json'))
-            $lang = $_SESSION['lang'] = $this->defaultLang;
-            $lang_file = $path_file . $_SESSION['lang'] . '.json';
 
+        if (!file_exists($path_file . $lang . '.json'))
+            $lang = $this->defaultLang;
+
+        $lang_file = $path_file . $lang . '.json';
         $cache_file = $path_cache. $lang . '_' . filemtime($lang_file) . '.php';
 
         if (!file_exists($cache_file)) {
@@ -141,7 +148,14 @@ class I18n {
             file_put_contents($cache_file, '<?php $strings='.
                 var_export(json_decode(file_get_contents($lang_file)), true).';', LOCK_EX);
         }
-        $this->cacheID = filemtime($lang_file);
+    }
+
+    private function getCacheID(string $lang) {
+        $path_file = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'langs' . DIRECTORY_SEPARATOR;
+
+        if (!file_exists($path_file . $lang . '.json'))
+            return '';
+        return filemtime($path_file . $lang . '.json');
     }
 
     public static function getInstance($langsFolder=null, $default=null): I18n {

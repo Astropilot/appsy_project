@@ -35,10 +35,13 @@ class Request implements IRequest {
                 $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
-        if ($this->requestMethod == "POST") {
+        if ($this->requestMethod === "POST") {
             foreach($_POST as $key => $value) {
                 $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
+        }
+        if ($this->requestMethod === "PUT") {
+            parse_str(file_get_contents("php://input"), $body);
         }
         return $body;
     }
