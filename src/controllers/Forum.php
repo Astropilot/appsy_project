@@ -38,7 +38,7 @@ $router->post('/api/forum/categories', function($request) {
         return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get('/api/forum/categories/<category_id>/posts', function($request, $category_id) {
+$router->get('/api/forum/categories/<category_id:int>/posts', function($request, $category_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
@@ -72,7 +72,7 @@ $router->get('/api/forum/categories/<category_id>/posts', function($request, $ca
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->post('/api/forum/categories/<category_id>/posts', function($request, $category_id) {
+$router->post('/api/forum/categories/<category_id:int>/posts', function($request, $category_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
@@ -93,7 +93,7 @@ $router->post('/api/forum/categories/<category_id>/posts', function($request, $c
         return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get('/api/forum/posts/<post_id>/responses', function($request, $post_id) {
+$router->get('/api/forum/posts/<post_id:int>/responses', function($request, $post_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 

@@ -14,8 +14,10 @@ $router->get('/connexion', function($request) {
     return Response::fromView('home/connexion.html');
 });
 
-$router->get('/inscription', function($request) {
-    return Response::fromView('home/inscription.html');
+$router->get('/inscription/<token:str>/<email:str>', function($request, $token, $email) {
+    $context = array('token' => $token, 'email' => $email);
+
+    return Response::fromView('home/inscription.html', $context);
 });
 
 $router->get('/dashboard', function($request) {
@@ -26,7 +28,7 @@ $router->get('/dashboard/chat', function($request) {
     return Response::fromView('dashboard/chat.html');
 });
 
-$router->get('/dashboard/chat/user/<user_id>', function($request, $user_id) {
+$router->get('/dashboard/chat/user/<user_id:int>', function($request, $user_id) {
     $context = array('contact_id' => $user_id);
 
     return Response::fromView('dashboard/chat_user.html', $context);
@@ -40,13 +42,13 @@ $router->get('/dashboard/forum', function($request) {
     return Response::fromView('dashboard/forum.html');
 });
 
-$router->get('/dashboard/forum/category/<cat_id>', function($request, $cat_id) {
+$router->get('/dashboard/forum/category/<cat_id:int>', function($request, $cat_id) {
     $context = array('category_id' => $cat_id);
 
     return Response::fromView('dashboard/forum_category.html', $context);
 });
 
-$router->get('/dashboard/forum/post/<post_id>', function($request, $post_id) {
+$router->get('/dashboard/forum/post/<post_id:int>', function($request, $post_id) {
     $context = array('post_id' => $post_id);
 
     return Response::fromView('dashboard/forum_post.html', $context);

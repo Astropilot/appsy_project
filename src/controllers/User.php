@@ -2,6 +2,7 @@
 
 use Testify\Router\Router;
 use Testify\Model\User;
+use \Testify\Model\UserInvite;
 use Testify\Model\Role;
 use Testify\Component\Security;
 use Testify\Component\API;
@@ -43,7 +44,30 @@ $router->post('/api/users/login', function($request) {
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get('/api/users/<userid>', function($request, $user_id) {
+$router->get('/api/users/invite', function($request) {
+    $errors_arr = array();
+
+    API::setAPIHeaders();
+
+    if(!isset($request->getBody()['token']) || empty($request->getBody()['token']))
+        $errors_arr[] = "No token given!";
+    if(!isset($request->getBody()['email']) || empty($request->getBody()['email']))
+        $errors_arr[] = "No email given!";
+
+    if(count($errors_arr) === 0) {
+        $token = Security::protect($request->getBody()['token']);
+        $email = Security::protect($request->getBody()['email']);
+
+        $invite = UserInvite::getInstance()->getValidInvite($token, $email);
+        if($invite === null) {
+            $errors_arr[] = "Invitation not found or expired!";
+        } else
+            return json_encode(array("r" => True, "invite" => $invite));
+    }
+    return json_encode(array("r" => False, "errors" => $errors_arr));
+});
+
+$router->get('/api/users/<userid:int>', function($request, $user_id) {
     $errors_arr = array();
 
     API::setAPIHeaders();
@@ -92,4 +116,56 @@ $router->get('/api/users/logoff', function($request) {
     }
     else
         return json_encode(array("r" => False, "errors" => array(I18n::getInstance()->translate('API_USER_DECONNECT_ERROR'))));
+});
+
+$router->post('/api/users', function($request) {
+    $errors_arr = array();
+
+    API::setAPIHeaders();
+
+    if(!isset($request->getBody()['token']) || empty($request->getBody()['token']))
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+    if(!isset($request->getBody()['email']) || empty($request->getBody()['email']))
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+    if(!isset($request->getBody()['firstname']) || empty($request->getBody()['firstname']))
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+    if(!isset($request->getBody()['lastname']) || empty($request->getBody()['lastname']))
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+    if(!isset($request->getBody()['password']) || empty($request->getBody()['password']))
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+    if(!isset($request->getBody()['password_check']) || empty($request->getBody()['password_check']))
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
+
+    if(count($errors_arr) === 0) {
+        $token = Security::protect($request->getBody()['token']);
+        $email = Security::protect($request->getBody()['email']);
+        $firstname = Security::protect($request->getBody()['firstname']);
+        $lastname = Security::protect($request->getBody()['lastname']);
+        $password = Security::protect($request->getBody()['password']);
+        $password_check = Security::protect($request->getBody()['password_check']);
+
+        if ($password !== $password_check)
+            $errors_arr[] = "The password verification do not match with the password!";
+    }
+
+    if (count($errors_arr) === 0) {
+        $invite = UserInvite::getInstance()->getValidInvite($token, $email);
+        if($invite === null)
+            $errors_arr[] = "Invitation not found or expired!";
+        else {
+            $res = User::getInstance()->createUser(
+                $invite['email'],
+                $firstname,
+                $lastname,
+                $invite['role'],
+                Security::hashPass($password, Config::HASH_SALT)
+            );
+            if ($res) {
+                UserInvite::getInstance()->unActiveInvite($invite['id']);
+                return json_encode(array("r" => True, "message" => "Congratulation ! You are now registered ! You can connect now on the Sign In page"));
+            } else
+                $errors_arr[] = "A error occured while creating user!";
+        }
+    }
+    return json_encode(array("r" => False, "errors" => $errors_arr));
 });

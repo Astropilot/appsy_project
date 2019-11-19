@@ -40,7 +40,7 @@ $router->post('/api/faq/questions', function($request) {
         return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->delete('/api/faq/questions/<question_id>', function($request, $question_id) {
+$router->delete('/api/faq/questions/<question_id:int>', function($request, $question_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);

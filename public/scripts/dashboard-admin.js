@@ -27,8 +27,8 @@ function searchMember(search) {
           member_template.find('.member-banned').append(
             `<form class="form">
               <select class="form-field" style="width: 100% !important">
-                <option value="0"></option>
-                <option value="1">Banni</option>
+                <option value="0">Non</option>
+                <option value="1">Oui</option>
                </select>
              </form>`
           ).find('option[value="' + member.banned + '"]').attr('selected', '');

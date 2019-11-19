@@ -3,6 +3,7 @@
 use Testify\Router\Router;
 use Testify\Router\Response;
 use Testify\Model\User;
+use Testify\Model\UserInvite;
 use Testify\Model\Role;
 use Testify\Component\Security;
 use Testify\Component\API;
@@ -42,14 +43,14 @@ $router->post('/admin/api/users', function($request) {
         $datetime->add(new \DateInterval('P3D'));
         $expire_date = $datetime->format('Y-m-d');
 
-        $res = User::getInstance()->createInvite($email, $firstname, $lastname, $role, $token, $expire_date);
+        $res = UserInvite::getInstance()->createInvite($email, $firstname, $lastname, $role, $token, $expire_date);
 
         if (!$res)
             $errors_arr[] = "Une erreur est arrivée pendant la création de l'invitation !";
         else {
             $context = array(
                 'user' => "$lastname $firstname",
-                'link' => "http://localhost/inscription/$token"
+                'link' => "http://localhost/inscription/$token/$email"
             );
 
             $mail = new Mail(

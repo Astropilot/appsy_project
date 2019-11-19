@@ -15,55 +15,63 @@ Inscription
     <div class="row justify-content-center">
       <h2>Inscription</h2>
     </div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" id="invite-wait">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+    <div class="row justify-content-center" id="invite-form" style="display: none">
       <form class="form">
-
-        <div>
-          <label for="nom">Nom : </label>
-          <input class="form-field" type="text" name="nom" id="nom" placeholder="Nom">
-          <label for="prenom">Prénom : </label>
-          <input class="form-field" type="text" name="prenom" id="prenom" placeholder="Prénom">
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="member-email">Email</label>
+          <input class="form-field col-8" type="email" name="member-email" id="member-email" readonly>
         </div>
-
-        <div>
-          <label for="email">Email : </label>
-          <input class="form-field" type="email" name="email" id="email" placeholder="Ex: email@gmail.com">
-          <label for="tel">Téléphone : </label>
-          <input class="form-field" type="tel" name="tel" id="tel" placeholder="06********">
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="member-lastname">Nom</label>
+          <input class="form-field col-8" type="text" name="member-lastname" id="member-lastname" required>
         </div>
-
-        <div>
-          <label for="pays">Pays : </label>
-          <select name="pays" id="pays">
-            <optgroup label="Europe">
-              <option value="france">France</option>
-              <option value="espagne">Espagne</option>
-              <option value="royaume-uni">Royaume-Uni</option>
-            </optgroup>
-            <optgroup label="Amérique">
-              <option value="canada">Canada</option>
-              <option value="etats-unis">Etats-Unis</option>
-            </optgroup>
-            <optgroup label="Asie">
-              <option value="chine">Chine</option>
-              <option value="japon">Japon</option>
-            </optgroup>
-          </select>
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="member-firstname">Prénom</label>
+          <input class="form-field col-8" type="text" name="member-firstname" id="member-firstname" required>
         </div>
-
-        <div>
-          <label for="pass">Choisissez un mot de passe : </label>
-          <input class="form-field" type="password" name="pass" id="pass" placeholder="Maj, nb caracteres, etc.">
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="member-password">Mot de passe</label>
+          <input class="form-field col-8" type="password" name="member-password" id="member-password" required>
         </div>
-        <div>
-          <label for="pass">Confirmation du mot de passe : </label>
-          <input  class="form-field" type="password" name="pass" id="pass" placeholder="Maj, nb caracteres, etc.">
+        <div class="row" style="margin-bottom: 25px">
+          <label class="col-4 col-form-label" for="member-password-check">Mot de passe</label>
+          <input class="form-field col-8" type="password" name="member-password-check" id="member-password-check" required>
         </div>
-
-
+        <div class="row justify-content-center">
+          <button type="button" class="btn btn-success" id="btn-register">
+            S'inscrire <i id="wait-register" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+          </button>
+        </div>
       </form>
     </div>
   </div>
 </section>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  $(function() {
+    var invite_token = '{{ token }}';
+    var invite_email = '{{ email }}';
+
+    $('#btn-register').on('click', function() {
+      registerMember(
+        invite_token,
+        invite_email,
+        $('#member-firstname').val(),
+        $('#member-lastname').val(),
+        $('#member-password').val(),
+        $('#member-password-check').val()
+      );
+    });
+
+    getInvite(invite_token, invite_email);
+  });
+</script>
 
 {% endblock %}

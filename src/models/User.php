@@ -17,6 +17,21 @@ class User {
         return self::$instance;
     }
 
+    public function createUser($email, $firstname, $lastname, $role, $password): bool {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "INSERT INTO tf_user
+             (email, firstname, lastname, role, password, banned)
+             VALUES (:email, :firstname, :lastname, :role, :password, 0)"
+        );
+        return $req->execute(array(
+            'email' => $email,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'role' => $role,
+            'password' => $password
+        ));
+    }
+
     public function userExist($email, $password) : bool {
         $req = Database::getInstance()->getPDO()->prepare(
             "SELECT 1 FROM tf_user WHERE `email`=:email AND `password`=:pass"
@@ -82,21 +97,5 @@ class User {
         $req->bindValue(':search3', '%' . $search . '%');
         $req->execute();
         return ($req->fetchAll());
-    }
-
-    public function createInvite($email, $firstname, $lastname, $role, $token, $expire_date): bool {
-        $req = Database::getInstance()->getPDO()->prepare(
-            "INSERT INTO tf_user_invited
-             SET `email`=:email, `firstname`=:firstname, `lastname`=:lastname,
-             `role`=:role, `invite_token`=:token, `expire_date`=:expire"
-        );
-        return $req->execute(array(
-            'email' => $email,
-            'firstname' => $firstname,
-            'lastname' => $lastname,
-            'role' => $role,
-            'token' => $token,
-            'expire' => $expire_date
-        ));
     }
 }

@@ -12,7 +12,7 @@ use Testify\Component\I18n;
 $router = Router::getInstance();
 
 
-$router->get('/api/users/<user_id>/contacts', function($request, $user_id) {
+$router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
     $errors_arr = array();
 
     API::setAPIHeaders();
@@ -49,7 +49,7 @@ $router->get('/api/users/<user_id>/contacts', function($request, $user_id) {
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->get('/api/users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
+$router->get('/api/users/<user_id:int>/<contact_id:int>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
 
     API::setAPIHeaders();
@@ -78,7 +78,7 @@ $router->get('/api/users/<user_id>/<contact_id>/messages', function($request, $u
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
 
-$router->post('/api/users/<user_id>/<contact_id>/messages', function($request, $user_id, $contact_id) {
+$router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
 
     API::setAPIHeaders();

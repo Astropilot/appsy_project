@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  lun. 18 nov. 2019 à 22:40
+-- Généré le :  mar. 19 nov. 2019 à 16:35
 -- Version du serveur :  10.4.8-MariaDB
 -- Version de PHP :  7.3.11
 
@@ -77,7 +77,8 @@ CREATE TABLE `tf_forum_post` (
 --
 
 INSERT INTO `tf_forum_post` (`id`, `author`, `title`, `content`, `created_at`, `updated_at`, `category`, `post_response`) VALUES
-(1, 2, 'Petit test', '&#60;span style=&#34;font-weight: bold;&#34;&#62;Bonjour &#60;/span&#62;tout le &#60;span style=&#34;color: rgb(204, 0, 0);&#34;&#62;&#60;span style=&#34;text-decoration: underline;&#34;&#62;monde &#60;/span&#62;&#60;/span&#62;!&#60;br&#62;', '2019-11-18 20:00:34', '2019-11-18 20:00:34', 1, NULL);
+(1, 2, 'Petit test', '&#60;span style=&#34;font-weight: bold;&#34;&#62;Bonjour &#60;/span&#62;tout le &#60;span style=&#34;color: rgb(204, 0, 0);&#34;&#62;&#60;span style=&#34;text-decoration: underline;&#34;&#62;monde &#60;/span&#62;&#60;/span&#62;!&#60;br&#62;', '2019-11-18 20:00:34', '2019-11-18 20:00:34', 1, NULL),
+(2, 2, 'srogjdroigkdrij', '&#60;h1&#62;rgdrgdr&#60;/h1&#62;&#60;div&#62;&#60;br&#62;&#60;/div&#62;&#60;div&#62;&#60;span style=&#34;color: rgb(204, 0, 0);&#34;&#62;&#60;span style=&#34;text-decoration: underline;&#34;&#62;grrdgd&#60;/span&#62;&#60;/span&#62;&#60;br&#62;&#60;/div&#62;', '2019-11-19 15:09:48', '2019-11-19 15:09:48', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -157,8 +158,10 @@ CREATE TABLE `tf_user_invited` (
   `email` varchar(254) NOT NULL,
   `firstname` varchar(75) NOT NULL,
   `lastname` varchar(75) NOT NULL,
+  `role` int(11) NOT NULL,
   `invite_token` varchar(64) NOT NULL,
-  `expire_date` date NOT NULL
+  `expire_date` date NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -235,7 +238,7 @@ ALTER TABLE `tf_forum_category`
 -- AUTO_INCREMENT pour la table `tf_forum_post`
 --
 ALTER TABLE `tf_forum_post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `tf_message`
@@ -259,7 +262,7 @@ ALTER TABLE `tf_user`
 -- AUTO_INCREMENT pour la table `tf_user_invited`
 --
 ALTER TABLE `tf_user_invited`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Contraintes pour les tables déchargées
