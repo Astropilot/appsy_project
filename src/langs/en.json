@@ -1,13 +1,14 @@
 {
     "LANGUAGE_NAME": "English",
 
-    "CGV": "General terms and conditions of sale",
+    "CGU": "Terms and conditions and legal notices",
 
     "404_OOPS": "Oops, the page was not found!",
     "404_DO_NOT_EXIST": "The page you are looking for does not exist or no longer exists. Go back or",
     "404_BACK_HOME": "come back to home",
 
     "HOME_NAVBAR_CONNECT": "Sign In",
+    "HOME_NAVBAR_CONTACT": "Contact",
 
     "HOME_TABTITLE_HOME": "Home",
     "HOME_NAVTITLE_HOME": "Discover Testify",
@@ -21,6 +22,8 @@
     "HOME_CONNECT_PASSWORD": "Your password",
     "HOME_CONNECT_BUTTON": "Login",
 
+    "HOME_CONTACT_TITLE": "Contact",
+
     "HOME_REGISTER_TITLE": "Register",
     "HOME_REGISTER_EMAIL": "Your email",
     "HOME_REGISTER_LASTNAME": "Your lastname",
@@ -28,6 +31,13 @@
     "HOME_REGISTER_PASSWORD": "Your password",
     "HOME_REGISTER_PASSWORDCHECK": "Password verification",
     "HOME_REGISTER_REGISTERBTN": "Sign Up",
+
+    "HOME_FAQ_TITLESHORT": "FAQ",
+    "HOME_FAQ_TITLE": "Frequently asked questions",
+    "HOME_FAQ_NOFAQ": "No questions available at the moment",
+
+    "HOME_CGU_TITLESHORT": "TERMS AND CONDITIONS",
+    "HOME_CGU_TITLE": "Terms and conditions",
 
     "API_USER_NO_USERNAME_PROVIDED": "The email was not provided!",
     "API_USER_NO_PASSWORD_PROVIDED": "The password was not provided!",
@@ -140,6 +150,9 @@
     "DASHBOARD_ADMIN_INVITE_ROLE": "Member's role",
     "DASHBOARD_ADMIN_INVITE_LANG": "Mail lang",
     "DASHBOARD_ADMIN_INVITE_ADDBTN": "Invite",
+    "DASHBOARD_ADMIN_FASTEDIT_CONFIRM_TITLE": "Are you sure of your action?",
+    "DASHBOARD_ADMIN_FASTEDIT_CONFIRMBTN": "I confirm that",
+    "DASHBOARD_ADMIN_FASTEDIT_CANCELBTN": "Cancel the action",
 
     "API_ADMIN_INVITE_NO_EMAIL": "No email given!",
     "API_ADMIN_INVITE_NO_FIRSTNAME": "No firstname given!",

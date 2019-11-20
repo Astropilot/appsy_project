@@ -14,6 +14,18 @@ $router->get('/connexion', function($request) {
     return Response::fromView('home/connexion.html');
 });
 
+$router->get('/faq', function($request) {
+    return Response::fromView('home/faq.html');
+});
+
+$router->get('/contact', function($request) {
+    return Response::fromView('home/contact.html');
+});
+
+$router->get('/cgu', function($request) {
+    return Response::fromView('home/cgu.html');
+});
+
 $router->get('/inscription/<token:str>/<email:str>', function($request, $token, $email) {
     $context = array('token' => $token, 'email' => $email);
 

@@ -12,7 +12,6 @@ $router = Router::getInstance();
 
 $router->get('/api/faq/questions', function($request) {
     API::setAPIHeaders();
-    Security::checkAPIConnected();
 
     $faq = Faq::getInstance()->getFaq();
     return json_encode(array("r" => True, "faq" => $faq));
@@ -24,15 +23,16 @@ $router->post('/api/faq/questions', function($request) {
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
     $errors_arr=array();
+    $data = $request->getBody();
 
-    if(!isset($request->getBody()['question']) || empty($request->getBody()['question']))
+    if(!isset($data['question']) || empty($data['question']))
         $errors_arr[] = I18n::getInstance()->translate('API_FAQ_NO_QUESTION_GIVEN');
-    if(!isset($request->getBody()['answer']) || empty($request->getBody()['answer']))
+    if(!isset($data['answer']) || empty($data['answer']))
         $errors_arr[] = I18n::getInstance()->translate('API_FAQ_NO_ANSWER_GIVEN');
 
     if(count($errors_arr) === 0) {
-        $question = Security::protect($request->getBody()['question']);
-        $answer = Security::protect($request->getBody()['answer']);
+        $question = $data['question'];
+        $answer = $data['answer'];
 
         $question = Faq::getInstance()->createQuestion($question, $answer);
         return json_encode(array("r" => True, "question" => $question));

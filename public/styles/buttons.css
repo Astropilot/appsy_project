@@ -13,7 +13,7 @@ li a {
 .btn-group-1 li {
   width: 140px;
   height: 25px;
-  float: right;
+  float: left;
   display: inline;
   background-color: #004570;
   border: solid white 1px;
@@ -33,13 +33,13 @@ li a {
 }
 
 .btn-group-1 li:first-child {
-  border-bottom-right-radius: 8px;
-  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
 }
 
 .btn-group-1 li:last-child {
-  border-bottom-left-radius: 8px;
-  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 /* Boutons en haut de page */

@@ -21,24 +21,25 @@ $router->post('/admin/api/users', function($request) {
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
     $errors_arr=array();
+    $data = $request->getBody();
 
-    if(!isset($request->getBody()['email']) || empty($request->getBody()['email']))
+    if(!isset($data['email']) || empty($data['email']))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_EMAIL');
-    if(!isset($request->getBody()['firstname']) || empty($request->getBody()['firstname']))
+    if(!isset($data['firstname']) || empty($data['firstname']))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_FIRSTNAME');
-    if(!isset($request->getBody()['lastname']) || empty($request->getBody()['lastname']))
+    if(!isset($data['lastname']) || empty($data['lastname']))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_LASTNAME');
-    if(!isset($request->getBody()['role']))
+    if(!isset($data['role']))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_ROLE');
-    if(!isset($request->getBody()['lang']) || empty($request->getBody()['lang']))
+    if(!isset($data['lang']) || empty($data['lang']))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_LANG');
 
     if(count($errors_arr) === 0) {
-        $email = Security::protect($request->getBody()['email']);
-        $firstname = Security::protect($request->getBody()['firstname']);
-        $lastname = Security::protect($request->getBody()['lastname']);
-        $role = Security::protect($request->getBody()['role']);
-        $lang = Security::protect($request->getBody()['lang']);
+        $email = $data['email'];
+        $firstname = $data['firstname'];
+        $lastname = $data['lastname'];
+        $role = $data['role'];
+        $lang = $data['lang'];
 
         date_default_timezone_set('UTC');
 
@@ -81,6 +82,7 @@ $router->post('/admin/api/users', function($request) {
 
 $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
     $errors_arr = array();
+    $data = $request->getBody();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
@@ -91,12 +93,12 @@ $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
     if($user === null) {
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_USER_NOT_FOUND');
     } else {
-        $email = isset($request->getBody()['email']) ? $request->getBody()['email'] : $user['email'];
-        $password = isset($request->getBody()['password']) ? Security::hashPass($request->getBody()['password'], Config::HASH_SALT) : $user['password'];
-        $lastname = isset($request->getBody()['lastname']) ? $request->getBody()['lastname'] : $user['lastname'];
-        $firstname = isset($request->getBody()['firstname']) ? $request->getBody()['firstname'] : $user['firstname'];
-        $role = isset($request->getBody()['role']) ? $request->getBody()['role'] : $user['role'];
-        $banned = isset($request->getBody()['banned']) ? $request->getBody()['banned'] : $user['banned'];
+        $email = isset($data['email']) ? $data['email'] : $user['email'];
+        $password = isset($data['password']) ? Security::hashPass($data['password'], Config::HASH_SALT) : $user['password'];
+        $lastname = isset($data['lastname']) ? $data['lastname'] : $user['lastname'];
+        $firstname = isset($data['firstname']) ? $data['firstname'] : $user['firstname'];
+        $role = isset($data['role']) ? $data['role'] : $user['role'];
+        $banned = isset($data['banned']) ? $data['banned'] : $user['banned'];
 
         $res = User::getInstance()->updateUser($user['id'], $email, $password, $lastname, $firstname, $role, $banned);
         if ($res)

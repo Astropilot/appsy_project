@@ -1,13 +1,14 @@
 {
     "LANGUAGE_NAME": "Français",
 
-    "CGV": "Conditions générales de ventes",
+    "CGU": "CGU et mentions légales",
 
     "404_OOPS": "Oops, la page n'a pas été trouvée !",
     "404_DO_NOT_EXIST": "La page que vous cherchez n'existe pas ou plus. Revenez en arrière ou",
     "404_BACK_HOME": "revenez à l'accueil",
 
     "HOME_NAVBAR_CONNECT": "Connexion",
+    "HOME_NAVBAR_CONTACT": "Contact",
 
     "HOME_TABTITLE_HOME": "Accueil",
     "HOME_NAVTITLE_HOME": "Découvrir Testify",
@@ -21,6 +22,8 @@
     "HOME_CONNECT_PASSWORD": "Votre mot de passe",
     "HOME_CONNECT_BUTTON": "Se connecter",
 
+    "HOME_CONTACT_TITLE": "Contact",
+
     "HOME_REGISTER_TITLE": "Inscription",
     "HOME_REGISTER_EMAIL": "Votre adresse email",
     "HOME_REGISTER_LASTNAME": "Votre nom",
@@ -28,6 +31,13 @@
     "HOME_REGISTER_PASSWORD": "Votre mot de passe",
     "HOME_REGISTER_PASSWORDCHECK": "Vérification de votre mot de passe",
     "HOME_REGISTER_REGISTERBTN": "S'inscrire",
+
+    "HOME_FAQ_TITLESHORT": "FAQ",
+    "HOME_FAQ_TITLE": "Foire aux questions",
+    "HOME_FAQ_NOFAQ": "Aucune question disponible pour le moment",
+
+    "HOME_CGU_TITLESHORT": "CGU",
+    "HOME_CGU_TITLE": "Conditions générales d'utilisation",
 
     "API_USER_NO_USERNAME_PROVIDED": "L'adresse e-mail n'a pas été fournie !",
     "API_USER_NO_PASSWORD_PROVIDED": "Le mot de passe n'a pas été fourni !",
@@ -139,6 +149,9 @@
     "DASHBOARD_ADMIN_INVITE_ROLE": "Rôle du membre",
     "DASHBOARD_ADMIN_INVITE_LANG": "Langue du mail",
     "DASHBOARD_ADMIN_INVITE_ADDBTN": "Inviter",
+    "DASHBOARD_ADMIN_FASTEDIT_CONFIRM_TITLE": "Êtes-vous sûr de votre action ?",
+    "DASHBOARD_ADMIN_FASTEDIT_CONFIRMBTN": "Je confirme",
+    "DASHBOARD_ADMIN_FASTEDIT_CANCELBTN": "Annuler l'action",
 
     "API_ADMIN_INVITE_NO_EMAIL": "L'adresse email n'a pas été fournie !",
     "API_ADMIN_INVITE_NO_FIRSTNAME": "Le prénom n'a pas été fourni !",

@@ -11,8 +11,6 @@ class Security {
     public static function protect(string $string) {
         if (ctype_digit($string))
             $string = intval($string);
-        else
-            $string = addcslashes($string, '%_');
         return $string;
     }
 

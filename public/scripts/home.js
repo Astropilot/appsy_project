@@ -108,3 +108,40 @@ function registerMember(token, email, firstname, lastname, password, password_ch
     }
   });
 }
+
+function getFAQ() {
+  $.ajax({
+    type: 'GET',
+    url: '/api/faq/questions',
+    dataType: 'json',
+    success: function(data) {
+      $('#faq-wait').hide();
+      if (data.r) {
+        if (data.faq.length == 0) {
+          $('#nofaq').show();
+          return;
+        }
+        data.faq.forEach(function(faq) {
+          var faq_template = $('#faq-template').clone().removeClass('d-none');
+
+          faq_template.find('h3').text(faq.question);
+          faq_template.find('p').text(faq.answer);
+
+          $('#faq-questions').append(
+            faq_template
+          );
+        });
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}

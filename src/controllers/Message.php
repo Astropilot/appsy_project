@@ -14,6 +14,7 @@ $router = Router::getInstance();
 
 $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
     $errors_arr = array();
+    $data = $request->getBody();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
@@ -21,9 +22,9 @@ $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
     if (intval($user_id) !== $_SESSION['id'])
         $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOACCESS');
 
-    if(!isset($request->getBody()['page']) || empty($request->getBody()['page']))
+    if(!isset($data['page']) || empty($data['page']))
         $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOPAGE');
-    if(!isset($request->getBody()['pageSize']) || empty($request->getBody()['pageSize']))
+    if(!isset($data['pageSize']) || empty($data['pageSize']))
         $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOSIZEPAGE');
 
     if(count($errors_arr) === 0) {
@@ -33,8 +34,8 @@ $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
     }
 
     if(count($errors_arr) === 0) {
-        $page = Security::protect($request->getBody()['page']);
-        $pageSize = Security::protect($request->getBody()['pageSize']);
+        $page = $data['page'];
+        $pageSize = $data['pageSize'];
 
         $paginator = new Paginator($page, $pageSize);
         $contacts = $paginator->paginate(Message::getInstance()->getContacts($user));
@@ -80,6 +81,7 @@ $router->get('/api/users/<user_id:int>/<contact_id:int>/messages', function($req
 
 $router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($request, $user_id, $contact_id) {
     $errors_arr = array();
+    $data = $request->getBody();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
@@ -98,11 +100,11 @@ $router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($re
         }
     }
 
-    if(!isset($request->getBody()['message']) || empty($request->getBody()['message']))
+    if(!isset($data['message']) || empty($data['message']))
         $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN');
 
     if(count($errors_arr) === 0) {
-        $message = Security::protect($request->getBody()['message']);
+        $message = $data['message'];
 
         $message = Message::getInstance()->createMessage($user, $contact, $message);
         return json_encode(array("r" => True, "message" => $message));
