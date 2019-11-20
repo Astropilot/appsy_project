@@ -89,20 +89,20 @@ $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
     $user = User::getInstance()->getUser($user_id, true);
 
     if($user === null) {
-        $errors_arr[] = "User not found!";
+        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_USER_NOT_FOUND');
     } else {
-        $user_email = isset($request->getBody()['member_email']) ? $request->getBody()['member_email'] : $user['email'];
-        $user_password = isset($request->getBody()['member_password']) ? Security::hashPass($request->getBody()['member_password'], Config::HASH_SALT) : $user['password'];
-        $user_lastname = isset($request->getBody()['member_lastname']) ? $request->getBody()['member_lastname'] : $user['lastname'];
-        $user_firstname = isset($request->getBody()['member_firstname']) ? $request->getBody()['member_firstname'] : $user['firstname'];
-        $user_role = isset($request->getBody()['member_role']) ? $request->getBody()['member_role'] : $user['role'];
-        $user_banned = isset($request->getBody()['member_banned']) ? $request->getBody()['member_banned'] : $user['banned'];
+        $email = isset($request->getBody()['email']) ? $request->getBody()['email'] : $user['email'];
+        $password = isset($request->getBody()['password']) ? Security::hashPass($request->getBody()['password'], Config::HASH_SALT) : $user['password'];
+        $lastname = isset($request->getBody()['lastname']) ? $request->getBody()['lastname'] : $user['lastname'];
+        $firstname = isset($request->getBody()['firstname']) ? $request->getBody()['firstname'] : $user['firstname'];
+        $role = isset($request->getBody()['role']) ? $request->getBody()['role'] : $user['role'];
+        $banned = isset($request->getBody()['banned']) ? $request->getBody()['banned'] : $user['banned'];
 
-        $res = User::getInstance()->updateUser($user['id'], $user_email, $user_password, $user_lastname, $user_firstname, $user_role, $user_banned);
+        $res = User::getInstance()->updateUser($user['id'], $email, $password, $lastname, $firstname, $role, $banned);
         if ($res)
-            return json_encode(array("r" => True, "message" => "User successfully updated!"));
+            return json_encode(array("r" => True, "message" => I18n::getInstance()->translate('API_ADMIN_USER_UPDATE_SUCCESS')));
         else
-            $errors_arr[] = "An error occured while updating the user!";
+            $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_USER_UPDATE_ERROR');
     }
 
     return json_encode(array("r" => False, "errors" => $errors_arr));

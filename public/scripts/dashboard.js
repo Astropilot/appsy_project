@@ -443,3 +443,70 @@ function createPost(category_id, title, content) {
     }
   });
 }
+
+function getUserProfile() {
+  var user = JSON.parse(localStorage.getItem('user'));
+
+  $.ajax({
+    type: 'GET',
+    url: `/api/users/${user.id}`,
+    dataType: 'json',
+    success: function(data) {
+      if (data.r) {
+        var member = data.user;
+        $('#profile-name').text(`${member.firstname} ${member.lastname}`);
+
+        $('#profile-email').val(member.email);
+        $('#profile-firstname').val(member.firstname);
+        $('#profile-lastname').val(member.lastname);
+
+        $('#profile-name i').hide();
+        $('#profile-wait').hide();
+        $('#profile-edit').show();
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function updateUserProfile(email, firstname, lastname, password, passwordcheck) {
+  var user = JSON.parse(localStorage.getItem('user'));
+
+  $.ajax({
+    type: 'PUT',
+    url: `/api/users/${user.id}`,
+    data: {email: email, firstname: firstname, lastname: lastname, password: password, passwordcheck: passwordcheck},
+    dataType: 'json',
+    success: function(data) {
+      if (data.r) {
+        new Noty({
+          theme: 'metroui',
+          type: 'success',
+          layout: 'centerRight',
+          timeout: 4000,
+          text: data.message
+        }).show();
+      } else {
+        getUserProfile();
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}

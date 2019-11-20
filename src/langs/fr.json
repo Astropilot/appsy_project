@@ -46,6 +46,15 @@
     "API_USER_CREATE_INVITE_EXPIRED": "L'invitation n'a pas été trouvée ou est expirée",
     "API_USER_CREATE_USER_ERROR": "Une erreur exceptionnelle est arrivée pendant la création de l'utilisateur",
     "API_USER_CREATE_USER_SUCCESS": "Félicitations vous êtes inscrit ! Vous pouvez à présent vous connecter sur la page de connexion",
+    "API_USER_INVITE_NO_TOKEN": "Le code d'invitation n'a pas été fourni !",
+    "API_USER_INVITE_NO_EMAIL": "L'email d'invitation n'a pas été fourni !",
+    "API_USER_INVITE_NOT_FOUND": "L'invitation n'a pas été trouvée ou est expirée",
+    "API_USER_UPDATE_NO_EMAIL": "L'email ne peux pas être vide !",
+    "API_USER_UPDATE_NO_LASTNAME": "Le nom ne peux pas être vide !",
+    "API_USER_UPDATE_NO_FIRSTNAME": "Le prénom ne peux pas être vide !",
+    "API_USER_UPDATE_PASSWORD_CHECK_ERROR": "Le mot de passe ne correspond pas avec la vérification !",
+    "API_USER_UPDATE_ERROR": "Une erreur exceptionnelle est survenue pendant la mise à jour de vos informations !",
+    "API_USER_UPDATE_SUCCESS": "Votre profil à bien été mis à jour !",
 
     "API_MESSAGE_NOACCESS": "Vous n'avez pas accès aux informations de cet utilisateur !",
     "API_MESSAGE_NOPAGE": "Pas de page recu !",
@@ -139,6 +148,9 @@
     "API_ADMIN_INVITE_CREATE_ERROR": "Une erreur exceptionnelle est arrivée pendant la création de l'invitation",
     "API_ADMIN_INVITE_SEND_ERROR": "Une erreur exceptionnelle est arrivée pendant l'envoi par mail de l'invitation",
 
+    "API_ADMIN_USER_NOT_FOUND": "L'utilisateur n'a pas été trouvé !",
+    "API_ADMIN_USER_UPDATE_ERROR": "Une erreur exceptionnelle est arrivée pendant la mise à jour de l'utilisateur !",
+    "API_ADMIN_USER_UPDATE_SUCCESS": "L'utilisateur à bien été mis à jour !",
 
     "API_ADMIN_INVITE_MAIL_TITLE": "Testify - Inscription",
     "API_ADMIN_INVITE_MAIL_WELCOME": "Bienvenue",

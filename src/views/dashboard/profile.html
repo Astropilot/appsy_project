@@ -1,0 +1,74 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block navtitle %}
+Profile
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid" style="padding-bottom: 60px;">
+  <div class="row justify-content-center">
+    <h2>Profile - <span id="profile-name"><i class="fas fa-circle-notch fa-spin"></i></span></h2>
+  </div>
+
+  <div class="row justify-content-center" id="profile-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row justify-content-center" id="profile-edit" style="display: none">
+    <form class="form">
+      <div class="row" style="margin-bottom: 10px">
+        <label class="col-4 col-form-label" for="profile-email">Email</label><br>
+        <input type="email" class="form-field col-8" name="profile-email" id="profile-email" placeholder="">
+      </div>
+      <div class="row" style="margin-bottom: 10px">
+        <label class="col-4 col-form-label" for="profile-firstname">Firstname</label><br>
+        <input type="text" class="form-field col-8" name="profile-firstname" id="profile-firstname" placeholder="">
+      </div>
+      <div class="row" style="margin-bottom: 10px">
+        <label class="col-4 col-form-label" for="profile-lastname">Lastname</label><br>
+        <input type="text" class="form-field col-8" name="profile-lastname" id="profile-lastname" placeholder="">
+      </div>
+      <div class="row" style="margin-bottom: 10px">
+        <label class="col-4 col-form-label" for="profile-password">Change password</label><br>
+        <input type="password" class="form-field col-8" name="profile-password" id="profile-password" placeholder="">
+      </div>
+      <div class="row" style="margin-bottom: 25px">
+        <label class="col-4 col-form-label" for="profile-passwordcheck">Change password check</label><br>
+        <input type="password" class="form-field col-8" name="profile-passwordcheck" id="profile-passwordcheck" placeholder="">
+      </div>
+      <div class="row justify-content-center">
+        <button type="button" class="btn btn-success" id="btn-update-profile">
+          Mettre à jour mes informations <i id="wait-update-profile" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  $(function() {
+
+    $('#btn-update-profile').on('click', function() {
+      updateUserProfile(
+        $('#profile-email').val(),
+        $('#profile-firstname').val(),
+        $('#profile-lastname').val(),
+        $('#profile-password').val(),
+        $('#profile-passwordcheck').val()
+      );
+    });
+
+    getUserProfile();
+
+  });
+</script>
+
+{% endblock %}

@@ -24,6 +24,10 @@ $router->get('/dashboard', function($request) {
     return Response::fromView('dashboard/home.html');
 });
 
+$router->get('/dashboard/profile', function($request) {
+    return Response::fromView('dashboard/profile.html');
+});
+
 $router->get('/dashboard/chat', function($request) {
     return Response::fromView('dashboard/chat.html');
 });

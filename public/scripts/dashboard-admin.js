@@ -78,7 +78,7 @@ function fastEditUser(member_id, member_role, member_banned) {
   $.ajax({
     type: 'PUT',
     url: `/admin/api/users/${member_id}`,
-    data: {member_role: member_role, member_banned: member_banned},
+    data: {role: member_role, banned: member_banned},
     dataType: 'json',
     success: function(data) {
       if (data.r) {

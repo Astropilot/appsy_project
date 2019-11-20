@@ -47,7 +47,7 @@ To make this project work you will need:
 * Put all the files in your site directory
 * Configure your web server to serve the `appsy_project/public/` folder directly.
 
-A example with Apache:
+A example with Apache in your `httpd.conf` file:
 ```ini
 DocumentRoot "path/to/appsy_project/public"
 <Directory "path/to/appsy_project/public">
@@ -55,6 +55,17 @@ DocumentRoot "path/to/appsy_project/public"
     AllowOverride All
     Require all granted
 </Directory>
+```
+* Configure your web server to declare 3 environment variables: `SMTP_HOST`, `MAIL_USERNAME` and `MAIL_PASSWORD`.
+  * `SMTP_HOST`: This is the address of the mail server to communicate to. Eg: smtp.gmail.com
+  * `MAIL_USERNAME`: This is the sender email address (used to send registration emails)
+  * `MAIL_PASSWORD`: This is the password for authenticating the email address defined above.
+
+A example with Apache in your `httpd.conf` file:
+```ini
+SetEnv SMTP_HOST smtp.gmail.com
+SetEnv MAIL_USERNAME sample@gmail.com
+SetEnv MAIL_PASSWORD my_password
 ```
 * On your MySQL server create a database called `testify`. Import the `tools/testify.sql` script into your MySQL server to get the different tables needed by the project.
 * Everything is ready you can now access your site!

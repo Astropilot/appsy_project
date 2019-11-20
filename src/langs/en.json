@@ -46,6 +46,15 @@
     "API_USER_CREATE_INVITE_EXPIRED": "The invitation is not found or has been expired!",
     "API_USER_CREATE_USER_ERROR": "A unexcepted error occured while creating the user!",
     "API_USER_CREATE_USER_SUCCESS": "Congratulation! You are now registered! You can connect now on the Sign In page",
+    "API_USER_INVITE_NO_TOKEN": "The invite code was not provided!",
+    "API_USER_INVITE_NO_EMAIL": "The invite email was not provided!",
+    "API_USER_INVITE_NOT_FOUND": "The invitation is not found or has been expired!",
+    "API_USER_UPDATE_NO_EMAIL": "The mail can't be empty!",
+    "API_USER_UPDATE_NO_LASTNAME": "The lastname can't be empty!",
+    "API_USER_UPDATE_NO_FIRSTNAME": "The firstname can't be empty!",
+    "API_USER_UPDATE_PASSWORD_CHECK_ERROR": "The password does not match the verification!",
+    "API_USER_UPDATE_ERROR": "An unexcepted error occurred during the update of your information!",
+    "API_USER_UPDATE_SUCCESS": "Your profile has been updated!",
 
 
     "API_MESSAGE_NOACCESS": "You do not have access to this user's information!",
@@ -139,6 +148,10 @@
     "API_ADMIN_INVITE_NO_LANG": "No mail lang given!",
     "API_ADMIN_INVITE_CREATE_ERROR": "A unexcepted error occured while creating the invite!",
     "API_ADMIN_INVITE_SEND_ERROR": "A unexcepted error occured while sending the email invite!",
+
+    "API_ADMIN_USER_NOT_FOUND": "The user has not been found!",
+    "API_ADMIN_USER_UPDATE_ERROR": "An unexcepted error occurred during the user update!",
+    "API_ADMIN_USER_UPDATE_SUCCESS": "The user has been updated well!",
 
     "API_ADMIN_INVITE_MAIL_TITLE": "Testify - Register",
     "API_ADMIN_INVITE_MAIL_WELCOME": "Welcome",
