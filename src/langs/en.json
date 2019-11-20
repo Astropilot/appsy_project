@@ -161,6 +161,7 @@
     "API_ADMIN_INVITE_NO_LANG": "No mail lang given!",
     "API_ADMIN_INVITE_CREATE_ERROR": "A unexcepted error occured while creating the invite!",
     "API_ADMIN_INVITE_SEND_ERROR": "A unexcepted error occured while sending the email invite!",
+    "API_ADMIN_INVITE_SEND_SUCCESS": "has been invited!",
 
     "API_ADMIN_USER_NOT_FOUND": "The user has not been found!",
     "API_ADMIN_USER_UPDATE_ERROR": "An unexcepted error occurred during the user update!",

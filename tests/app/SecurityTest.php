@@ -25,11 +25,15 @@ class SecurityTest extends TestCase {
         );
         $this->assertSame(
             '\%Test',
-            Security::protect('%Test')
+            Security::protect('\%Test')
         );
         $this->assertSame(
-            'Un\_Test',
-            Security::protect('Un_Test')
+            5,
+            Security::protect('5')
+        );
+        $this->assertSame(
+            -58,
+            Security::protect('-58')
         );
     }
 
@@ -40,7 +44,7 @@ class SecurityTest extends TestCase {
         );
 
         $_SESSION['email'] = 'something';
-        $_SESSION['id'] = 'something';
+        $_SESSION['id'] = '1';
 
         $this->assertSame(
             True,

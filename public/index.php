@@ -19,6 +19,7 @@ I18n::getInstance('src/langs/', 'en');
 Router::getInstance(new Request);
 
 require_once '../src/views/Views.php';
+require_once '../src/controllers/Contact.php';
 require_once '../src/controllers/User.php';
 require_once '../src/controllers/Faq.php';
 require_once '../src/controllers/Message.php';

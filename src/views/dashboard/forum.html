@@ -16,13 +16,6 @@
       <h2>{{ translate 'DASHBOARD_FORUM_TITLE' }}</h2>
     </div>
   </div>
-  <div class="row">
-    <div class="offset-10 col-2">
-      <button type="button" class="btn btn-success btn-sm" id="btn-new-category" style="display: none">
-        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_FORUM_ADDCATEGORYBTN' }}
-      </button>
-    </div>
-  </div>
   <div class="row justify-content-center" id="forums-wait">
     <i class="fas fa-circle-notch fa-spin fa-2x"></i>
   </div>
@@ -43,8 +36,8 @@
       <div class="row justify-content-center" style="margin-top: 30px;">
         <form class="form">
           <div class="row">
-            <label class="col-4 col-form-label" for="category-name">{{ translate 'DASHBOARD_FORUM_MODAL_NAME' }}</label><br>
-            <input type="text" class="form-field col-8" name="category-name" id="category-name" placeholder="{{ translate 'DASHBOARD_FORUM_MODAL_NAME_EXAMPLE' }}">
+            <label class="col-4 col-form-label" for="category-name">{{ translate 'DASHBOARD_FORUM_MODAL_NAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="category-name" id="category-name" placeholder="{{ translate 'DASHBOARD_FORUM_MODAL_NAME_EXAMPLE' }}" required>
           </div>
         </form>
       </div>
@@ -66,9 +59,6 @@
   <a href="/dashboard/forum/category/${category.id}" class="btn btn-primary" style="margin-left: auto">
     {{ translate 'DASHBOARD_FORUM_GOPOSTSBTN' }}
   </a>
-  <button class="btn btn-danger" style="margin-left: 5px">
-    <i class="fas fa-trash-alt"></i>
-  </button>
 </div>
 
 {% endblock %}
@@ -81,16 +71,7 @@
   $(function() {
     var modal = $('#modal-new-category');
 
-    // Admin actions
-    var btnNewCategory = $('#btn-new-category');
-    var btnsDeleteCategory = $('.btn-delete-category');
-
     var user = JSON.parse(localStorage.getItem('user'));
-
-    if (user.role >= 2) {
-      btnNewCategory.show();
-      btnsDeleteCategory.show();
-    }
 
     getCategories();
 

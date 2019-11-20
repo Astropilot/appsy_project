@@ -55,7 +55,21 @@
     Tickets Tab
   </div>
   <div id="forum-tab" class="row tabcontent">
-    Forum Tab
+    <div class="row">
+      <div class="offset-10 col-2">
+        <button type="button" class="btn btn-success btn-sm" id="btn-new-category">
+          <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_FORUM_ADDCATEGORYBTN' }}
+        </button>
+      </div>
+    </div>
+    <div class="row justify-content-center" id="forums-wait">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+    <div class="row justify-content-center" id="noforums" style="display: none">
+      <h3>{{ translate 'DASHBOARD_FORUM_NOCATEGORY' }}</h3>
+    </div>
+    <div id="forums">
+    </div>
   </div>
   <div id="faq-tab" class="row tabcontent">
     FAQ Tab
@@ -72,28 +86,28 @@
       <div class="row justify-content-center" style="margin-top: 30px;">
         <form class="form">
           <div class="row" style="margin-bottom: 10px">
-            <label class="col-4 col-form-label" for="member-email">{{ translate 'DASHBOARD_ADMIN_INVITE_EMAIL' }}</label><br>
-            <input type="email" class="form-field col-8" name="member-email" id="member-email" placeholder="">
+            <label class="col-4 col-form-label" for="member-email">{{ translate 'DASHBOARD_ADMIN_INVITE_EMAIL' }} <span style="color: red">*</span></label><br>
+            <input type="email" class="form-field col-8" name="member-email" id="member-email" required>
           </div>
           <div class="row" style="margin-bottom: 10px">
-            <label class="col-4 col-form-label" for="member-firstname">{{ translate 'DASHBOARD_ADMIN_INVITE_FIRSTNAME' }}</label><br>
-            <input type="text" class="form-field col-8" name="member-firstname" id="member-firstname" placeholder="">
+            <label class="col-4 col-form-label" for="member-firstname">{{ translate 'DASHBOARD_ADMIN_INVITE_FIRSTNAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="member-firstname" id="member-firstname" required>
           </div>
           <div class="row" style="margin-bottom: 10px">
-            <label class="col-4 col-form-label" for="member-lastname">{{ translate 'DASHBOARD_ADMIN_INVITE_LASTNAME' }}</label><br>
-            <input type="text" class="form-field col-8" name="member-lastname" id="member-lastname" placeholder="">
+            <label class="col-4 col-form-label" for="member-lastname">{{ translate 'DASHBOARD_ADMIN_INVITE_LASTNAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="member-lastname" id="member-lastname" required>
           </div>
           <div class="row" style="margin-bottom: 10px">
-            <label class="col-4 col-form-label" for="member-role">{{ translate 'DASHBOARD_ADMIN_INVITE_ROLE' }}</label><br>
-            <select class="form-field col-8" name="member-role" id="member-role">
+            <label class="col-4 col-form-label" for="member-role">{{ translate 'DASHBOARD_ADMIN_INVITE_ROLE' }} <span style="color: red">*</span></label><br>
+            <select class="form-field col-8" name="member-role" id="member-role" required>
               <option value="0" selected>Utilisateur</option>
               <option value="1">Examinateur</option>
               <option value="2">Administrateur</option>
              </select>
           </div>
           <div class="row">
-            <label class="col-4 col-form-label" for="mail-lang">{{ translate 'DASHBOARD_ADMIN_INVITE_LANG' }}</label><br>
-            <select class="form-field col-8" name="mail-lang" id="mail-lang">
+            <label class="col-4 col-form-label" for="mail-lang">{{ translate 'DASHBOARD_ADMIN_INVITE_LANG' }} <span style="color: red">*</span></label><br>
+            <select class="form-field col-8" name="mail-lang" id="mail-lang" required>
               <option value="en" selected>English</option>
               <option value="fr">Français</option>
              </select>
@@ -148,6 +162,17 @@
     </td>
   </tr>
 </table>
+
+<div id="category-first-template" class="row d-none">
+  <h2 class="col-3"><b class="category-title"></b></h2>
+  <h5 class="offset-5 col-2" style="align-self: end; margin-bottom: 0">Posts: <span class="category-posts"></span></h5>
+  <h5 class="col-2" style="align-self: end; margin-bottom: 0"><b class="category-date">${category.updated_at}</b></h5>
+</div>
+<div id="category-second-template" class="row d-none">
+  <button class="btn btn-danger" style="margin-left: 5px">
+    <i class="fas fa-trash-alt"></i>
+  </button>
+</div>
 
 {% endblock %}
 

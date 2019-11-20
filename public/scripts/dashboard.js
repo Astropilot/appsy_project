@@ -370,6 +370,8 @@ function getPosts(category_id, postPage, postPageSize, paginatorPosts) {
 }
 
 function getPostResponses(post_id, responsePage, responsePageSize, paginatorResponses) {
+  var user = JSON.parse(localStorage.getItem('user'));
+
   $.ajax({
     type: 'GET',
     url: `/api/forum/posts/${post_id}/responses?page=${responsePage}&pageSize=${responsePageSize}`,
@@ -381,6 +383,11 @@ function getPostResponses(post_id, responsePage, responsePageSize, paginatorResp
         $('#post-title').empty();
         $('#post-title').append(data.post.title);
         document.title = `Forum - ${data.post.title}`;
+
+        if (user.id == data.post.author || user.role >= 2) {
+          $('#btn-delete-post').removeClass('d-none');
+        }
+
         data.responses.forEach(function(response) {
           var response_template = $('#response-template tr').clone().removeClass('d-none');
 
@@ -391,7 +398,18 @@ function getPostResponses(post_id, responsePage, responsePageSize, paginatorResp
           response_template.find('.response-created').text(response.created_at);
           response_template.find('.response-updated').text(response.updated_at);
 
+          if (user.id == response.author.id || user.role >= 2) {
+            response_template.find('.btn-edit-response').removeClass('d-none');
+          }
+          if ((user.id == response.author.id || user.role >= 2) && data.post.id != response.id) {
+            response_template.find('.btn-delete-response').removeClass('d-none');
+            response_template.find('.btn-delete-response').data('id', response.id);
+          }
+
           $('#response-list').append(response_template);
+        });
+        $('.btn-delete-response').on('click', function() {
+          deleteResponse(data.post.id, $(this).data('id'));
         });
         $('#responses-list-row').show();
         paginatorResponses.paginate(
@@ -497,6 +515,80 @@ function updateUserProfile(email, firstname, lastname, password, passwordcheck) 
         }).show();
       } else {
         getUserProfile();
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function createResponse(post_id, content) {
+  $('#wait-creating-response').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/api/forum/posts/${post_id}/responses`,
+    data: {content: content},
+    dataType: 'json',
+    success: function(data) {
+      $('#wait-creating-response').hide();
+      if (data.r) {
+        $('.wysiwyg .editor').html('');
+        getPostResponses(post_id, 1, responsePageSize, paginatorResponses);
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function deleteResponse(post_id, response_id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `/api/forum/posts/${post_id}/responses/${response_id}`,
+    dataType: 'json',
+    success: function(data) {
+      if (data.r) {
+        getPostResponses(post_id, 1, responsePageSize, paginatorResponses);
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function deletePost(post_id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `/api/forum/posts/${post_id}`,
+    dataType: 'json',
+    success: function(data) {
+      if (data.r) {
+        window.location.replace('/dashboard/forum');
+      } else {
         data.errors.forEach(function(error) {
           new Noty({
             theme: 'metroui',

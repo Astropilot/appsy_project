@@ -72,7 +72,7 @@ $router->post('/admin/api/users', function($request) {
             );
 
             if ($mail->sendMail())
-                return json_encode(array("r" => True, "message" => "$firstname à bien été invité !"));
+                return json_encode(array("r" => True, "message" => "$firstname " . I18n::getInstance()->translate('API_ADMIN_INVITE_SEND_SUCCESS')));
             else
                 $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_SEND_ERROR');
         }

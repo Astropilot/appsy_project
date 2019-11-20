@@ -102,20 +102,22 @@ class Forum {
         $req->execute(array('pid' => $post_id));
 
         $post = $req->fetch();
+        $post['author'] = User::getInstance()->getUser($post['author']);
         $post['content'] = html_entity_decode($post['content']);
         return ($post);
     }
 
-    public function createPost($author, $category_id, $title, $content) {
+    public function createPost($author, $category_id, $title, $content, $response=null) {
         $req = Database::getInstance()->getPDO()->prepare(
             "INSERT INTO tf_forum_post SET `author`=:uid, `title`=:title,
-            `content`=:content, `updated_at`=NOW(), `category`=:cid"
+            `content`=:content, `updated_at`=NOW(), `category`=:cid, `post_response`=:reponse"
         );
         $req->execute(array(
             'uid' => $author,
             'title' => $title,
             'content' => $content,
-            'cid' => $category_id
+            'cid' => $category_id,
+            'reponse' => $response
         ));
 
         $post_id = Database::getInstance()->getPDO()->lastInsertId();
@@ -141,5 +143,34 @@ class Forum {
             array_push($responses, $row);
         }
         return $responses;
+    }
+
+    public function getPostResponse($post_id, $response_id) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "SELECT *
+             FROM tf_forum_post
+             WHERE `id`=:rid AND `post_response`=:pid
+             LIMIT 1"
+        );
+        $req->execute(array('pid' => $post_id, 'rid' => $response_id));
+        $row = $req->fetch();
+        $row['author'] = User::getInstance()->getUser($row['author']);
+        return $row;
+    }
+
+    public function deletePostResponse($post_id, $response_id) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "DELETE FROM tf_forum_post
+             WHERE `id`=:rid AND `post_response`=:pid"
+        );
+        return $req->execute(array('pid' => $post_id, 'rid' => $response_id));
+    }
+
+    public function deletePost($post_id) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "DELETE FROM tf_forum_post
+             WHERE `id`=:pid AND `post_response` IS NULL"
+        );
+        return $req->execute(array('pid' => $post_id));
     }
 }

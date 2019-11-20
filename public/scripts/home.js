@@ -145,3 +145,40 @@ function getFAQ() {
     }
   });
 }
+
+function sendContact(name, email, message) {
+  $('#wait-contact').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/api/contact`,
+    data: {
+      name: name,
+      email: email,
+      message: message
+    },
+    dataType: 'json',
+    success: function(data) {
+      $('#wait-contact').hide();
+      if (data.r) {
+        new Noty({
+          theme: 'metroui',
+          type: 'success',
+          layout: 'centerRight',
+          timeout: 6000,
+          text: data.message
+        }).show();
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}

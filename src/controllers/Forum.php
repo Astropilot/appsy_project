@@ -82,9 +82,9 @@ $router->post('/api/forum/categories/<category_id:int>/posts', function($request
     $data = $request->getBody();
 
     if(!isset($data['title']) || empty($data['title']))
-        $errors_arr[] = "";
+        $errors_arr[] = "No title given!";
     if(!isset($data['content']) || empty($data['content']))
-        $errors_arr[] = "";
+        $errors_arr[] = "No content given!";
 
     if(count($errors_arr) === 0) {
         $title = $data['title'];
@@ -127,6 +127,74 @@ $router->get('/api/forum/posts/<post_id:int>/responses', function($request, $pos
             "responses" => $responses['data'],
             "paginator" => $responses['paginator']
         ));
+    }
+    return json_encode(array("r" => False, "errors" => $errors_arr));
+});
+
+$router->post('/api/forum/posts/<post_id:int>/responses', function($request, $post_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+
+    $errors_arr=array();
+    $data = $request->getBody();
+
+    if(!isset($data['content']) || empty($data['content']))
+        $errors_arr[] = "No content";
+
+    if(count($errors_arr) === 0) {
+        $content = $data['content'];
+
+        $post = Forum::getInstance()->getPost($post_id);
+        if ($post === null)
+            $errors_arr[] = "";
+        else {
+            $response = Forum::getInstance()->createPost($_SESSION['id'], $post['category'], $post['title'], $content, $post['id']);
+            return json_encode(array("r" => True, "response" => $response));
+        }
+    }
+    return json_encode(array("r" => False, "errors" => $errors_arr));
+});
+
+$router->delete('/api/forum/posts/<post_id:int>/responses/<response_id:int>', function($request, $post_id, $response_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+
+    $errors_arr=array();
+
+    $response = Forum::getInstance()->getPostResponse($post_id, $response_id);
+
+    if ($response === null)
+        $errors_arr[] = "Response not found!";
+    else {
+        if (intval($response['author']['id']) !== $_SESSION['id'] && intval($_SESSION['role']) < Role::$ROLES['ADMINISTRATOR'])
+            $errors_arr[] = "Access denied!";
+    }
+
+    if(count($errors_arr) === 0) {
+        Forum::getInstance()->deletePostResponse($post_id, $response_id);
+        return json_encode(array("r" => True));
+    }
+    return json_encode(array("r" => False, "errors" => $errors_arr));
+});
+
+$router->delete('/api/forum/posts/<post_id:int>', function($request, $post_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+
+    $errors_arr=array();
+
+    $post = Forum::getInstance()->getPost($post_id);
+
+    if ($post === null)
+        $errors_arr[] = "Post not found!";
+    else {
+        if (intval($post['author']['id']) !== $_SESSION['id'] && intval($_SESSION['role']) < Role::$ROLES['ADMINISTRATOR'])
+            $errors_arr[] = "Access denied!";
+    }
+
+    if(count($errors_arr) === 0) {
+        Forum::getInstance()->deletePost($post_id);
+        return json_encode(array("r" => True));
     }
     return json_encode(array("r" => False, "errors" => $errors_arr));
 });
