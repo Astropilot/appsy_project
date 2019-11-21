@@ -27,7 +27,7 @@ class Forum {
              WHERE tf_forum_post.post_response IS NULL
              GROUP BY tf_forum_category.id, tf_forum_category.title,
                 tf_forum_category.created_at, tf_forum_category.updated_at
-             ORDER BY tf_forum_category.created_at"
+             ORDER BY tf_forum_category.display_order ASC"
         );
         $req->execute();
         return ($req->fetchAll());
@@ -50,11 +50,33 @@ class Forum {
         return ($req->fetch());
     }
 
-    public function createCategory($name) {
+    public function getNewCategoryDisplayOrder() {
         $req = Database::getInstance()->getPDO()->prepare(
-            "INSERT INTO tf_forum_category SET `title`=:title, `updated_at`=NOW()"
+            "SELECT COALESCE(MAX(display_order) + 1, 0) FROM tf_forum_category"
         );
-        $req->execute(array('title' => $name));
+        $req->execute();
+        return ($req->fetchColumn());
+    }
+
+    public function updateCategoryDisplayOrder($category_id, $display_order) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "UPDATE tf_forum_category SET `display_order`=:order WHERE `id`=:id"
+        );
+        return $req->execute(array(
+            'id' => $category_id,
+            'order' => $display_order
+        ));
+    }
+
+    public function createCategory($name, $description, $display_order) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "INSERT INTO tf_forum_category SET `title`=:title, `description`=:description, `display_order`=:order, `updated_at`=NOW()"
+        );
+        $req->execute(array(
+            'title' => $name,
+            'description' => $description,
+            'order' => $display_order
+        ));
 
         $category_id = Database::getInstance()->getPDO()->lastInsertId();
         return self::getCategory($category_id);

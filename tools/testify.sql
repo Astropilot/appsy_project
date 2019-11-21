@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 19 nov. 2019 à 16:35
+-- Généré le :  jeu. 21 nov. 2019 à 15:31
 -- Version du serveur :  10.4.8-MariaDB
 -- Version de PHP :  7.3.11
 
@@ -44,16 +44,11 @@ CREATE TABLE `tf_faq` (
 CREATE TABLE `tf_forum_category` (
   `id` int(11) NOT NULL,
   `title` varchar(70) NOT NULL,
+  `description` varchar(150) NOT NULL,
+  `display_order` int(11) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Déchargement des données de la table `tf_forum_category`
---
-
-INSERT INTO `tf_forum_category` (`id`, `title`, `created_at`, `updated_at`) VALUES
-(1, 'Assistance', '2019-11-18 19:42:40', '2019-11-18 19:42:40');
 
 -- --------------------------------------------------------
 
@@ -72,14 +67,6 @@ CREATE TABLE `tf_forum_post` (
   `post_response` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Déchargement des données de la table `tf_forum_post`
---
-
-INSERT INTO `tf_forum_post` (`id`, `author`, `title`, `content`, `created_at`, `updated_at`, `category`, `post_response`) VALUES
-(1, 2, 'Petit test', '&#60;span style=&#34;font-weight: bold;&#34;&#62;Bonjour &#60;/span&#62;tout le &#60;span style=&#34;color: rgb(204, 0, 0);&#34;&#62;&#60;span style=&#34;text-decoration: underline;&#34;&#62;monde &#60;/span&#62;&#60;/span&#62;!&#60;br&#62;', '2019-11-18 20:00:34', '2019-11-18 20:00:34', 1, NULL),
-(2, 2, 'srogjdroigkdrij', '&#60;h1&#62;rgdrgdr&#60;/h1&#62;&#60;div&#62;&#60;br&#62;&#60;/div&#62;&#60;div&#62;&#60;span style=&#34;color: rgb(204, 0, 0);&#34;&#62;&#60;span style=&#34;text-decoration: underline;&#34;&#62;grrdgd&#60;/span&#62;&#60;/span&#62;&#60;br&#62;&#60;/div&#62;', '2019-11-19 15:09:48', '2019-11-19 15:09:48', 1, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -93,19 +80,6 @@ CREATE TABLE `tf_message` (
   `message` text NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Déchargement des données de la table `tf_message`
---
-
-INSERT INTO `tf_message` (`id`, `author`, `recipient`, `message`, `created_at`) VALUES
-(1, 2, 3, 'Yep ca va merci ;-)', '2019-11-08 13:50:54'),
-(2, 2, 3, 'Hey petit test !', '2019-11-08 15:52:29'),
-(3, 3, 2, 'Yo', '2019-11-08 16:07:28'),
-(4, 2, 3, 'Ok ça m&#39;a l&#39;air de fonctionner :D', '2019-11-08 16:07:58'),
-(5, 3, 2, 'Ah nice', '2019-11-08 16:08:34'),
-(6, 2, 3, 'Salut !', '2019-11-08 16:10:18'),
-(7, 3, 2, 'Hey comment ca va ?', '2019-11-08 16:10:38');
 
 -- --------------------------------------------------------
 
@@ -144,8 +118,9 @@ CREATE TABLE `tf_user` (
 --
 
 INSERT INTO `tf_user` (`id`, `email`, `password`, `lastname`, `firstname`, `role`, `banned`) VALUES
-(2, 'demo@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'John', 'Doe', 2, 0),
-(3, 'demo2@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Alice', 'O\'connel', 0, 0);
+(2, 'demo@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Doe', 'John', 2, 0),
+(3, 'demo2@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Tessier', 'Alice', 1, 0),
+(4, 'demo3@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Lousier', 'Ben', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -256,7 +231,7 @@ ALTER TABLE `tf_ticket`
 -- AUTO_INCREMENT pour la table `tf_user`
 --
 ALTER TABLE `tf_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `tf_user_invited`

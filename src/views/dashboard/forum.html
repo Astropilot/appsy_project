@@ -26,30 +26,6 @@
   </div>
 </div>
 
-<div id="modal-new-category" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2>{{ translate 'DASHBOARD_FORUM_MODAL_NEWCATEGORY_TITLE' }}</h2>
-    </div>
-    <div class="modal-body">
-      <div class="row justify-content-center" style="margin-top: 30px;">
-        <form class="form">
-          <div class="row">
-            <label class="col-4 col-form-label" for="category-name">{{ translate 'DASHBOARD_FORUM_MODAL_NAME' }} <span style="color: red">*</span></label><br>
-            <input type="text" class="form-field col-8" name="category-name" id="category-name" placeholder="{{ translate 'DASHBOARD_FORUM_MODAL_NAME_EXAMPLE' }}" required>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div class="modal-footer d-flex justify-content-end">
-      <button type="button" class="btn btn-success btn-sm" id="btn-create-category">
-        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_FORUM_MODAL_ADDBTN' }} <i id="wait-creating-category" class="fas fa-circle-notch fa-spin" style="display: none"></i>
-      </button>
-    </div>
-  </div>
-</div>
-
 <div id="category-first-template" class="row d-none">
   <h2 class="col-3"><b class="category-title"></b></h2>
   <h5 class="offset-5 col-2" style="align-self: end; margin-bottom: 0">Posts: <span class="category-posts"></span></h5>
@@ -69,18 +45,9 @@
 
 <script type="text/javascript">
   $(function() {
-    var modal = $('#modal-new-category');
-
-    var user = JSON.parse(localStorage.getItem('user'));
 
     getCategories();
 
-    btnNewCategory.on("click", function() {
-      modal.showModal();
-    });
-    $('#btn-create-category').on('click', function() {
-      createCategory();
-    });
   });
 </script>
 

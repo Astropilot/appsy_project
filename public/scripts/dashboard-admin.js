@@ -104,3 +104,58 @@ function inviteMember(email, firstname, lastname, role, lang) {
     }
   });
 }
+
+function getCategories() {
+  $.ajax({
+    type: 'GET',
+    url: `/api/forum/categories`,
+    dataType: 'json',
+    success: function(data) {
+      $('#noforums').hide();
+
+      $('#forums').empty();
+      if (data.categories.length == 0) {
+        $('#noforums').show();
+        return;
+      }
+      data.categories.forEach(function(category) {
+        var first_cat_template = $('#category-first-template').clone().removeClass('d-none');
+        var second_cat_template = $('#category-second-template').clone().removeClass('d-none');
+
+        first_cat_template.find('.category-title').text(category.title);
+        first_cat_template.find('.category-posts').text(category.count_posts);
+        first_cat_template.find('.category-date').text(category.updated_at);
+
+        second_cat_template.find('button').data('id', category.id).on('click', function() {
+          deleteCategory($(this).data('id'));
+        });
+
+        $('#forums').append(first_cat_template);
+        $('#forums').append('<hr>');
+        $('#forums').append(second_cat_template);
+      });
+    },
+    complete: function() {
+      $('#forums-wait').hide();
+    }
+  });
+}
+
+function createCategory(category_name, category_description) {
+  $('#wait-creating-category').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/api/forum/categories`,
+    data: {name: category_name, description: category_description},
+    dataType: 'json',
+    success: function(data) {
+      $('#modal-new-category').closeModal();
+      $('#category-name').val('');
+      getCategories();
+    },
+    complete: function() {
+      $('#wait-creating-category').hide();
+    }
+  });
+}

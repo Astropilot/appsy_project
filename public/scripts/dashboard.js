@@ -230,26 +230,6 @@ function getCategories() {
   });
 }
 
-function createCategory() {
-  var category_name = $('#category-name').val();
-  $('#wait-creating-category').show();
-
-  $.ajax({
-    type: 'POST',
-    url: `/api/forum/categories`,
-    data: {name: category_name},
-    dataType: 'json',
-    success: function(data) {
-      $('#modal-new-category').closeModal();
-      $('#category-name').val('');
-      getCategories();
-    },
-    complete: function() {
-      $('#wait-creating-category').hide();
-    }
-  });
-}
-
 function getPosts(category_id, postPage, postPageSize, paginatorPosts) {
   $.ajax({
     type: 'GET',

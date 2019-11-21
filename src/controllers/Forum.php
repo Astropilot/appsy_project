@@ -32,14 +32,19 @@ $router->post('/api/forum/categories', function($request) {
 
     if(!isset($data['name']) || empty($data['name']))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NO_NAME_GIVEN');
+    if(!isset($data['description']) || empty($data['description']))
+        $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NO_DESCRIPTION_GIVEN');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
     $name = $data['name'];
+    $description = $data['description'];
 
-    $category = Forum::getInstance()->createCategory($name);
+    $display_order = Forum::getInstance()->getNewCategoryDisplayOrder();
+
+    $category = Forum::getInstance()->createCategory($name, $description, $display_order);
     if($category !== null) {
         return new Response(
             json_encode(array("category" => $category)),
@@ -48,6 +53,22 @@ $router->post('/api/forum/categories', function($request) {
     } else {
         return API::makeResponseError("An unexcepted error occured while creating category!", 500);
     }
+});
+
+$router->post('/api/forum/categories/<category_id:int>/reorder', function($request) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+    Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
+
+    $errors_arr=array();
+    $data = $request->getBody();
+
+    if(!isset($data['direction']) || empty($data['direction']))
+        return API::makeResponseError("No direction given!", 400);
+
+    $direction = $data['direction'];
+
+    return API::makeResponseError("An unexcepted error occured while reordering category!", 500);
 });
 
 $router->get('/api/forum/categories/<category_id:int>/posts', function($request, $category_id) {
