@@ -66,7 +66,7 @@ $router->get('/api/users/invite', function($request) {
     $email = $data['email'];
 
     $invite = UserInvite::getInstance()->getValidInvite($token, $email);
-    if($invite === null) {
+    if(!$invite) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_INVITE_NOT_FOUND'), 404);
     }
 
@@ -83,7 +83,7 @@ $router->get('/api/users/<userid:int>', function($request, $user_id) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOACCESS'), 403);
 
     $user = User::getInstance()->getUser($user_id);
-    if($user === null) {
+    if(!$user) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
     }
     return new Response(
@@ -120,7 +120,7 @@ $router->put('/api/users/<userid:int>', function($request, $user_id) {
     }
 
     $user = User::getInstance()->getUser($user_id, true);
-    if($user === null) {
+    if(!$user) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
     }
 
@@ -209,7 +209,7 @@ $router->post('/api/users', function($request) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_CREATE_PASSWORD_NOT_MATCH'), 400);
 
     $invite = UserInvite::getInstance()->getValidInvite($token, $email);
-    if($invite === null)
+    if(!$invite)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_CREATE_INVITE_EXPIRED'), 404);
 
     $res = User::getInstance()->createUser(

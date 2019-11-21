@@ -72,7 +72,21 @@
     </div>
   </div>
   <div id="faq-tab" class="row tabcontent">
-    FAQ Tab
+    <div class="row">
+      <div class="offset-10 col-2">
+        <button type="button" class="btn btn-success btn-sm" id="btn-new-faq">
+          <i class="fas fa-plus"></i> Nouvelle question
+        </button>
+      </div>
+    </div>
+    <div class="row justify-content-center" id="faq-wait">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+    <div class="row justify-content-center" id="nofaq" style="display: none">
+      <h3>{{ translate 'HOME_FAQ_NOFAQ' }}</h3>
+    </div>
+    <div id="faq-questions">
+    </div>
   </div>
 </div>
 
@@ -197,15 +211,58 @@
   <h5 class="col-2" style="align-self: end; margin-bottom: 0"><b class="category-date">${category.updated_at}</b></h5>
 </div>
 <div id="category-second-template" class="row d-none">
-  <button class="btn btn-danger" style="margin-left: auto; margin-top: auto; margin-bottom: auto;">
+  <div class="col-5 category-description"></div>
+  <button class="btn btn-danger btn-delete-category" style="margin-left: auto; margin-top: auto; margin-bottom: auto;">
     <i class="fas fa-trash-alt"></i>
   </button>
   <div class="d-flex" style="flex-direction: column;">
-    <button class="btn btn-primary">
+    <button class="btn btn-primary btn-move-up">
       <i class="fas fa-chevron-up"></i>
     </button>
-    <button class="btn btn-primary">
+    <button class="btn btn-primary btn-move-down">
       <i class="fas fa-chevron-down"></i>
+    </button>
+  </div>
+</div>
+
+<div id="modal-new-faq" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_FORUM_MODAL_NEWFAQ_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="faq-question">Question <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="faq-question" id="faq-question" required>
+          </div>
+          <div class="row">
+            <label class="col-4 col-form-label" for="faq-answer">Réponse <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="faq-answer" id="faq-answer" required>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm" id="btn-create-faq">
+        <i class="fas fa-plus"></i> Ajouter <i id="wait-creating-faq" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="faq-template" class="d-none" style="margin-bottom: 5px">
+  <div class="row justify-content-center">
+    <h3 style="margin-bottom: 0"></h3>
+  </div>
+  <div class="row justify-content-center">
+    <p style="margin-top: 5px"></p>
+  </div>
+  <div class="row justify-content-center">
+    <button class="btn btn-danger btn-delete-faq">
+      <i class="fas fa-trash-alt"></i> Supprimer la question
     </button>
   </div>
 </div>
@@ -222,6 +279,7 @@
   $(function() {
     var modalNewMember = $('#modal-new-member');
     var modalNewCategory = $('#modal-new-category');
+    var modalNewFaq = $('#modal-new-faq');
 
     $("#member-search").bind("input", function () {
       var that = this;
@@ -283,8 +341,17 @@
       createCategory($('#category-name').val(), $('#category-description').val());
     });
 
+    $('#btn-new-faq').on("click", function() {
+      modalNewFaq.showModal();
+    });
+
+    $('#btn-create-faq').on('click', function() {
+      createFAQ($('#faq-question').val(), $('#faq-answer').val());
+    });
+
     searchMember($('#member-search').val());
     getCategories();
+    getFAQ();
 
   });
 </script>

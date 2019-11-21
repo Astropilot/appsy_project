@@ -45,7 +45,7 @@ $router->post('/api/forum/categories', function($request) {
     $display_order = Forum::getInstance()->getNewCategoryDisplayOrder();
 
     $category = Forum::getInstance()->createCategory($name, $description, $display_order);
-    if($category !== null) {
+    if($category) {
         return new Response(
             json_encode(array("category" => $category)),
             201
@@ -55,7 +55,7 @@ $router->post('/api/forum/categories', function($request) {
     }
 });
 
-$router->post('/api/forum/categories/<category_id:int>/reorder', function($request) {
+$router->post('/api/forum/categories/<category_id:int>/reorder', function($request, $category_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
@@ -68,7 +68,45 @@ $router->post('/api/forum/categories/<category_id:int>/reorder', function($reque
 
     $direction = $data['direction'];
 
-    return API::makeResponseError("An unexcepted error occured while reordering category!", 500);
+    $category = Forum::getInstance()->getCategory($category_id);
+    if (!$category) {
+        return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
+    }
+
+    $order_sibling = Forum::getInstance()->getSiblingCategoryOrder($category['display_order'], $direction);
+
+    $category_sibling = Forum::getInstance()->getCategoryFromDisplayOrder($order_sibling);
+
+    if ($category_sibling) {
+        if(!Forum::getInstance()->updateCategoryDisplayOrder($category_sibling['id'], $category['display_order']))
+            return API::makeResponseError("An unexcepted error occured while reordering category!", 500);
+    } else
+        $order_sibling = $category['display_order'];
+
+    if(!Forum::getInstance()->updateCategoryDisplayOrder($category['id'], $order_sibling))
+        return API::makeResponseError("An unexcepted error occured while reordering category!", 500);
+
+    return new Response('', 204);
+});
+
+$router->delete('/api/forum/categories/<category_id:int>', function($request, $category_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+    Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
+
+    $category = Forum::getInstance()->getCategory($category_id);
+    if (!$category) {
+        return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
+    }
+
+    if (Forum::getInstance()->deleteCategory($category_id)) {
+        return new Response(
+            '',
+            204
+        );
+    } else {
+        return API::makeResponseError("An unexcepted error occured while deleting category!", 500);
+    }
 });
 
 $router->get('/api/forum/categories/<category_id:int>/posts', function($request, $category_id) {
@@ -88,7 +126,7 @@ $router->get('/api/forum/categories/<category_id:int>/posts', function($request,
     }
 
     $category = Forum::getInstance()->getCategory($category_id);
-    if ($category === null) {
+    if (!$category) {
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
     }
 
@@ -127,7 +165,7 @@ $router->post('/api/forum/categories/<category_id:int>/posts', function($request
     $content = $data['content'];
 
     $post = Forum::getInstance()->createPost($_SESSION['id'], $category_id, $title, $content);
-    if($post !== null) {
+    if($post) {
         return new Response(
             json_encode(array("post" => $post)),
             201
@@ -154,7 +192,7 @@ $router->get('/api/forum/posts/<post_id:int>/responses', function($request, $pos
     }
 
     $post = Forum::getInstance()->getPost($post_id);
-    if ($post === null) {
+    if (!$post) {
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
     }
 
@@ -190,12 +228,12 @@ $router->post('/api/forum/posts/<post_id:int>/responses', function($request, $po
     $content = $data['content'];
 
     $post = Forum::getInstance()->getPost($post_id);
-    if ($post === null) {
+    if (!$post) {
         return API::makeResponseError("Post not found!", 404);
     }
 
     $response = Forum::getInstance()->createPost($_SESSION['id'], $post['category'], $post['title'], $content, $post['id']);
-    if($response !== null) {
+    if($response) {
         return new Response(
             json_encode(array("response" => $response)),
             201
@@ -211,7 +249,7 @@ $router->delete('/api/forum/posts/<post_id:int>/responses/<response_id:int>', fu
 
     $response = Forum::getInstance()->getPostResponse($post_id, $response_id);
 
-    if ($response === null) {
+    if (!$response) {
         return API::makeResponseError("Reponse not found!", 404);
     }
 
@@ -235,7 +273,7 @@ $router->delete('/api/forum/posts/<post_id:int>', function($request, $post_id) {
 
     $post = Forum::getInstance()->getPost($post_id);
 
-    if ($post === null)
+    if (!$post)
         return API::makeResponseError("Post not found!", 404);
 
     if (intval($post['author']['id']) !== $_SESSION['id'] && intval($_SESSION['role']) < Role::$ROLES['ADMINISTRATOR'])

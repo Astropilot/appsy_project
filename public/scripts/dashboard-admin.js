@@ -126,8 +126,15 @@ function getCategories() {
         first_cat_template.find('.category-posts').text(category.count_posts);
         first_cat_template.find('.category-date').text(category.updated_at);
 
-        second_cat_template.find('button').data('id', category.id).on('click', function() {
+        second_cat_template.find('.category-description').text(category.description);
+        second_cat_template.find('.btn-delete-category').data('id', category.id).on('click', function() {
           deleteCategory($(this).data('id'));
+        });
+        second_cat_template.find('.btn-move-up').data('id', category.id).on('click', function() {
+          moveCategory($(this).data('id'),'up');
+        });
+        second_cat_template.find('.btn-move-down').data('id', category.id).on('click', function() {
+          moveCategory($(this).data('id'), 'down');
         });
 
         $('#forums').append(first_cat_template);
@@ -156,6 +163,92 @@ function createCategory(category_name, category_description) {
     },
     complete: function() {
       $('#wait-creating-category').hide();
+    }
+  });
+}
+
+function moveCategory(category_id, direction) {
+  $.ajax({
+    type: 'POST',
+    url: `/api/forum/categories/${category_id}/reorder`,
+    data: {direction: direction},
+    dataType: 'json',
+    success: function() {
+      getCategories();
+    }
+  });
+}
+
+function deleteCategory(category_id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `/api/forum/categories/${category_id}`,
+    dataType: 'json',
+    success: function() {
+      getCategories();
+    }
+  });
+}
+
+function getFAQ() {
+  $('#nofaq').hide();
+
+  $.ajax({
+    type: 'GET',
+    url: '/api/faq/questions',
+    dataType: 'json',
+    success: function(data) {
+      $('#faq-questions').empty();
+      if (data.faq.length == 0) {
+        $('#nofaq').show();
+        return;
+      }
+      data.faq.forEach(function(faq) {
+        var faq_template = $('#faq-template').clone().removeClass('d-none');
+
+        faq_template.find('h3').text(faq.question);
+        faq_template.find('p').text(faq.answer);
+
+        faq_template.find('.btn-delete-faq').data('id', faq.id).on('click', function() {
+          deleteFAQ($(this).data('id'));
+        });
+
+        $('#faq-questions').append(
+          faq_template
+        );
+      });
+    },
+    complete: function() {
+      $('#faq-wait').hide();
+    }
+  });
+}
+
+function createFAQ(question, answer) {
+  $('#wait-creating-faq').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/api/faq/questions`,
+    data: {question: question, answer: answer},
+    dataType: 'json',
+    success: function(data) {
+      $('#modal-new-faq').closeModal();
+      getFAQ();
+    },
+    complete: function() {
+      $('#wait-creating-faq').hide();
+    }
+  });
+}
+
+function deleteFAQ(faq_id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `/api/faq/questions/${faq_id}`,
+    dataType: 'json',
+    success: function() {
+      getFAQ();
     }
   });
 }

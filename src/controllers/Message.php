@@ -33,7 +33,7 @@ $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
     }
 
     $user = User::getInstance()->getUser($user_id);
-    if($user === null)
+    if(!$user)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND'), 404);
 
     $page = $data['page'];
@@ -60,11 +60,11 @@ $router->get('/api/users/<user_id:int>/<contact_id:int>/messages', function($req
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_NOACCESS'), 403);
 
     $user = User::getInstance()->getUser($user_id);
-    if($user === null)
+    if(!$user)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND'), 404);
 
     $contact = User::getInstance()->getUser($contact_id);
-    if ($contact === null)
+    if (!$contact)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_CONTACT_NOT_FOUND'), 404);
 
     $messages = Message::getInstance()->getUserContactMessages($user, $contact);
@@ -84,11 +84,11 @@ $router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($re
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_NOACCESS'), 403);
 
     $user = User::getInstance()->getUser($user_id);
-    if($user === null)
+    if(!$user)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND'), 404);
 
     $contact = User::getInstance()->getUser($contact_id);
-    if ($contact === null)
+    if (!$contact)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_CONTACT_NOT_FOUND'), 404);
 
     if(!isset($data['message']) || empty($data['message']))
@@ -97,7 +97,7 @@ $router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($re
     $message = $data['message'];
 
     $message = Message::getInstance()->createMessage($user, $contact, $message);
-    if($message !== null) {
+    if($message) {
         return new Response(
             json_encode(array("message" => $message)),
             201

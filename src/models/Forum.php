@@ -58,6 +58,20 @@ class Forum {
         return ($req->fetchColumn());
     }
 
+    public function getSiblingCategoryOrder($order, $direction) {
+        if ($direction === "up")
+            $sql = "SELECT COALESCE(MAX(display_order), -1) FROM tf_forum_category WHERE `display_order`<:order";
+        else
+            $sql = "SELECT COALESCE(MIN(display_order), -1) FROM tf_forum_category WHERE `display_order`>:order";
+        $req = Database::getInstance()->getPDO()->prepare(
+            $sql
+        );
+        $req->execute(array(
+            'order' => $order
+        ));
+        return ($req->fetchColumn());
+    }
+
     public function updateCategoryDisplayOrder($category_id, $display_order) {
         $req = Database::getInstance()->getPDO()->prepare(
             "UPDATE tf_forum_category SET `display_order`=:order WHERE `id`=:id"
@@ -66,6 +80,19 @@ class Forum {
             'id' => $category_id,
             'order' => $display_order
         ));
+    }
+
+    public function getCategoryFromDisplayOrder($display_order) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "SELECT *
+             FROM tf_forum_category
+             WHERE `display_order`=:order
+             LIMIT 1"
+        );
+        $req->execute(array(
+            'order'=> $display_order
+        ));
+        return ($req->fetch());
     }
 
     public function createCategory($name, $description, $display_order) {
@@ -80,6 +107,14 @@ class Forum {
 
         $category_id = Database::getInstance()->getPDO()->lastInsertId();
         return self::getCategory($category_id);
+    }
+
+    public function deleteCategory($category_id) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "DELETE FROM tf_forum_category
+             WHERE `id`=:cid"
+        );
+        return $req->execute(array('cid' => $category_id));
     }
 
     public function getPosts($category_id) {

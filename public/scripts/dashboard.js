@@ -217,6 +217,7 @@ function getCategories() {
         first_cat_template.find('.category-posts').text(category.count_posts);
         first_cat_template.find('.category-date').text(category.updated_at);
 
+        second_cat_template.find('.category-description').text(category.description);
         second_cat_template.find('a').attr('href', `/dashboard/forum/category/${category.id}`);
 
         $('#forums').append(first_cat_template);

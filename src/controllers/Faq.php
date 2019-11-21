@@ -41,7 +41,7 @@ $router->post('/api/faq/questions', function($request) {
     $answer = $data['answer'];
 
     $question = Faq::getInstance()->createQuestion($question, $answer);
-    if($question !== null) {
+    if($question) {
         return new Response(
             json_encode(array("question" => $question)),
             201

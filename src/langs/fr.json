@@ -106,7 +106,7 @@
     "DASHBOARD_USERCHAT_SENDBTN": "Envoyer",
 
     "DASHBOARD_FORUM_TITLE": "Forum",
-    "DASHBOARD_FORUM_ADDCATEGORYBTN": "Ajouter une catégorie",
+    "DASHBOARD_FORUM_ADDCATEGORYBTN": "Nouvelle catégorie",
     "DASHBOARD_FORUM_NOCATEGORY": "Il n'y a pas encore de catégories disponible !",
     "DASHBOARD_FORUM_GOPOSTSBTN": "Accéder aux posts",
     "DASHBOARD_FORUM_MODAL_NEWCATEGORY_TITLE": "Nouvelle catégorie",

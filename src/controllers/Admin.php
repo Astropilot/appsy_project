@@ -93,7 +93,7 @@ $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
 
     $user = User::getInstance()->getUser($user_id, true);
 
-    if($user === null) {
+    if(!$user) {
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_USER_NOT_FOUND'), 404);
     } else {
         $email = isset($data['email']) ? $data['email'] : $user['email'];
