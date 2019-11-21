@@ -12,4 +12,24 @@ $(function() {
 
     $(this).attr('href', '/' + lang + url);
   });
+
+  $(document).ajaxError(function(event, request) {
+    handleErrors(request);
+  });
 });
+
+function handleErrors(xhrReponse) {
+  if (xhrReponse.responseText != '') {
+    var data = $.parseJSON(xhrReponse.responseText);
+
+    data.errors.forEach(function(error) {
+      new Noty({
+        theme: 'metroui',
+        type: 'error',
+        layout: 'centerRight',
+        timeout: 4000,
+        text: error
+      }).show();
+    });
+  }
+}

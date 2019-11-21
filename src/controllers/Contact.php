@@ -22,33 +22,38 @@ $router->post('/api/contact', function($request) {
     if(!isset($data['message']) || empty($data['message']))
         $errors_arr[] = "No message given!";
 
-    if(count($errors_arr) === 0) {
-        $name = $data['name'];
-        $email = $data['email'];
-        $message = $data['message'];
-
-        $context = array(
-            'user' => $name,
-            'message' => $message,
-            'email' => $email
-        );
-
-        $mail = new Mail(
-            array(
-                'smtp_host' => getenv('SMTP_HOST'),
-                'username' => getenv('MAIL_USERNAME'),
-                'password' => getenv('MAIL_PASSWORD'),
-                'name' => 'Testify'
-            ),
-            getenv('MAIL_USERNAME'),
-            I18n::getInstance()->translate('API_CONTACT_MAIL_TITLE', 'fr'),
-            Response::fromView('mails/contact.html', $context, 'fr')
-        );
-
-        if ($mail->sendMail())
-            return json_encode(array("r" => True, "message" => "Votre message à bien été envoyé !"));
-        else
-            $errors_arr[] = "Une erreur est survenue pendant l'envoi de votre message";
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
     }
-    return json_encode(array("r" => False, "errors" => $errors_arr));
+
+    $name = $data['name'];
+    $email = $data['email'];
+    $message = $data['message'];
+
+    $context = array(
+        'user' => $name,
+        'message' => $message,
+        'email' => $email
+    );
+
+    $mail = new Mail(
+        array(
+            'smtp_host' => getenv('SMTP_HOST'),
+            'username' => getenv('MAIL_USERNAME'),
+            'password' => getenv('MAIL_PASSWORD'),
+            'name' => 'Testify'
+        ),
+        getenv('MAIL_USERNAME'),
+        I18n::getInstance()->translate('API_CONTACT_MAIL_TITLE', 'fr'),
+        Response::fromView('mails/contact.html', $context, 'fr')->getContent()
+    );
+
+    if ($mail->sendMail()) {
+        return new Response(
+            json_encode(array("message" => "Votre message à bien été envoyé !")),
+            201
+        );
+    } else {
+        return API::makeResponseError("Une erreur est survenue pendant l'envoi de votre message", 500);
+    }
 });

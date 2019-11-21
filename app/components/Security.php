@@ -9,7 +9,12 @@ class Security {
     }
 
     public static function protect(string $string) {
-        if (ctype_digit($string))
+        $string_sanitized = $string;
+        $pos = strpos($string, "-");
+        if ($pos !== false) {
+            $string_sanitized = substr_replace($string, "", $pos, 1);
+        }
+        if (ctype_digit($string_sanitized))
             $string = intval($string);
         return $string;
     }
@@ -22,7 +27,8 @@ class Security {
 
     public static function checkAPIConnected() {
       if (!self::isLogged()) {
-        echo json_encode(array("r" => False, "errors" => array("Vous devez être connecté !")));
+        http_response_code(401);
+        echo json_encode(array("errors" => array("Vous devez être connecté !")));
         exit;
       }
     }

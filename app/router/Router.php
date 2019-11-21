@@ -86,7 +86,12 @@ class Router {
                 foreach ($matches as $value) {
                     array_push($values, $value);
                 }
-                echo call_user_func_array($method['method'], $values);
+                $response = call_user_func_array($method['method'], $values);
+                if (!($response instanceof \Testify\Router\Response))
+                    throw new \Exception("The controller response need to be a Response object!");
+
+                http_response_code($response->getHttpCode());
+                echo $response->getContent();
                 return;
             }
         }

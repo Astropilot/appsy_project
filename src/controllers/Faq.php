@@ -1,6 +1,7 @@
 <?php
 
 use Testify\Router\Router;
+use Testify\Router\Response;
 use Testify\Model\Faq;
 use Testify\Model\Role;
 use Testify\Component\Security;
@@ -14,7 +15,9 @@ $router->get('/api/faq/questions', function($request) {
     API::setAPIHeaders();
 
     $faq = Faq::getInstance()->getFaq();
-    return json_encode(array("r" => True, "faq" => $faq));
+    return new Response(
+        json_encode(array("faq" => $faq))
+    );
 });
 
 $router->post('/api/faq/questions', function($request) {
@@ -30,14 +33,22 @@ $router->post('/api/faq/questions', function($request) {
     if(!isset($data['answer']) || empty($data['answer']))
         $errors_arr[] = I18n::getInstance()->translate('API_FAQ_NO_ANSWER_GIVEN');
 
-    if(count($errors_arr) === 0) {
-        $question = $data['question'];
-        $answer = $data['answer'];
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
+    }
 
-        $question = Faq::getInstance()->createQuestion($question, $answer);
-        return json_encode(array("r" => True, "question" => $question));
-    } else
-        return json_encode(array("r" => False, "errors" => $errors_arr));
+    $question = $data['question'];
+    $answer = $data['answer'];
+
+    $question = Faq::getInstance()->createQuestion($question, $answer);
+    if($question !== null) {
+        return new Response(
+            json_encode(array("question" => $question)),
+            201
+        );
+    } else {
+        return API::makeResponseError("An unexcepted error occured while creating question!", 500);
+    }
 });
 
 $router->delete('/api/faq/questions/<question_id:int>', function($request, $question_id) {
@@ -45,10 +56,12 @@ $router->delete('/api/faq/questions/<question_id:int>', function($request, $ques
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
-    $errors_arr=array();
-
-    if (Faq::getInstance()->deleteQuestion($question_id))
-        return json_encode(array("r" => True));
-    else
-        return json_encode(array("r" => False, "errors" => $errors_arr));
+    if (Faq::getInstance()->deleteQuestion($question_id)) {
+        return new Response(
+            '',
+            204
+        );
+    } else {
+        return API::makeResponseError("An unexcepted error occured while deleting question!", 500);
+    }
 });

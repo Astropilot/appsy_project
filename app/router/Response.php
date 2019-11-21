@@ -6,7 +6,23 @@ use Testify\Component\I18n;
 
 class Response {
 
-    public static function fromView(string $file, $context=NULL, $setLang=NULL) : string {
+    private $content;
+    private $httpCode;
+
+    public function __construct(string $content, int $httpCode=200) {
+        $this->content = $content;
+        $this->httpCode = $httpCode;
+    }
+
+    public function getHttpCode() {
+        return $this->httpCode;
+    }
+
+    public function getContent() {
+        return $this->content;
+    }
+
+    public static function fromView(string $file, $context=NULL, $setLang=NULL, int $httpCode=200) : Response {
         $path = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR;
         $file_contents = file_get_contents($path . $file);
         $file_extends_contents = null;
@@ -29,7 +45,7 @@ class Response {
                 $context,
                 $lang
             );
-            return self::computeContext($file_contents, $context);
+            return new Response(self::computeContext($file_contents, $context), $httpCode);
         } else {
             $translation_not_cached = I18n::getInstance()->notCached;
             $path_cache = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
@@ -45,14 +61,14 @@ class Response {
 
             if (file_exists($cache_file) && !$translation_not_cached) {
                 I18n::getInstance()->setLangToContext($context, $lang);
-                return self::computeContext(file_get_contents($cache_file), $context);
+                return new Response(self::computeContext(file_get_contents($cache_file), $context), $httpCode);
             } elseif (file_exists($cache_file) && $translation_not_cached) {
                 $file_extends_contents = I18n::getInstance()->computeTranslations(
                     file_get_contents($cache_untranslated_file),
                     $context
                 );
                 file_put_contents($cache_file, $file_extends_contents, LOCK_EX);
-                return self::computeContext($file_extends_contents, $context);
+                return new Response(self::computeContext($file_extends_contents, $context), $httpCode);
             }
 
             $file_blocks = self::getBlocks($file_contents);
@@ -94,7 +110,7 @@ class Response {
             file_put_contents($cache_untranslated_file, $file_extends_contents, LOCK_EX);
             $file_extends_contents = I18n::getInstance()->computeTranslations($file_extends_contents, $context);
             file_put_contents($cache_file, $file_extends_contents, LOCK_EX);
-            return self::computeContext($file_extends_contents, $context);
+            return new Response(self::computeContext($file_extends_contents, $context), $httpCode);
         }
     }
 

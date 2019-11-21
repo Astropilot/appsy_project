@@ -20,24 +20,10 @@ function connexion(email, password) {
     data: {email: email, password: password},
     dataType: 'json',
     success: function(data) {
-      $('#wait-login').hide();
-      if (data.r) {
-        localStorage.setItem('user',  JSON.stringify(data.user));
-        window.location.replace('/dashboard');
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
+      localStorage.setItem('user',  JSON.stringify(data.user));
+      window.location.replace('/dashboard');
     },
-    error: function() {
-      console.log('User login request failed.');
+    complete: function() {
       $('#wait-login').hide();
     }
   });
@@ -48,23 +34,13 @@ function getInvite(token, email) {
     type: 'GET',
     url: `/api/users/invite?token=${token}&email=${email}`,
     success: function(data) {
+      $('#member-email').val(data.invite.email);
+      $('#member-firstname').val(data.invite.firstname);
+      $('#member-lastname').val(data.invite.lastname);
+      $('#invite-form').show();
+    },
+    complete: function() {
       $('#invite-wait').hide();
-      if (data.r) {
-        $('#member-email').val(data.invite.email);
-        $('#member-firstname').val(data.invite.firstname);
-        $('#member-lastname').val(data.invite.lastname);
-        $('#invite-form').show();
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
     }
   });
 }
@@ -85,26 +61,16 @@ function registerMember(token, email, firstname, lastname, password, password_ch
     },
     dataType: 'json',
     success: function(data) {
+      new Noty({
+        theme: 'metroui',
+        type: 'success',
+        layout: 'centerRight',
+        timeout: 6000,
+        text: data.message
+      }).show();
+    },
+    complete: function() {
       $('#wait-register').hide();
-      if (data.r) {
-        new Noty({
-          theme: 'metroui',
-          type: 'success',
-          layout: 'centerRight',
-          timeout: 6000,
-          text: data.message
-        }).show();
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
     }
   });
 }
@@ -115,33 +81,23 @@ function getFAQ() {
     url: '/api/faq/questions',
     dataType: 'json',
     success: function(data) {
-      $('#faq-wait').hide();
-      if (data.r) {
-        if (data.faq.length == 0) {
-          $('#nofaq').show();
-          return;
-        }
-        data.faq.forEach(function(faq) {
-          var faq_template = $('#faq-template').clone().removeClass('d-none');
-
-          faq_template.find('h3').text(faq.question);
-          faq_template.find('p').text(faq.answer);
-
-          $('#faq-questions').append(
-            faq_template
-          );
-        });
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
+      if (data.faq.length == 0) {
+        $('#nofaq').show();
+        return;
       }
+      data.faq.forEach(function(faq) {
+        var faq_template = $('#faq-template').clone().removeClass('d-none');
+
+        faq_template.find('h3').text(faq.question);
+        faq_template.find('p').text(faq.answer);
+
+        $('#faq-questions').append(
+          faq_template
+        );
+      });
+    },
+    complete: function() {
+      $('#faq-wait').hide();
     }
   });
 }
@@ -159,26 +115,16 @@ function sendContact(name, email, message) {
     },
     dataType: 'json',
     success: function(data) {
+      new Noty({
+        theme: 'metroui',
+        type: 'success',
+        layout: 'centerRight',
+        timeout: 6000,
+        text: data.message
+      }).show();
+    },
+    complete: function() {
       $('#wait-contact').hide();
-      if (data.r) {
-        new Noty({
-          theme: 'metroui',
-          type: 'success',
-          layout: 'centerRight',
-          timeout: 6000,
-          text: data.message
-        }).show();
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
     }
   });
 }

@@ -8,8 +8,8 @@ class Role {
 
     public static function checkPermissions($role) {
         if (intval($_SESSION['role']) < $role) {
+            http_response_code(403);
             echo json_encode(array(
-                "r" => False,
                 "errors" => array("Vous n'avez pas accès à ce module")
             ));
             exit;

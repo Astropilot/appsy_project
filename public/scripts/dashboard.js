@@ -20,12 +20,11 @@ function checkIsLogged() {
       url: '/api/users/' + user.id,
       dataType: 'json',
       success: function(data) {
-        if (data.r) {
-          localStorage.setItem('user',  JSON.stringify(data.user));
-          handleSideNavigation();
-        } else {
-          window.location.replace('/connexion');
-        }
+        localStorage.setItem('user',  JSON.stringify(data.user));
+        handleSideNavigation();
+      },
+      error: function() {
+        window.location.replace('/connexion');
       }
     });
   }
@@ -55,18 +54,8 @@ function disconnect() {
     url: '/api/users/logoff',
     dataType: 'json',
     success: function(data) {
-      if (data.r) {
-        localStorage.clear();
-        window.location.replace('/connexion');
-      } else {
-        new Noty({
-          theme: 'metroui',
-          type: 'error',
-          layout: 'centerRight',
-          timeout: 4000,
-          text: data.errors[0]
-        }).show();
-      }
+      localStorage.clear();
+      window.location.replace('/connexion');
     }
   });
 }
@@ -79,40 +68,30 @@ function getUserContacts(contactPage, contactPageSize, paginatorContacts) {
     url: '/api/users/' + user.id + '/contacts?page=' + contactPage + '&pageSize=' + contactPageSize,
     dataType: 'json',
     success: function(data) {
-      $('#contacts-wait').hide();
-      if (data.r) {
-        $('#contacts').empty();
-        if (data.contacts.length == 0) {
-          $('#nocontact').show();
-          return;
-        }
-        data.contacts.forEach(function(contact) {
-          var contact_template = $('#contact-template').clone().removeClass('d-none');
-
-          contact_template.find('b').text(`${contact.user.firstname} ${contact.user.lastname}`);
-          contact_template.find('span').text(contact.message);
-          contact_template.find('a').attr('href', `/dashboard/chat/user/${contact.user.id}`);
-
-          $('#contacts').append(
-            contact_template
-          );
-        });
-        paginatorContacts.paginate(
-          data.paginator.page,
-          data.paginator.pageSize,
-          data.paginator.total
-        );
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
+      $('#contacts').empty();
+      if (data.contacts.length == 0) {
+        $('#nocontact').show();
+        return;
       }
+      data.contacts.forEach(function(contact) {
+        var contact_template = $('#contact-template').clone().removeClass('d-none');
+
+        contact_template.find('b').text(`${contact.user.firstname} ${contact.user.lastname}`);
+        contact_template.find('span').text(contact.message);
+        contact_template.find('a').attr('href', `/dashboard/chat/user/${contact.user.id}`);
+
+        $('#contacts').append(
+          contact_template
+        );
+      });
+      paginatorContacts.paginate(
+        data.paginator.page,
+        data.paginator.pageSize,
+        data.paginator.total
+      );
+    },
+    complete: function() {
+      $('#contacts-wait').hide();
     }
   });
 }
@@ -125,41 +104,31 @@ function getUserContactMessages(contact_id) {
     url: `/api/users/${user.id}/${contact_id}/messages`,
     dataType: 'json',
     success: function(data) {
-      $('#messages-wait').hide();
-      if (data.r) {
-        $('#messages').empty();
-        $('#contact').empty();
-        $('#contact').append(`${data.contact.firstname} ${data.contact.lastname}`);
-        if (data.messages.length == 0) {
-          $('#nomessage').show();
-          return;
-        }
-        data.messages.forEach(function(message) {
-          var message_class = (message.author.id == user.id) ? 'msgMe' : 'msgOthers';
-          var offset_col = (message.author.id == user.id) ? 'offset-6' : '';
-          $('#messages').append(
-            `<div class="row">
-              <div class="col-6 ${offset_col}">
-                <div class="message ${message_class}">
-                  <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
-                  <p>${message.message}</p>
-                  <small>${message.created_at}</small>
-               </div>
-              </div>
-             </div>`
-          );
-        });
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
+      $('#messages').empty();
+      $('#contact').empty();
+      $('#contact').append(`${data.contact.firstname} ${data.contact.lastname}`);
+      if (data.messages.length == 0) {
+        $('#nomessage').show();
+        return;
       }
+      data.messages.forEach(function(message) {
+        var message_class = (message.author.id == user.id) ? 'msgMe' : 'msgOthers';
+        var offset_col = (message.author.id == user.id) ? 'offset-6' : '';
+        $('#messages').append(
+          `<div class="row">
+            <div class="col-6 ${offset_col}">
+              <div class="message ${message_class}">
+                <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
+                <p>${message.message}</p>
+                <small>${message.created_at}</small>
+             </div>
+            </div>
+           </div>`
+        );
+      });
+    },
+    complete: function() {
+      $('#messages-wait').hide();
     }
   });
 }
@@ -174,33 +143,23 @@ function sendMessageTo(contact_id, message) {
     data: {message: message},
     dataType: 'json',
     success: function(data) {
-      $('#wait-send-message').hide();
-      if (data.r) {
-        var message = data.message;
+      var message = data.message;
 
-        $('#text-message').val('');
-        $('#messages').prepend(
-          `<div class="row">
-            <div class="col-6 offset-6">
-              <div class="message msgMe">
-                <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
-                <p>${message.message}</p>
-                <small>${message.created_at}</small>
-             </div>
-            </div>
-           </div>`
-        );
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
+      $('#text-message').val('');
+      $('#messages').prepend(
+        `<div class="row">
+          <div class="col-6 offset-6">
+            <div class="message msgMe">
+              <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
+              <p>${message.message}</p>
+              <small>${message.created_at}</small>
+           </div>
+          </div>
+         </div>`
+      );
+    },
+    complete: function() {
+      $('#wait-send-message').hide();
     }
   });
 }
@@ -214,35 +173,25 @@ function searchContact(search) {
     data: {search: search},
     dataType: 'json',
     success: function(data) {
+      var message = data.message;
+
+      $('#contact-list').empty();
+      data.contacts.forEach(function(contact) {
+        var contact_template = $('#contactsearch-template tr').clone().removeClass('d-none');
+
+        contact_template.find('.contact-name').text(`${contact.firstname} ${contact.lastname}`);
+        contact_template.find('.contact-email').text(contact.email);
+        contact_template.find('.contact-role').text(ROLES[contact.role]);
+        contact_template.find('a').attr('href', `/dashboard/chat/user/${contact.id}`);
+
+        $('#contact-list').append(
+          contact_template
+        );
+      });
+      $('#contact-list-row').show();
+    },
+    complete: function() {
       $('#wait-searching').hide();
-      if (data.r) {
-        var message = data.message;
-
-        $('#contact-list').empty();
-        data.contacts.forEach(function(contact) {
-          var contact_template = $('#contactsearch-template tr').clone().removeClass('d-none');
-
-          contact_template.find('.contact-name').text(`${contact.firstname} ${contact.lastname}`);
-          contact_template.find('.contact-email').text(contact.email);
-          contact_template.find('.contact-role').text(ROLES[contact.role]);
-          contact_template.find('a').attr('href', `/dashboard/chat/user/${contact.id}`);
-
-          $('#contact-list').append(
-            contact_template
-          );
-        });
-        $('#contact-list-row').show();
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
     }
   });
 }
@@ -253,39 +202,30 @@ function getCategories() {
     url: `/api/forum/categories`,
     dataType: 'json',
     success: function(data) {
-      $('#forums-wait').hide();
       $('#noforums').hide();
-      if (data.r) {
-        $('#forums').empty();
-        if (data.categories.length == 0) {
-          $('#noforums').show();
-          return;
-        }
-        data.categories.forEach(function(category) {
-          var first_cat_template = $('#category-first-template').clone().removeClass('d-none');
-          var second_cat_template = $('#category-second-template').clone().removeClass('d-none');
 
-          first_cat_template.find('.category-title').text(category.title);
-          first_cat_template.find('.category-posts').text(category.count_posts);
-          first_cat_template.find('.category-date').text(category.updated_at);
-
-          second_cat_template.find('a').attr('href', `/dashboard/forum/category/${category.id}`);
-
-          $('#forums').append(first_cat_template);
-          $('#forums').append('<hr>');
-          $('#forums').append(second_cat_template);
-        });
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
+      $('#forums').empty();
+      if (data.categories.length == 0) {
+        $('#noforums').show();
+        return;
       }
+      data.categories.forEach(function(category) {
+        var first_cat_template = $('#category-first-template').clone().removeClass('d-none');
+        var second_cat_template = $('#category-second-template').clone().removeClass('d-none');
+
+        first_cat_template.find('.category-title').text(category.title);
+        first_cat_template.find('.category-posts').text(category.count_posts);
+        first_cat_template.find('.category-date').text(category.updated_at);
+
+        second_cat_template.find('a').attr('href', `/dashboard/forum/category/${category.id}`);
+
+        $('#forums').append(first_cat_template);
+        $('#forums').append('<hr>');
+        $('#forums').append(second_cat_template);
+      });
+    },
+    complete: function() {
+      $('#forums-wait').hide();
     }
   });
 }
@@ -300,22 +240,12 @@ function createCategory() {
     data: {name: category_name},
     dataType: 'json',
     success: function(data) {
+      $('#modal-new-category').closeModal();
+      $('#category-name').val('');
+      getCategories();
+    },
+    complete: function() {
       $('#wait-creating-category').hide();
-      if (data.r) {
-        $('#modal-new-category').closeModal();
-        $('#category-name').val('');
-        getCategories();
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
     }
   });
 }
@@ -326,45 +256,35 @@ function getPosts(category_id, postPage, postPageSize, paginatorPosts) {
     url: `/api/forum/categories/${category_id}/posts?page=${postPage}&pageSize=${postPageSize}`,
     dataType: 'json',
     success: function(data) {
-      $('#posts-wait').hide();
       $('#nopost').hide();
-      if (data.r) {
-        $('#post-list').empty();
-        $('#category').empty();
-        $('#category').append(data.category.title);
-        document.title = `Forum - ${data.category.title}`;
-        if (data.posts.length == 0) {
-          $('#nopost').show();
-          return;
-        }
-        data.posts.forEach(function(post) {
-          var post_template = $('#post-template tr').clone().removeClass('d-none');
-
-          post_template.find('.post-title').append(
-            `<a href="/dashboard/forum/post/${post.id}">${post.title}</a>`
-          ).attr('width', '70%');
-          post_template.find('.post-updated').text(post.updated_at);
-          post_template.find('.post-count').text(post.count_responses);
-
-          $('#post-list').append(post_template);
-        });
-        $('#post-list-row').show();
-        paginatorPosts.paginate(
-          data.paginator.page,
-          data.paginator.pageSize,
-          data.paginator.total
-        );
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
+      $('#post-list').empty();
+      $('#category').empty();
+      $('#category').append(data.category.title);
+      document.title = `Forum - ${data.category.title}`;
+      if (data.posts.length == 0) {
+        $('#nopost').show();
+        return;
       }
+      data.posts.forEach(function(post) {
+        var post_template = $('#post-template tr').clone().removeClass('d-none');
+
+        post_template.find('.post-title').append(
+          `<a href="/dashboard/forum/post/${post.id}">${post.title}</a>`
+        ).attr('width', '70%');
+        post_template.find('.post-updated').text(post.updated_at);
+        post_template.find('.post-count').text(post.count_responses);
+
+        $('#post-list').append(post_template);
+      });
+      $('#post-list-row').show();
+      paginatorPosts.paginate(
+        data.paginator.page,
+        data.paginator.pageSize,
+        data.paginator.total
+      );
+    },
+    complete: function() {
+      $('#posts-wait').hide();
     }
   });
 }
@@ -377,57 +297,47 @@ function getPostResponses(post_id, responsePage, responsePageSize, paginatorResp
     url: `/api/forum/posts/${post_id}/responses?page=${responsePage}&pageSize=${responsePageSize}`,
     dataType: 'json',
     success: function(data) {
-      $('#responses-wait').hide();
-      if (data.r) {
-        $('#response-list').empty();
-        $('#post-title').empty();
-        $('#post-title').append(data.post.title);
-        document.title = `Forum - ${data.post.title}`;
+      $('#response-list').empty();
+      $('#post-title').empty();
+      $('#post-title').append(data.post.title);
+      document.title = `Forum - ${data.post.title}`;
 
-        if (user.id == data.post.author || user.role >= 2) {
-          $('#btn-delete-post').removeClass('d-none');
+      if (user.id == data.post.author || user.role >= 2) {
+        $('#btn-delete-post').removeClass('d-none');
+      }
+
+      data.responses.forEach(function(response) {
+        var response_template = $('#response-template tr').clone().removeClass('d-none');
+
+        response_template.find('.response-author').append(
+          `${response.author.lastname} ${response.author.firstname}`
+        );
+        response_template.find('.response-content').append($.parseHTML(response.content)).attr('width', '60%');
+        response_template.find('.response-created').text(response.created_at);
+        response_template.find('.response-updated').text(response.updated_at);
+
+        if (user.id == response.author.id || user.role >= 2) {
+          response_template.find('.btn-edit-response').removeClass('d-none');
+        }
+        if ((user.id == response.author.id || user.role >= 2) && data.post.id != response.id) {
+          response_template.find('.btn-delete-response').removeClass('d-none');
+          response_template.find('.btn-delete-response').data('id', response.id);
         }
 
-        data.responses.forEach(function(response) {
-          var response_template = $('#response-template tr').clone().removeClass('d-none');
-
-          response_template.find('.response-author').append(
-            `${response.author.lastname} ${response.author.firstname}`
-          );
-          response_template.find('.response-content').append($.parseHTML(response.content)).attr('width', '60%');
-          response_template.find('.response-created').text(response.created_at);
-          response_template.find('.response-updated').text(response.updated_at);
-
-          if (user.id == response.author.id || user.role >= 2) {
-            response_template.find('.btn-edit-response').removeClass('d-none');
-          }
-          if ((user.id == response.author.id || user.role >= 2) && data.post.id != response.id) {
-            response_template.find('.btn-delete-response').removeClass('d-none');
-            response_template.find('.btn-delete-response').data('id', response.id);
-          }
-
-          $('#response-list').append(response_template);
-        });
-        $('.btn-delete-response').on('click', function() {
-          deleteResponse(data.post.id, $(this).data('id'));
-        });
-        $('#responses-list-row').show();
-        paginatorResponses.paginate(
-          data.paginator.page,
-          data.paginator.pageSize,
-          data.paginator.total
-        );
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
+        $('#response-list').append(response_template);
+      });
+      $('.btn-delete-response').on('click', function() {
+        deleteResponse(data.post.id, $(this).data('id'));
+      });
+      $('#responses-list-row').show();
+      paginatorResponses.paginate(
+        data.paginator.page,
+        data.paginator.pageSize,
+        data.paginator.total
+      );
+    },
+    complete: function() {
+      $('#responses-wait').hide();
     }
   });
 }
@@ -441,23 +351,13 @@ function createPost(category_id, title, content) {
     data: {title: title, content: content},
     dataType: 'json',
     success: function(data) {
+      $('#modal-new-post').closeModal();
+      $('#post-title').val('');
+      $('.wysiwyg .editor').html('');
+      getPosts(category_id, 1, postPageSize, paginatorPosts);
+    },
+    complete: function() {
       $('#wait-creating-post').hide();
-      if (data.r) {
-        $('#modal-new-post').closeModal();
-        $('#post-title').val('');
-        $('.wysiwyg .editor').html('');
-        getPosts(category_id, 1, postPageSize, paginatorPosts);
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
     }
   });
 }
@@ -470,28 +370,18 @@ function getUserProfile() {
     url: `/api/users/${user.id}`,
     dataType: 'json',
     success: function(data) {
-      if (data.r) {
-        var member = data.user;
-        $('#profile-name').text(`${member.firstname} ${member.lastname}`);
+      var member = data.user;
+      $('#profile-name').text(`${member.firstname} ${member.lastname}`);
 
-        $('#profile-email').val(member.email);
-        $('#profile-firstname').val(member.firstname);
-        $('#profile-lastname').val(member.lastname);
+      $('#profile-email').val(member.email);
+      $('#profile-firstname').val(member.firstname);
+      $('#profile-lastname').val(member.lastname);
 
-        $('#profile-name i').hide();
-        $('#profile-wait').hide();
-        $('#profile-edit').show();
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
+      $('#profile-name i').hide();
+      $('#profile-edit').show();
+    },
+    complete: function() {
+      $('#profile-wait').hide();
     }
   });
 }
@@ -505,26 +395,13 @@ function updateUserProfile(email, firstname, lastname, password, passwordcheck) 
     data: {email: email, firstname: firstname, lastname: lastname, password: password, passwordcheck: passwordcheck},
     dataType: 'json',
     success: function(data) {
-      if (data.r) {
-        new Noty({
-          theme: 'metroui',
-          type: 'success',
-          layout: 'centerRight',
-          timeout: 4000,
-          text: data.message
-        }).show();
-      } else {
-        getUserProfile();
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
+      new Noty({
+        theme: 'metroui',
+        type: 'success',
+        layout: 'centerRight',
+        timeout: 4000,
+        text: data.message
+      }).show();
     }
   });
 }
@@ -538,21 +415,11 @@ function createResponse(post_id, content) {
     data: {content: content},
     dataType: 'json',
     success: function(data) {
+      $('.wysiwyg .editor').html('');
+      getPostResponses(post_id, 1, responsePageSize, paginatorResponses);
+    },
+    complete: function() {
       $('#wait-creating-response').hide();
-      if (data.r) {
-        $('.wysiwyg .editor').html('');
-        getPostResponses(post_id, 1, responsePageSize, paginatorResponses);
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
     }
   });
 }
@@ -563,19 +430,7 @@ function deleteResponse(post_id, response_id) {
     url: `/api/forum/posts/${post_id}/responses/${response_id}`,
     dataType: 'json',
     success: function(data) {
-      if (data.r) {
-        getPostResponses(post_id, 1, responsePageSize, paginatorResponses);
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
+      getPostResponses(post_id, 1, responsePageSize, paginatorResponses);
     }
   });
 }
@@ -586,19 +441,7 @@ function deletePost(post_id) {
     url: `/api/forum/posts/${post_id}`,
     dataType: 'json',
     success: function(data) {
-      if (data.r) {
-        window.location.replace('/dashboard/forum');
-      } else {
-        data.errors.forEach(function(error) {
-          new Noty({
-            theme: 'metroui',
-            type: 'error',
-            layout: 'centerRight',
-            timeout: 4000,
-            text: error
-          }).show();
-        });
-      }
+      window.location.replace('/dashboard/forum');
     }
   });
 }

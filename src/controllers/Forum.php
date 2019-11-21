@@ -1,6 +1,7 @@
 <?php
 
 use Testify\Router\Router;
+use Testify\Router\Response;
 use Testify\Model\Forum;
 use Testify\Model\Role;
 use Testify\Component\Security;
@@ -16,7 +17,9 @@ $router->get('/api/forum/categories', function($request) {
     Security::checkAPIConnected();
 
     $categories = Forum::getInstance()->getCategories();
-    return json_encode(array("r" => True, "categories" => $categories));
+    return new Response(
+        json_encode(array("categories" => $categories))
+    );
 });
 
 $router->post('/api/forum/categories', function($request) {
@@ -30,13 +33,21 @@ $router->post('/api/forum/categories', function($request) {
     if(!isset($data['name']) || empty($data['name']))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NO_NAME_GIVEN');
 
-    if(count($errors_arr) === 0) {
-        $name = $data['name'];
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
+    }
 
-        $category = Forum::getInstance()->createCategory($name);
-        return json_encode(array("r" => True, "category" => $category));
-    } else
-        return json_encode(array("r" => False, "errors" => $errors_arr));
+    $name = $data['name'];
+
+    $category = Forum::getInstance()->createCategory($name);
+    if($category !== null) {
+        return new Response(
+            json_encode(array("category" => $category)),
+            201
+        );
+    } else {
+        return API::makeResponseError("An unexcepted error occured while creating category!", 500);
+    }
 });
 
 $router->get('/api/forum/categories/<category_id:int>/posts', function($request, $category_id) {
@@ -51,27 +62,28 @@ $router->get('/api/forum/categories/<category_id:int>/posts', function($request,
     if(!isset($data['pageSize']) || empty($data['pageSize']))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOSIZEPAGE');
 
-    if (count($errors_arr) === 0) {
-        $category = Forum::getInstance()->getCategory($category_id);
-        if ($category === null)
-            $errors_arr[] = I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND');
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
     }
 
-    if (count($errors_arr) === 0) {
-        $page = $data['page'];
-        $pageSize = $data['pageSize'];
+    $category = Forum::getInstance()->getCategory($category_id);
+    if ($category === null) {
+        return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
+    }
 
-        $paginator = new Paginator($page, $pageSize);
-        $posts = $paginator->paginate(Forum::getInstance()->getPosts($category_id));
+    $page = $data['page'];
+    $pageSize = $data['pageSize'];
 
-        return json_encode(array(
-            "r" => True,
+    $paginator = new Paginator($page, $pageSize);
+    $posts = $paginator->paginate(Forum::getInstance()->getPosts($category_id));
+
+    return new Response(
+        json_encode(array(
             "category" => $category,
             "posts" => $posts['data'],
             "paginator" => $posts['paginator']
-        ));
-    }
-    return json_encode(array("r" => False, "errors" => $errors_arr));
+        ))
+    );
 });
 
 $router->post('/api/forum/categories/<category_id:int>/posts', function($request, $category_id) {
@@ -86,14 +98,22 @@ $router->post('/api/forum/categories/<category_id:int>/posts', function($request
     if(!isset($data['content']) || empty($data['content']))
         $errors_arr[] = "No content given!";
 
-    if(count($errors_arr) === 0) {
-        $title = $data['title'];
-        $content = $data['content'];
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
+    }
 
-        $post = Forum::getInstance()->createPost($_SESSION['id'], $category_id, $title, $content);
-        return json_encode(array("r" => True, "post" => $post));
-    } else
-        return json_encode(array("r" => False, "errors" => $errors_arr));
+    $title = $data['title'];
+    $content = $data['content'];
+
+    $post = Forum::getInstance()->createPost($_SESSION['id'], $category_id, $title, $content);
+    if($post !== null) {
+        return new Response(
+            json_encode(array("post" => $post)),
+            201
+        );
+    } else {
+        return API::makeResponseError("An unexcepted error occured while creating post!", 500);
+    }
 });
 
 $router->get('/api/forum/posts/<post_id:int>/responses', function($request, $post_id) {
@@ -108,27 +128,28 @@ $router->get('/api/forum/posts/<post_id:int>/responses', function($request, $pos
     if(!isset($data['pageSize']) || empty($data['pageSize']))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOSIZEPAGE');
 
-    if (count($errors_arr) === 0) {
-        $post = Forum::getInstance()->getPost($post_id);
-        if ($post === null)
-            $errors_arr[] = I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND');
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
     }
 
-    if (count($errors_arr) === 0) {
-        $page = $data['page'];
-        $pageSize = $data['pageSize'];
+    $post = Forum::getInstance()->getPost($post_id);
+    if ($post === null) {
+        return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
+    }
 
-        $paginator = new Paginator($page, $pageSize);
-        $responses = $paginator->paginate(Forum::getInstance()->getPostResponses($post_id));
+    $page = $data['page'];
+    $pageSize = $data['pageSize'];
 
-        return json_encode(array(
-            "r" => True,
+    $paginator = new Paginator($page, $pageSize);
+    $responses = $paginator->paginate(Forum::getInstance()->getPostResponses($post_id));
+
+    return new Response(
+        json_encode(array(
             "post" => $post,
             "responses" => $responses['data'],
             "paginator" => $responses['paginator']
-        ));
-    }
-    return json_encode(array("r" => False, "errors" => $errors_arr));
+        ))
+    );
 });
 
 $router->post('/api/forum/posts/<post_id:int>/responses', function($request, $post_id) {
@@ -141,60 +162,70 @@ $router->post('/api/forum/posts/<post_id:int>/responses', function($request, $po
     if(!isset($data['content']) || empty($data['content']))
         $errors_arr[] = "No content";
 
-    if(count($errors_arr) === 0) {
-        $content = $data['content'];
-
-        $post = Forum::getInstance()->getPost($post_id);
-        if ($post === null)
-            $errors_arr[] = "";
-        else {
-            $response = Forum::getInstance()->createPost($_SESSION['id'], $post['category'], $post['title'], $content, $post['id']);
-            return json_encode(array("r" => True, "response" => $response));
-        }
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
     }
-    return json_encode(array("r" => False, "errors" => $errors_arr));
+
+    $content = $data['content'];
+
+    $post = Forum::getInstance()->getPost($post_id);
+    if ($post === null) {
+        return API::makeResponseError("Post not found!", 404);
+    }
+
+    $response = Forum::getInstance()->createPost($_SESSION['id'], $post['category'], $post['title'], $content, $post['id']);
+    if($response !== null) {
+        return new Response(
+            json_encode(array("response" => $response)),
+            201
+        );
+    } else {
+        return API::makeResponseError("An unexcepted error occured while creating response!", 500);
+    }
 });
 
 $router->delete('/api/forum/posts/<post_id:int>/responses/<response_id:int>', function($request, $post_id, $response_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
-    $errors_arr=array();
-
     $response = Forum::getInstance()->getPostResponse($post_id, $response_id);
 
-    if ($response === null)
-        $errors_arr[] = "Response not found!";
-    else {
-        if (intval($response['author']['id']) !== $_SESSION['id'] && intval($_SESSION['role']) < Role::$ROLES['ADMINISTRATOR'])
-            $errors_arr[] = "Access denied!";
+    if ($response === null) {
+        return API::makeResponseError("Reponse not found!", 404);
     }
 
-    if(count($errors_arr) === 0) {
-        Forum::getInstance()->deletePostResponse($post_id, $response_id);
-        return json_encode(array("r" => True));
+    if (intval($response['author']['id']) !== $_SESSION['id'] && intval($_SESSION['role']) < Role::$ROLES['ADMINISTRATOR']) {
+        return API::makeResponseError("Access denied!", 403);
     }
-    return json_encode(array("r" => False, "errors" => $errors_arr));
+
+    if (Forum::getInstance()->deletePostResponse($post_id, $response_id)) {
+        return new Response(
+            '',
+            204
+        );
+    } else {
+        return API::makeResponseError("An unexcepted error occured while deleting response!", 500);
+    }
 });
 
 $router->delete('/api/forum/posts/<post_id:int>', function($request, $post_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
-    $errors_arr=array();
-
     $post = Forum::getInstance()->getPost($post_id);
 
     if ($post === null)
-        $errors_arr[] = "Post not found!";
-    else {
-        if (intval($post['author']['id']) !== $_SESSION['id'] && intval($_SESSION['role']) < Role::$ROLES['ADMINISTRATOR'])
-            $errors_arr[] = "Access denied!";
-    }
+        return API::makeResponseError("Post not found!", 404);
 
-    if(count($errors_arr) === 0) {
-        Forum::getInstance()->deletePost($post_id);
-        return json_encode(array("r" => True));
+    if (intval($post['author']['id']) !== $_SESSION['id'] && intval($_SESSION['role']) < Role::$ROLES['ADMINISTRATOR'])
+        return API::makeResponseError("Access denied!", 403);
+
+    if (Forum::getInstance()->deletePost($post_id)) {
+        return new Response(
+            '',
+            204
+        );
+    } else {
+        return API::makeResponseError("An unexcepted error occured while deleting post!", 500);
     }
-    return json_encode(array("r" => False, "errors" => $errors_arr));
 });
