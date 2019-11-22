@@ -182,21 +182,21 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Modifier l'utilisateur</h2>
+      <h2>{{ translate 'DASHBOARD_ADMIN_EDIT_TITLE' }}</h2>
     </div>
     <div class="modal-body">
       <div class="row justify-content-center" style="margin-top: 30px;">
         <form class="form">
           <div class="row" style="margin-bottom: 10px">
-            <label class="col-4 col-form-label" for="user-email">{{ translate 'DASHBOARD_ADMIN_INVITE_EMAIL' }} <span style="color: red">*</span></label><br>
+            <label class="col-4 col-form-label" for="user-email">{{ translate 'DASHBOARD_ADMIN_EDIT_EMAIL' }} <span style="color: red">*</span></label><br>
             <input type="email" class="form-field col-8" name="user-email" id="user-email" required>
           </div>
           <div class="row" style="margin-bottom: 10px">
-            <label class="col-4 col-form-label" for="user-firstname">{{ translate 'DASHBOARD_ADMIN_INVITE_FIRSTNAME' }} <span style="color: red">*</span></label><br>
+            <label class="col-4 col-form-label" for="user-firstname">{{ translate 'DASHBOARD_ADMIN_EDIT_FIRSTNAME' }} <span style="color: red">*</span></label><br>
             <input type="text" class="form-field col-8" name="user-firstname" id="user-firstname" required>
           </div>
           <div class="row" style="margin-bottom: 10px">
-            <label class="col-4 col-form-label" for="user-lastname">{{ translate 'DASHBOARD_ADMIN_INVITE_LASTNAME' }} <span style="color: red">*</span></label><br>
+            <label class="col-4 col-form-label" for="user-lastname">{{ translate 'DASHBOARD_ADMIN_EDIT_LASTNAME' }} <span style="color: red">*</span></label><br>
             <input type="text" class="form-field col-8" name="user-lastname" id="user-lastname" required>
           </div>
         </form>
@@ -204,7 +204,7 @@
     </div>
     <div class="modal-footer d-flex justify-content-end">
       <button type="button" class="btn btn-success btn-sm" id="btn-edit-user">
-        <i class="fas fa-edit"></i> Modifier <i id="wait-edit-user" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        <i class="fas fa-edit"></i> {{ translate 'DASHBOARD_ADMIN_EDIT_EDITBTN' }} <i id="wait-edit-user" class="fas fa-circle-notch fa-spin" style="display: none"></i>
       </button>
     </div>
   </div>
@@ -214,18 +214,18 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>{{ translate 'DASHBOARD_ADMIN_DELETE_CONFIRM_TITLE' }}</h2>
+      <h2>{{ translate 'DASHBOARD_ADMIN_USER_DELETE_CONFIRM_TITLE' }}</h2>
     </div>
     <div class="modal-body">
       <div class="row justify-content-center" style="margin-top: 30px;">
         <div class="col-6 d-flex justify-content-center">
           <button type="button" class="btn btn-success" id="btn-confirm-delete">
-            <i class="fas fa-check"></i> {{ translate 'DASHBOARD_ADMIN_DELETE_CONFIRMBTN' }}
+            <i class="fas fa-check"></i> {{ translate 'DASHBOARD_ADMIN_USER_DELETE_CONFIRM_CONFIRM' }}
           </button>
         </div>
         <div class="col-6 d-flex justify-content-center">
           <button type="button" class="btn btn-danger" id="btn-cancel-delete">
-            <i class="fas fa-ban"></i> {{ translate 'DASHBOARD_ADMIN_DELETE_CANCELBTN' }}
+            <i class="fas fa-ban"></i> {{ translate 'DASHBOARD_ADMIN_USER_DELETE_CONFIRM_CANCEL' }}
           </button>
         </div>
       </div>
@@ -264,7 +264,7 @@
             <input type="text" class="form-field col-8" name="category-name" id="category-name" placeholder="{{ translate 'DASHBOARD_FORUM_MODAL_NAME_EXAMPLE' }}" required>
           </div>
           <div class="row">
-            <label class="col-4 col-form-label" for="category-description">Description de la catégorie <span style="color: red">*</span></label><br>
+            <label class="col-4 col-form-label" for="category-description">{{ translate 'DASHBOARD_FORUM_MODAL_DESCRIPTION' }} <span style="color: red">*</span></label><br>
             <input type="text" class="form-field col-8" name="category-description" id="category-description" required>
           </div>
         </form>
@@ -302,17 +302,17 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>{{ translate 'DASHBOARD_FORUM_MODAL_NEWFAQ_TITLE' }}</h2>
+      <h2>{{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_NEWFAQ_TITLE' }}</h2>
     </div>
     <div class="modal-body">
       <div class="row justify-content-center" style="margin-top: 30px;">
         <form class="form">
           <div class="row" style="margin-bottom: 10px">
-            <label class="col-4 col-form-label" for="faq-question">Question <span style="color: red">*</span></label><br>
+            <label class="col-4 col-form-label" for="faq-question">{{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_NEWFAQ_QUESTION' }} <span style="color: red">*</span></label><br>
             <input type="text" class="form-field col-8" name="faq-question" id="faq-question" required>
           </div>
           <div class="row">
-            <label class="col-4 col-form-label" for="faq-answer">Réponse <span style="color: red">*</span></label><br>
+            <label class="col-4 col-form-label" for="faq-answer">{{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_NEWFAQ_ANSWER' }} <span style="color: red">*</span></label><br>
             <input type="text" class="form-field col-8" name="faq-answer" id="faq-answer" required>
           </div>
         </form>
@@ -320,7 +320,7 @@
     </div>
     <div class="modal-footer d-flex justify-content-end">
       <button type="button" class="btn btn-success btn-sm" id="btn-create-faq">
-        <i class="fas fa-plus"></i> Ajouter <i id="wait-creating-faq" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_NEWFAQ_ADDBTN' }} <i id="wait-creating-faq" class="fas fa-circle-notch fa-spin" style="display: none"></i>
       </button>
     </div>
   </div>
@@ -335,7 +335,7 @@
   </div>
   <div class="row justify-content-center">
     <button class="btn btn-danger btn-delete-faq">
-      <i class="fas fa-trash-alt"></i> Supprimer la question
+      <i class="fas fa-trash-alt"></i> {{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_DELETEFAQ_DELBTN' }}
     </button>
   </div>
 </div>
