@@ -27,9 +27,27 @@
         <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_ADMIN_INVITEBTN' }}
       </button>
     </div>
-    <div class="d-flex justify-content-center" style="margin-bottom: 15px">
+    <div class="d-flex justify-content-center align-items-center" style="margin-bottom: 15px">
       <form class="form" style="width: 100%;margin: 0 55px">
-        <input type="text" style="width: 100%" class="form-field" name="member-search" id="member-search" placeholder="Ex: John Doe">
+        <input type="text" style="width: 90%;" class="form-field" name="member-search" id="member-search" placeholder="Ex: John Doe">
+        <button type="button" class="btn btn-primary btn-sm" style="margin-left: 5px" id="btn-toggle-filter">
+          Filtres
+        </button>
+      </form>
+    </div>
+    <div class="justify-content-center d-none" id="filters" style="margin-bottom: 15px">
+      <form class="form">
+        <select class="form-field" name="filter-role" id="filter-role" required>
+          <option value="" selected>---</option>
+          <option value="0">Utilisateur</option>
+          <option value="1">Examinateur</option>
+          <option value="2">Administrateur</option>
+         </select>
+         <select class="form-field" name="filter-banned" id="filter-banned" required>
+           <option value="" selected>---</option>
+           <option value="0">Non</option>
+           <option value="1">Oui</option>
+          </select>
       </form>
     </div>
     <div class="d-flex justify-content-center">
@@ -52,7 +70,7 @@
     </div>
   </div>
   <div id="tickets-tab" class="row tabcontent">
-    Tickets Tab
+    TODO: A faire !
   </div>
   <div id="forum-tab" class="row tabcontent">
     <div class="row">
@@ -343,6 +361,10 @@
       $(this).data('timeout', setTimeout(function () {
         searchMember($(that).val());
       }, 500));
+    });
+
+    $('#btn-toggle-filter').on('click', function() {
+      $('#filters').toggleClass('d-flex').toggleClass('d-none');
     });
 
     $('.btn-new-member').on("click", function() {
