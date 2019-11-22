@@ -160,6 +160,61 @@
   </div>
 </div>
 
+<div id="modal-edit-user" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Modifier l'utilisateur</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="user-email">{{ translate 'DASHBOARD_ADMIN_INVITE_EMAIL' }} <span style="color: red">*</span></label><br>
+            <input type="email" class="form-field col-8" name="user-email" id="user-email" required>
+          </div>
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="user-firstname">{{ translate 'DASHBOARD_ADMIN_INVITE_FIRSTNAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="user-firstname" id="user-firstname" required>
+          </div>
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="user-lastname">{{ translate 'DASHBOARD_ADMIN_INVITE_LASTNAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="user-lastname" id="user-lastname" required>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm" id="btn-edit-user">
+        <i class="fas fa-edit"></i> Modifier <i id="wait-edit-user" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-confirm-delete" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_DELETE_CONFIRM_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-success" id="btn-confirm-delete">
+            <i class="fas fa-check"></i> {{ translate 'DASHBOARD_ADMIN_DELETE_CONFIRMBTN' }}
+          </button>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-danger" id="btn-cancel-delete">
+            <i class="fas fa-ban"></i> {{ translate 'DASHBOARD_ADMIN_DELETE_CANCELBTN' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <table id="member-template" class="d-none">
   <tr>
     <td class="member-name"></td>
@@ -167,10 +222,10 @@
     <td class="member-role"></td>
     <td class="member-banned"></td>
     <td width="15%">
-      <button class="btn btn-primary btn-sm">
+      <button class="btn btn-primary btn-sm btn-modify-user">
         <i class="fas fa-edit"></i>
       </button>
-      <button class="btn btn-danger btn-sm">
+      <button class="btn btn-danger btn-sm btn-delete-user">
         <i class="fas fa-trash-alt"></i>
       </button>
     </td>
@@ -278,6 +333,7 @@
 <script>
   $(function() {
     var modalNewMember = $('#modal-new-member');
+    var modalEditUser = $('#modal-edit-user');
     var modalNewCategory = $('#modal-new-category');
     var modalNewFaq = $('#modal-new-faq');
 
@@ -321,6 +377,25 @@
         fastEditUser(member_id, null, member_banned);
 
       $('#modal-confirm-edit').closeModal();
+    });
+
+    $('#btn-edit-user').on('click', function() {
+      var member_id = modalEditUser.data('id');
+      var member_email = modalEditUser.find('#user-email').val();
+      var member_firstname = modalEditUser.find('#user-firstname').val();
+      var member_lastname = modalEditUser.find('#user-lastname').val();
+      completeEditUser(member_id, member_email, member_firstname, member_lastname);
+    });
+
+    $('#btn-cancel-delete').on('click', function() {
+      $('#modal-confirm-delete').closeModal();
+    });
+
+    $('#btn-confirm-delete').on('click', function() {
+      var member_id = $('#modal-confirm-delete').data('id');
+
+      $('#modal-confirm-delete').closeModal();
+      deleteUser(member_id);
     });
 
     $('#btn-invite-member').on('click', function() {

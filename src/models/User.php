@@ -32,6 +32,15 @@ class User {
         ));
     }
 
+    public function deleteUser($user_id) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "DELETE FROM tf_user WHERE `id`=:uid"
+        );
+        return $req->execute(array(
+            'uid' => $user_id
+        ));
+    }
+
     public function userExist($email, $password) : bool {
         $req = Database::getInstance()->getPDO()->prepare(
             "SELECT 1 FROM tf_user WHERE `email`=:email AND `password`=:pass AND `banned`=0"

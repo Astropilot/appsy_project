@@ -9,6 +9,9 @@ function searchMember(search) {
     dataType: 'json',
     success: function(data) {
       var modalEditConfirm = $('#modal-confirm-edit');
+      var modalEditUser = $('#modal-edit-user');
+      var modalDeleteConfirm = $('#modal-confirm-delete');
+
       data.contacts.forEach(function(member) {
         var member_template = $('#member-template tr').clone().attr('data-id', member.id);
 
@@ -51,7 +54,19 @@ function searchMember(search) {
             .showModal();
         });
 
-        member_template.find('button').data('id', member.id);
+        member_template.find('.btn-modify-user').on('click', function() {
+          modalEditUser.data('id', member.id);
+          modalEditUser.find('#user-email').val(member.email);
+          modalEditUser.find('#user-firstname').val(member.firstname);
+          modalEditUser.find('#user-lastname').val(member.lastname);
+          modalEditUser.showModal();
+        });
+
+        member_template.find('.btn-delete-user').on('click', function() {
+          modalDeleteConfirm
+            .data('id', member.id)
+            .showModal();
+        });
 
         $('#member-list').append(
           member_template
@@ -78,6 +93,42 @@ function fastEditUser(member_id, member_role, member_banned) {
         timeout: 4000,
         text: data.message
       }).show();
+    }
+  });
+}
+
+function completeEditUser(member_id, email, firstname, lastname) {
+  $('#wait-edit-user').show();
+
+  $.ajax({
+    type: 'PUT',
+    url: `/admin/api/users/${member_id}`,
+    data: {email: email, firstname: firstname, lastname: lastname},
+    dataType: 'json',
+    success: function(data) {
+      new Noty({
+        theme: 'metroui',
+        type: 'success',
+        layout: 'centerRight',
+        timeout: 4000,
+        text: data.message
+      }).show();
+      $('#modal-edit-user').closeModal();
+      searchMember($('#member-search').val());
+    },
+    complete: function() {
+      $('#wait-edit-user').hide();
+    }
+  });
+}
+
+function deleteUser(user_id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `/api/users/${user_id}`,
+    dataType: 'json',
+    success: function() {
+      searchMember($('#member-search').val());
     }
   });
 }

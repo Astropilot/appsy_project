@@ -144,6 +144,21 @@ $router->put('/api/users/<userid:int>', function($request, $user_id) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_UPDATE_ERROR'), 500);
 });
 
+$router->delete('/api/users/<user_id:int>', function($request, $user_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+    Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
+
+    if (User::getInstance()->deleteUser($user_id)) {
+        return new Response(
+            '',
+            204
+        );
+    } else {
+        return API::makeResponseError("An unexcepted error occured while deleting user!", 500);
+    }
+});
+
 $router->post('/api/contacts/search', function($request) {
     $data = $request->getBody();
 
