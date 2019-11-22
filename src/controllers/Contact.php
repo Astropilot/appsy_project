@@ -16,11 +16,11 @@ $router->post('/api/contact', function($request) {
     API::setAPIHeaders();
 
     if(!isset($data['name']) || empty($data['name']))
-        $errors_arr[] = "No name given!";
+        $errors_arr[] = I18n::getInstance()->translate('API_CONTACT_NO_NAME');
     if(!isset($data['email']) || empty($data['email']))
-        $errors_arr[] = "No email given!";
+        $errors_arr[] = I18n::getInstance()->translate('API_CONTACT_NO_EMAIL');
     if(!isset($data['message']) || empty($data['message']))
-        $errors_arr[] = "No message given!";
+        $errors_arr[] = I18n::getInstance()->translate('API_CONTACT_NO_MESSAGE');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
@@ -50,10 +50,10 @@ $router->post('/api/contact', function($request) {
 
     if ($mail->sendMail()) {
         return new Response(
-            json_encode(array("message" => "Votre message à bien été envoyé !")),
+            json_encode(array("message" => I18n::getInstance()->translate('API_CONTACT_SUCCESS'))),
             201
         );
     } else {
-        return API::makeResponseError("Une erreur est survenue pendant l'envoi de votre message", 500);
+        return API::makeResponseError(I18n::getInstance()->translate('API_CONTACT_ERROR'), 500);
     }
 });

@@ -76,7 +76,7 @@ $router->post('/admin/api/users', function($request) {
 
         if ($mail->sendMail())
             return new Response(
-                json_encode(array("message" => "$firstname " . I18n::getInstance()->translate('API_ADMIN_INVITE_SEND_SUCCESS'))),
+                json_encode(array('message' => "$firstname " . I18n::getInstance()->translate('API_ADMIN_INVITE_SEND_SUCCESS'))),
                 201
             );
         else
@@ -106,7 +106,7 @@ $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
         $res = User::getInstance()->updateUser($user['id'], $email, $password, $lastname, $firstname, $role, $banned);
         if ($res) {
             return new Response(
-                json_encode(array("message" => I18n::getInstance()->translate('API_ADMIN_USER_UPDATE_SUCCESS')))
+                json_encode(array('message' => I18n::getInstance()->translate('API_ADMIN_USER_UPDATE_SUCCESS')))
             );
         } else {
             return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_USER_UPDATE_ERROR'), 500);

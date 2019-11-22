@@ -16,7 +16,7 @@ $router->get('/api/faq/questions', function($request) {
 
     $faq = Faq::getInstance()->getFaq();
     return new Response(
-        json_encode(array("faq" => $faq))
+        json_encode(array('faq' => $faq))
     );
 });
 
@@ -43,11 +43,11 @@ $router->post('/api/faq/questions', function($request) {
     $question = Faq::getInstance()->createQuestion($question, $answer);
     if($question) {
         return new Response(
-            json_encode(array("question" => $question)),
+            json_encode(array('question' => $question)),
             201
         );
     } else {
-        return API::makeResponseError("An unexcepted error occured while creating question!", 500);
+        return API::makeResponseError(I18n::getInstance()->translate('API_FAQ_CREATE_FAQ_ERROR'), 500);
     }
 });
 
@@ -62,6 +62,6 @@ $router->delete('/api/faq/questions/<question_id:int>', function($request, $ques
             204
         );
     } else {
-        return API::makeResponseError("An unexcepted error occured while deleting question!", 500);
+        return API::makeResponseError(I18n::getInstance()->translate('API_FAQ_DELETE_FAQ_ERROR'), 500);
     }
 });

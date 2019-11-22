@@ -23,6 +23,16 @@
     "HOME_CONNECT_BUTTON": "Login",
 
     "HOME_CONTACT_TITLE": "Contact",
+    "HOME_CONTACT_NAME": "Your name",
+    "HOME_CONTACT_EMAIL": "Your email",
+    "HOME_CONTACT_MESSAGE": "Your message",
+    "HOME_CONTACT_SENDBTN": "Send my message",
+
+    "API_CONTACT_NO_NAME": "The name was not provided!",
+    "API_CONTACT_NO_EMAIL": "The email was not provided!",
+    "API_CONTACT_NO_MESSAGE": "The message was not provided!",
+    "API_CONTACT_SUCCESS": "Your message has been sent!",
+    "API_CONTACT_ERROR": "An error occured while sending your message!",
 
     "HOME_REGISTER_TITLE": "Register",
     "HOME_REGISTER_EMAIL": "Your email",
@@ -65,7 +75,7 @@
     "API_USER_UPDATE_PASSWORD_CHECK_ERROR": "The password does not match the verification!",
     "API_USER_UPDATE_ERROR": "An unexcepted error occurred during the update of your information!",
     "API_USER_UPDATE_SUCCESS": "Your profile has been updated!",
-
+    "API_USER_DELETE_ERROR": "An error occurred while deleting the user!",
 
     "API_MESSAGE_NOACCESS": "You do not have access to this user's information!",
     "API_MESSAGE_NOPAGE": "No page received!",
@@ -73,12 +83,32 @@
     "API_MESSAGE_USER_NOT_FOUND": "The user is not found!",
     "API_MESSAGE_CONTACT_NOT_FOUND": "The contact is not found!",
     "API_MESSAGE_NO_MESSAGE_GIVEN": "No message given!",
+    "API_MESSAGE_CREATE_ERROR": "An error occurred while deleting the message!",
 
     "API_FORUM_NO_NAME_GIVEN": "No category name given!",
+    "API_FORUM_NO_DESCRIPTION_GIVEN": "No description was not given!",
+    "API_FORUM_CREATE_CATEGORY_ERROR": "An error occured while creating the category!",
+    "API_FORUM_REORDER_CATEGORY_NO_DIRECTION": "The move direction was not given!",
+    "API_FORUM_REORDER_CATEGORY_ERROR": "An error occured while moving the category!",
+    "API_FORUM_DELETE_CATEGORY_ERROR": "An error occured while deleting the category!",
+    "API_FORUM_POST_NO_TITLE": "The title was not given!",
+    "API_FORUM_POST_CREATE_ERROR": "An error occurred while creating the post!",
+    "API_FORUM_NOPAGE": "No page was given!",
+    "API_FORUM_NOSIZEPAGE": "No page size was given!",
+    "API_FORUM_RESPONSE_NO_CONTENT": "No message was given!",
+    "API_FORUM_POST_NOT_FOUND": "The post is not found!",
+    "API_FORUM_RESPONSE_CREATE_ERROR": "An error occurred while creating the response!",
+    "API_FORUM_RESPONSE_NOT_FOUND": "The response is not found!",
+    "API_FORUM_RESPONSE_NOACCESS": "You do not have access to this response!",
+    "API_FORUM_DELETE_RESPONSE_ERROR": "An error occurred while deleting the response!",
+    "API_FORUM_POST_NOACCESS": "You do not have access to this post!",
+    "API_FORUM_DELETE_POST_ERROR": "An error occurred while deleting the post!",
     "API_FORUM_CATEGORY_NOT_FOUND": "The category is not found!",
 
     "API_FAQ_NO_QUESTION_GIVEN": "No given question!",
     "API_FAQ_NO_ANSWER_GIVEN": "No answer given!",
+    "API_FAQ_CREATE_FAQ_ERROR": "An error occured while creating your question!",
+    "API_FAQ_DELETE_FAQ_ERROR": "An error occured while deleting your question!",
 
     "DASHBOARD_MENU_ROOT": "Home",
     "DASHBOARD_MENU_TESTS": "Tests",
@@ -115,21 +145,23 @@
     "DASHBOARD_FORUM_MODAL_NAME_EXAMPLE": "Eg: My category",
     "DASHBOARD_FORUM_MODAL_ADDBTN": "Create",
 
-    "API_FORUM_NOPAGE": "No page received!",
-    "API_FORUM_NOSIZEPAGE": "No page size received!",
-
     "DASHBOARD_FORUMCATEGORY_TITLE": "Forum",
     "DASHBOARD_FORUMCATEGORY_NOPOST": "This category does not have any conversations yet!",
-    "DASHBOARD_FORUMCATEGORY_NEWPOSTBTN": "Create the first conversation",
+    "DASHBOARD_FORUMCATEGORY_NEWFIRSTPOSTBTN": "Create the first conversation",
     "DASHBOARD_FORUMCATEGORY_SUBJECT": "Subject",
     "DASHBOARD_FORUMCATEGORY_LASTMESSAGE": "Last message",
     "DASHBOARD_FORUMCATEGORY_COUNT": "Responses count",
+    "DASHBOARD_FORUMCATEGORY_NEWPOSTBTN": "New conversation",
+    "DASHBOARD_FORUMCATEGORY_POSTMODAL_MAINTITLE": "New conversation",
+    "DASHBOARD_FORUMCATEGORY_POSTMODAL_TITLE": "Conversation title",
+    "DASHBOARD_FORUMCATEGORY_POSTMODAL_ADDBTN": "Create",
 
     "DASHBOARD_FORUMPOST_TITLE": "Discussion",
     "DASHBOARD_FORUMPOST_AUTHOR": "Author",
     "DASHBOARD_FORUMPOST_CONTENT": "Content",
     "DASHBOARD_FORUMPOST_CREATEDAT": "Created At",
     "DASHBOARD_FORUMPOST_CREATEDAT": "Updated At",
+    "DASHBOARD_FORUMPOST_REPLYBTN": "Reply",
 
     "DASHBOARD_ADMIN_TITLE": "Administration",
     "DASHBOARD_ADMIN_USERTAB": "Users",
@@ -137,6 +169,7 @@
     "DASHBOARD_ADMIN_FORUMTAB": "Forum",
     "DASHBOARD_ADMIN_FAQTAB": "FAQ",
     "DASHBOARD_ADMIN_INVITEBTN": "Invite a new member",
+    "DASHBOARD_ADMIN_FILTERBTN": "Filters",
     "DASHBOARD_ADMIN_SEARCH_NAME": "Lastname / Firstname",
     "DASHBOARD_ADMIN_SEARCH_EMAIL": "Email",
     "DASHBOARD_ADMIN_SEARCH_ROLE": "Role",
@@ -153,6 +186,10 @@
     "DASHBOARD_ADMIN_FASTEDIT_CONFIRM_TITLE": "Are you sure of your action?",
     "DASHBOARD_ADMIN_FASTEDIT_CONFIRMBTN": "I confirm that",
     "DASHBOARD_ADMIN_FASTEDIT_CANCELBTN": "Cancel the action",
+    "DASHBOARD_ADMIN_FORUM_ADDCATEGORYBTN": "Create category",
+    "DASHBOARD_ADMIN_FORUM_NOCATEGORY": "You do not have created a category yet",
+    "DASHBOARD_ADMIN_FAQ_CREATEBTN": "Create question",
+    "DASHBOARD_ADMIN_FAQ_NOFAQ": "You do not have created a question yet",
 
     "API_ADMIN_INVITE_NO_EMAIL": "No email given!",
     "API_ADMIN_INVITE_NO_FIRSTNAME": "No firstname given!",
@@ -172,6 +209,14 @@
     "API_ADMIN_INVITE_MAIL_EXPLAIN": "You have been invited to register on the Testify platform by XXXX. This platform allows you to consult your psychomotor test results from your institution.",
     "API_ADMIN_INVITE_MAIL_WARN": "You have 72 hours to respond to the invitation. If you do not register within the time limit, you will need to contact a person in charge of your test institution to request a new invitation.",
     "API_ADMIN_INVITE_MAIL_REGISTERBTN": "REGISTER NOW",
-    "API_ADMIN_INVITE_MAIL_COPYRIGHT": "All rights reserved"
+    "API_ADMIN_INVITE_MAIL_COPYRIGHT": "All rights reserved",
+
+    "DASHBOARD_PROFILE_TITLE": "Profile",
+    "DASHBOARD_PROFILE_EMAIL": "Email",
+    "DASHBOARD_PROFILE_FIRSTNAME": "Firstname",
+    "DASHBOARD_PROFILE_LASTNAME": "Lastname",
+    "DASHBOARD_PROFILE_PASSWORD": "Change password",
+    "DASHBOARD_PROFILE_PASSWORDCHECK": "Password verification",
+    "DASHBOARD_PROFILE_UPDATEBTN": "Update my information"
 
 }

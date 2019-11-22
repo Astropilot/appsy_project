@@ -21,7 +21,7 @@
   </div>
   <div class="row" style="justify-content: end; margin-bottom: 15px">
     <button type="button" class="btn btn-primary btn-sm btn-new-post" style="margin-right: 5px">
-      Nouvelle discussion
+      {{ translate 'DASHBOARD_FORUMCATEGORY_NEWPOSTBTN' }}
     </button>
   </div>
   <div class="row justify-content-center" id="posts-wait">
@@ -31,7 +31,7 @@
     <h3>{{ translate 'DASHBOARD_FORUMCATEGORY_NOPOST' }}</h3>
     <div class="row">
       <button type="button" class="btn btn-primary btn-new-post">
-        {{ translate 'DASHBOARD_FORUMCATEGORY_NEWPOSTBTN' }}
+        {{ translate 'DASHBOARD_FORUMCATEGORY_NEWFIRSTPOSTBTN' }}
       </button>
     </div>
   </div>
@@ -55,13 +55,13 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Nouvelle discussion</h2>
+      <h2>{{ translate 'DASHBOARD_FORUMCATEGORY_POSTMODAL_MAINTITLE' }}</h2>
     </div>
     <div class="modal-body">
       <div class="row justify-content-center" style="margin-top: 30px;">
         <form class="form">
           <div class="row">
-            <label class="col-4 col-form-label" for="post-title">Titre de la discussion <span style="color: red">*</span></label><br>
+            <label class="col-4 col-form-label" for="post-title">{{ translate 'DASHBOARD_FORUMCATEGORY_POSTMODAL_TITLE' }} <span style="color: red">*</span></label><br>
             <input type="text" class="form-field col-8" name="post-title" id="post-title" required>
           </div>
           <div style="margin-top: 15px">
@@ -72,7 +72,7 @@
     </div>
     <div class="modal-footer d-flex justify-content-end">
       <button type="button" class="btn btn-success btn-sm" id="btn-create-post">
-        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_FORUM_MODAL_ADDBTN' }} <i id="wait-creating-post" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_FORUMCATEGORY_POSTMODAL_ADDBTN' }} <i id="wait-creating-post" class="fas fa-circle-notch fa-spin" style="display: none"></i>
       </button>
     </div>
   </div>

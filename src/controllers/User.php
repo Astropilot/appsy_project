@@ -43,7 +43,7 @@ $router->post('/api/users/login', function($request) {
     $_SESSION['role'] = $user['role'];
 
     return new Response(
-        json_encode(array("user" => $user))
+        json_encode(array('user' => $user))
     );
 });
 
@@ -71,7 +71,7 @@ $router->get('/api/users/invite', function($request) {
     }
 
     return new Response(
-        json_encode(array("invite" => $invite))
+        json_encode(array('invite' => $invite))
     );
 });
 
@@ -87,7 +87,7 @@ $router->get('/api/users/<userid:int>', function($request, $user_id) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
     }
     return new Response(
-        json_encode(array("user" => $user))
+        json_encode(array('user' => $user))
     );
 });
 
@@ -155,7 +155,7 @@ $router->delete('/api/users/<user_id:int>', function($request, $user_id) {
             204
         );
     } else {
-        return API::makeResponseError("An unexcepted error occured while deleting user!", 500);
+        return API::makeResponseError(I18n::getInstance()->translate('API_USER_DELETE_ERROR'), 500);
     }
 });
 
@@ -172,7 +172,7 @@ $router->post('/api/contacts/search', function($request) {
     $contacts = User::getInstance()->findContacts($search, !Role::isUser());
 
     return new Response(
-        json_encode(array("contacts" => $contacts))
+        json_encode(array('contacts' => $contacts))
     );
 });
 
@@ -237,7 +237,7 @@ $router->post('/api/users', function($request) {
     if ($res) {
         UserInvite::getInstance()->unActiveInvite($invite['id']);
         return new Response(
-            json_encode(array("message" => I18n::getInstance()->translate('API_USER_CREATE_USER_SUCCESS'))),
+            json_encode(array('message' => I18n::getInstance()->translate('API_USER_CREATE_USER_SUCCESS'))),
             201
         );
     } else

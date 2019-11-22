@@ -44,8 +44,8 @@ $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
 
     return new Response(
         json_encode(array(
-            "contacts" => $contacts['data'],
-            "paginator" => $contacts['paginator']
+            'contacts' => $contacts['data'],
+            'paginator' => $contacts['paginator']
         ))
     );
 });
@@ -70,7 +70,7 @@ $router->get('/api/users/<user_id:int>/<contact_id:int>/messages', function($req
     $messages = Message::getInstance()->getUserContactMessages($user, $contact);
 
     return new Response(
-        json_encode(array("contact" => $contact, "messages" => $messages))
+        json_encode(array('contact' => $contact, 'messages' => $messages))
     );
 });
 
@@ -99,10 +99,10 @@ $router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($re
     $message = Message::getInstance()->createMessage($user, $contact, $message);
     if($message) {
         return new Response(
-            json_encode(array("message" => $message)),
+            json_encode(array('message' => $message)),
             201
         );
     } else {
-        return API::makeResponseError("An unexcepted error occured while creating message!", 500);
+        return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_CREATE_ERROR'), 500);
     }
 });
