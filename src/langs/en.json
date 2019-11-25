@@ -165,6 +165,13 @@
     "DASHBOARD_FORUMPOST_UPDATEDAT": "Updated At",
     "DASHBOARD_FORUMPOST_REPLYBTN": "Reply",
 
+    "DASHBOARD_TICKET_TITLE": "Tickets",
+    "DASHBOARD_TICKET_NOTICKET": "You do not have created any ticket yet",
+    "DASHBOARD_TICKET_TICKETTITLE": "Title",
+    "DASHBOARD_TICKET_STATUS": "Status",
+    "DASHBOARD_TICKET_CREATEDAT": "Created at",
+    "DASHBOARD_TICKET_UPDATEDAT": "Updated at",
+
     "DASHBOARD_ADMIN_TITLE": "Administration",
     "DASHBOARD_ADMIN_USERTAB": "Users",
     "DASHBOARD_ADMIN_TICKETSTAB": "Tickets",
