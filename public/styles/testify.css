@@ -16,6 +16,7 @@ html {
 
 body {
   position: relative;
+  z-index : 1;
   min-height: 100%;
   margin: 0;
   padding: 0;
@@ -94,13 +95,18 @@ th {
 
 /* Style pour les zones de texte */
 section {
-  position:relative;
+  position: relative;
   z-index: -1; /* Gere la disposition par rapport aux autres éléments */
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding-top: 40px;
   padding-bottom: 40px;
+}
+
+section > input {
+  position: relative;
+  z-index: 999;
 }
 
 .bg-grey {
