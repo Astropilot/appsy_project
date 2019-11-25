@@ -1,11 +1,11 @@
-function searchMember(search) {
+function searchMember(search, page, pageSize, paginator) {
   $('#wait-search-member').show();
   $('#member-list').empty();
 
   $.ajax({
     type: 'POST',
-    url: `/api/contacts/search`,
-    data: {search: search},
+    url: '/api/contacts/search',
+    data: {search: search, page: page, pageSize: pageSize},
     dataType: 'json',
     success: function(data) {
       var modalEditConfirm = $('#modal-confirm-edit');
@@ -72,6 +72,11 @@ function searchMember(search) {
           member_template
         );
       });
+      paginator.paginate(
+        data.paginator.page,
+        data.paginator.pageSize,
+        data.paginator.total
+      );
     },
     complete: function() {
       $('#wait-search-member').hide();

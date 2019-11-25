@@ -164,13 +164,13 @@ function sendMessageTo(contact_id, message) {
   });
 }
 
-function searchContact(search) {
+function searchContact(search, page, pageSize, paginator) {
   $('#wait-searching').show();
 
   $.ajax({
     type: 'POST',
     url: `/api/contacts/search`,
-    data: {search: search},
+    data: {search: search, page: page, pageSize: pageSize},
     dataType: 'json',
     success: function(data) {
       var message = data.message;
@@ -189,6 +189,11 @@ function searchContact(search) {
         );
       });
       $('#contact-list-row').show();
+      paginator.paginate(
+        data.paginator.page,
+        data.paginator.pageSize,
+        data.paginator.total
+      );
     },
     complete: function() {
       $('#wait-searching').hide();

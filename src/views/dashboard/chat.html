@@ -53,6 +53,7 @@
       </tbody>
     </table>
   </div>
+  <div class="row justify-content-center paginator" id="search-pagination"></div>
 </div>
 
 <div id="contact-template" class="contact row bg-grey d-none" style="display: flex; align-items: center; padding: 10px; margin-bottom: 5px">
@@ -84,12 +85,17 @@
     var url = new URL(window.location.href);
 
     var page = url.searchParams.get('page') || 1;
-    var contactPageSize = 4;
+    var contactPageSize = 5;
     var paginatorContacts = new Paginator($('#contact-pagination'));
+    var paginatorSearch = new Paginator($('#search-pagination'));
 
     paginatorContacts.setOnPaginateChange(function(page) {
       history.pushState({page: page}, '', '?page=' + page);
       getUserContacts(page, contactPageSize, paginatorContacts);
+    });
+
+    paginatorContacts.setOnPaginateChange(function(page) {
+      searchContact($('#contact-search').val(), page, contactPageSize, paginatorSearch);
     });
 
     window.onpopstate = function(event) {
@@ -103,12 +109,12 @@
 
     $('#contact-search').keypress(function (e) {
       if (e.which == 13) {
-        searchContact($(this).val());
+        searchContact($(this).val(), 1, contactPageSize, paginatorSearch);
         return false;
       }
     });
     $('#btn-search').on('click', function() {
-      searchContact($('#contact-search').val());
+      searchContact($('#contact-search').val(), 1, contactPageSize, paginatorSearch);
     });
   });
 </script>

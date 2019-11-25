@@ -3,6 +3,7 @@
 namespace Testify\Router;
 
 use Testify\Component\I18n;
+use Testify\Component\Arrays;
 
 class Router {
 
@@ -15,16 +16,15 @@ class Router {
         "PUT",
         "DELETE"
     );
-    private $noRouteHandler = null;
 
     private function __construct(IRequest $request) {
         $this->request = $request;
 
         $this->get('/404', function($request) {
-            header("{$this->request->serverProtocol} 404 Not Found");
-
-            if ($this->noRouteHandler !== null)
-                echo call_user_func_array($this->noRouteHandler, array($this->request));
+            return new Response(
+                "404: Page not found!",
+                404
+            );
         });
     }
 
@@ -39,13 +39,7 @@ class Router {
         if(!in_array(strtoupper($name), $this->supportedHttpMethods)) {
             $this->invalidMethodHandler();
         }
-        if (!property_exists($this, strtolower($name)))
-            $this->{strtolower($name)} = array(array("route" => $this->formatRoute($route), "method" => $method));
-        else
-            array_push(
-                $this->{strtolower($name)},
-                array("route" => $this->formatRoute($route), "method" => $method)
-            );
+        $this->{strtolower($name)}[$this->formatRoute($route)] = $method;
     }
 
     private function formatRoute($route) {
@@ -71,8 +65,7 @@ class Router {
         $formatedRoute = $this->formatRoute($formatedRoute);
         $formatedRoute = I18n::getInstance()->setLangFromURL($formatedRoute);
 
-        foreach ($methodsList as $method) {
-            $route = $method['route'];
+        foreach ($methodsList as $route => $method) {
 
             $route_cmp = preg_replace('/\<[a-z_]+:int\>/i', '([0-9]+)', $route);
             $route_cmp = preg_replace('/\<[a-z_]+:str\>/i', '(.+)', $route_cmp);
@@ -86,7 +79,7 @@ class Router {
                 foreach ($matches as $value) {
                     array_push($values, $value);
                 }
-                $response = call_user_func_array($method['method'], $values);
+                $response = call_user_func_array($method, $values);
                 if (!($response instanceof \Testify\Router\Response))
                     throw new \Exception("The controller response need to be a Response object!");
 
@@ -96,10 +89,6 @@ class Router {
             }
         }
         $this->defaultRequestHandler();
-    }
-
-    public function setNoRouteHandler($handler) {
-        $this->noRouteHandler = $handler;
     }
 
     public static function getInstance(IRequest $request=NULL): Router {

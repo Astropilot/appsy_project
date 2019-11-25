@@ -69,3 +69,7 @@ $router->get('/dashboard/forum/post/<post_id:int>', function($request, $post_id)
 
     return Response::fromView('dashboard/forum_post.html', $context);
 });
+
+$router->get('/404', function($request) {
+    return Response::fromView('404.html', null, null, 404);
+});

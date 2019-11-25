@@ -25,7 +25,3 @@ require_once '../src/controllers/Faq.php';
 require_once '../src/controllers/Message.php';
 require_once '../src/controllers/Forum.php';
 require_once '../src/controllers/Admin.php';
-
-$router->setNoRouteHandler(function($request) {
-    return Response::fromView('404.html');
-});

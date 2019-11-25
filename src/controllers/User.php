@@ -8,6 +8,7 @@ use Testify\Model\Role;
 use Testify\Component\Security;
 use Testify\Component\API;
 use Testify\Component\I18n;
+use Testify\Component\Paginator;
 
 use Testify\Config;
 
@@ -160,19 +161,35 @@ $router->delete('/api/users/<user_id:int>', function($request, $user_id) {
 });
 
 $router->post('/api/contacts/search', function($request) {
+    $errors_arr = array();
     $data = $request->getBody();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
     if(!isset($data['search']))
-        return API::makeResponseError(I18n::getInstance()->translate('API_USER_SEARCH_NO_CRITERIA'), 400);
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_SEARCH_NO_CRITERIA');
+    if(!isset($data['page']) || empty($data['page']))
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOPAGE');
+    if(!isset($data['pageSize']) || empty($data['pageSize']))
+        $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOSIZEPAGE');
+
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
+    }
 
     $search = $data['search'];
-    $contacts = User::getInstance()->findContacts($search, !Role::isUser());
+    $page = $data['page'];
+    $pageSize = $data['pageSize'];
+
+    $paginator = new Paginator($page, $pageSize);
+    $contacts = $paginator->paginate(User::getInstance()->findContacts($search, !Role::isUser()));
 
     return new Response(
-        json_encode(array('contacts' => $contacts))
+        json_encode(array(
+            'contacts' => $contacts['data'],
+            'paginator' => $contacts['paginator']
+        ))
     );
 });
 
