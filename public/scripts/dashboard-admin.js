@@ -119,7 +119,7 @@ function completeEditUser(member_id, email, firstname, lastname) {
         text: data.message
       }).show();
       $('#modal-edit-user').closeModal();
-      searchMember($('#member-search').val());
+      searchMember($('#member-search').val(), 1, contactPageSize, paginatorContacts);
     },
     complete: function() {
       $('#wait-edit-user').hide();
@@ -133,7 +133,7 @@ function deleteUser(user_id) {
     url: `/api/users/${user_id}`,
     dataType: 'json',
     success: function() {
-      searchMember($('#member-search').val());
+      searchMember($('#member-search').val(), 1, contactPageSize, paginatorContacts);
     }
   });
 }

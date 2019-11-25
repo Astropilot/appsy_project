@@ -119,6 +119,7 @@
     "DASHBOARD_MENU_SUBJECTS": "Sujets",
     "DASHBOARD_MENU_EXAMINERS": "Examinateurs",
     "DASHBOARD_MENU_ADMIN": "Administration",
+    "DASHBOARD_MENU_TICKET": "Tickets",
     "DASHBOARD_MENU_FORUM": "Forum",
     "DASHBOARD_MENU_CHAT": "Messagerie",
 
@@ -165,7 +166,7 @@
     "DASHBOARD_FORUMPOST_AUTHOR": "Auteur",
     "DASHBOARD_FORUMPOST_CONTENT": "Message",
     "DASHBOARD_FORUMPOST_CREATEDAT": "Date de création",
-    "DASHBOARD_FORUMPOST_CREATEDAT": "Date de mise à jour",
+    "DASHBOARD_FORUMPOST_UPDATEDAT": "Date de mise à jour",
     "DASHBOARD_FORUMPOST_REPLYBTN": "Répondre",
 
     "DASHBOARD_ADMIN_TITLE": "Administration",

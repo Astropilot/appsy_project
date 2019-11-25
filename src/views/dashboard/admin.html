@@ -352,14 +352,16 @@
 <script type="text/javascript" src="/scripts/dashboard-admin.js" ></script>
 
 <script>
+  var contactPageSize = 5;
+  var paginatorContacts = null;
+
   $(function() {
     var modalNewMember = $('#modal-new-member');
     var modalEditUser = $('#modal-edit-user');
     var modalNewCategory = $('#modal-new-category');
     var modalNewFaq = $('#modal-new-faq');
 
-    var contactPageSize = 5;
-    var paginatorContacts = new Paginator($('#contact-pagination'));
+    paginatorContacts = new Paginator($('#contact-pagination'));
 
     paginatorContacts.setOnPaginateChange(function(page) {
       searchMember($('#member-search').val(), page, contactPageSize, paginatorContacts);

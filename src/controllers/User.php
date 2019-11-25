@@ -201,7 +201,7 @@ $router->get('/api/users/logoff', function($request) {
         unset($_SESSION['role']);
         unset($_SESSION['id']);
         session_destroy();
-        return new Response('');
+        return new Response('', 204);
     }
     else
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_DECONNECT_ERROR'), 500);

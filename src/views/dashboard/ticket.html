@@ -1,0 +1,90 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_TICKET_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_TICKET_TITLE' }}
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/styles/paginator.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid" style="padding-bottom: 60px;">
+  <div class="row justify-content-center">
+    <h2>{{ translate 'DASHBOARD_TICKET_TITLE' }}</h2>
+  </div>
+  <div class="row justify-content-center" id="tickets-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row flex-column justify-content-center align-items-center" id="noticket" style="display: none">
+    <h3>{{ translate 'DASHBOARD_TICKET_NOTICKET' }}</h3>
+  </div>
+  <div class="row" id="tickets-list-row" style="display: none">
+    <table>
+      <thead>
+        <tr>
+          <th width="60%">{{ translate 'DASHBOARD_TICKET_TITLE' }}</th>
+          <th>{{ translate 'DASHBOARD_TICKET_STATUS' }}</th>
+          <th>{{ translate 'DASHBOARD_TICKET_CREATEDAT' }}</th>
+          <th>{{ translate 'DASHBOARD_TICKET_UPDATEDAT' }}</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tickets-list">
+      </tbody>
+    </table>
+  </div>
+  <div class="row justify-content-center paginator" id="tickets-pagination"></div>
+</div>
+
+<table id="ticket-template" class="d-none">
+  <tr>
+    <td width="60%" class="ticket-title"></td>
+    <td class="ticket-status"></td>
+    <td class="ticket-created"></td>
+    <td class="ticket-updated"></td>
+    <td class="ticket-actions">
+      <a href="" class="btn btn-primary btn-sm btn-view-ticket">
+        <i class="fas fa-eye"></i>
+      </a>
+    </td>
+  </tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="/scripts/paginator.js" ></script>
+
+<script type="text/javascript">
+  var ticketPageSize = 10;
+  var paginatorTickets = null;
+
+  $(function() {
+    var url = new URL(window.location.href);
+    var page = url.searchParams.get('page') || 1;
+    paginatorTickets = new Paginator($('#tickets-pagination'));
+
+    paginatorTickets.setOnPaginateChange(function(page) {
+      history.pushState({page: page}, '', '?page=' + page);
+      getUserTickets(page, ticketPageSize, paginatorTickets);
+    });
+
+    window.onpopstate = function(event) {
+      var page = 1;
+      if (event.state !== null)
+        page = event.state.page;
+      getUserTickets(page, ticketPageSize, paginatorTickets);
+    };
+
+    getUserTickets(page, ticketPageSize, paginatorTickets);
+  });
+</script>
+
+{% endblock %}
