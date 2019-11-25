@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+  <head>
+    <title>Testify Dashboard - {% block title %}{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/styles/testify_dashboard.css">
+    <link rel="stylesheet" href="/vendor/noty/noty.css">
+    <link rel="stylesheet" href="/vendor/noty/themes/metroui.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/all.min.css">
+    <link rel="stylesheet" href="/styles/dropdown.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
+
+    {% block styles %}
+    {% endblock %}
+  </head>
+  <body>
+
+    <nav class="side-nav">
+      <a href="/dashboard">
+        <img src="/images/logo_testify.png" width="70px" height="70px">
+      </a>
+
+      <div class="nav-menu" id="home-nav">
+        <div class="nav-element">
+          <a href="/dashboard">
+            <i class="fas fa-home"></i>
+            {{ translate 'DASHBOARD_MENU_ROOT' }}
+          </a>
+        </div>
+        <div class="nav-element" id="wait-nav">
+          <a href="#">
+            <i class="fas fa-circle-notch fa-spin"></i>
+          </a>
+        </div>
+        <div class="nav-element" id="tests-nav" style="display: none">
+          <a href="/dashboard/tests">
+            <i class="fas fa-tasks"></i>
+            {{ translate 'DASHBOARD_MENU_TESTS' }}
+          </a>
+        </div>
+        <div class="nav-element" id="subjects-nav" style="display: none">
+          <a href="/dashboard/subjects">
+            <i class="fas fa-users"></i>
+            {{ translate 'DASHBOARD_MENU_SUBJECTS' }}
+          </a>
+        </div>
+        <div class="nav-element" id="examiners-nav" style="display: none">
+          <a href="/dashboard/examiners">
+            <i class="fas fa-users-cog"></i>
+            {{ translate 'DASHBOARD_MENU_EXAMINERS' }}
+          </a>
+        </div>
+
+        <div class="nav-bottom"></div>
+        <div class="nav-element" id="admin-nav" style="display: none">
+          <a href="/dashboard/admin">
+            <i class="fas fa-user-cog"></i>
+            {{ translate 'DASHBOARD_MENU_ADMIN' }}
+          </a>
+        </div>
+        <div class="nav-element" id="chat-nav">
+          <a href="/dashboard/forum">
+            <i class="fas fa-comments"></i>
+            {{ translate 'DASHBOARD_MENU_FORUM' }}
+          </a>
+        </div>
+        <div class="nav-element" id="chat-nav">
+          <a href="/dashboard/chat">
+            <i class="fas fa-comment-dots"></i>
+            {{ translate 'DASHBOARD_MENU_CHAT' }}
+          </a>
+        </div>
+        <div class="nav-element" id="logout-nav">
+          <a href="#">
+            <i class="fas fa-sign-out-alt"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main">
+      <nav class="header-nav">
+        <h1 id="navtitle">{% block navtitle %}{% endblock %}</h1>
+        <a href="/dashboard/profile" style="margin-right: 15px">
+          <i class="far fa-user-circle fa-2x" style="color: white"></i>
+        </a>
+        <div class="dropdown">
+          <button class="dropbtn">{{ translate 'LANGUAGE_NAME' }} <i class="fas fa-caret-down"></i></button>
+          <div class="dropdown-content">
+            <a href="/fr" class="translation" id-tr="fr">Français</a>
+            <a href="/en" class="translation" id-tr="en">English</a>
+          </div>
+        </div>
+      </nav>
+
+      {% block body %}
+      {% endblock %}
+
+    </div>
+
+    <script type="text/javascript" src="/vendor/jquery/jquery-3.4.1.min.js" ></script>
+    <script type="text/javascript" src="/vendor/noty/noty.min.js" ></script>
+    <script type="text/javascript" src="/scripts/main.js" ></script>
+    <script type="text/javascript" src="/scripts/dashboard.js" ></script>
+
+    <script>
+      $('.dropbtn').on('click', function() {
+        $(this).next().toggleClass('show');
+      });
+
+      $(window).on('click.windowdropdown', function (event) {
+        if (!event.target.matches('.dropbtn')) {
+          $('.dropdown-content').removeClass('show');
+        }
+      });
+    </script>
+
+    {% block scripts %}
+    {% endblock %}
+  </body>
+</html>

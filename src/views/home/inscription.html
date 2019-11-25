@@ -1,0 +1,77 @@
+{% extends 'base_home.html' %}
+
+{% block title %}
+{{ translate 'HOME_REGISTER_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'HOME_REGISTER_TITLE' }}
+{% endblock %}
+
+{% block body %}
+
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+      <h2>{{ translate 'HOME_REGISTER_TITLE' }}</h2>
+    </div>
+    <div class="row justify-content-center" id="invite-wait">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+    <div class="row justify-content-center" id="invite-form" style="display: none">
+      <form class="form">
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="member-email">{{ translate 'HOME_REGISTER_EMAIL' }}</label>
+          <input class="form-field col-8" type="email" name="member-email" id="member-email" readonly>
+        </div>
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="member-lastname">{{ translate 'HOME_REGISTER_LASTNAME' }} <span style="color: red">*</span></label>
+          <input class="form-field col-8" type="text" name="member-lastname" id="member-lastname" required>
+        </div>
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="member-firstname">{{ translate 'HOME_REGISTER_FIRSTNAME' }} <span style="color: red">*</span></label>
+          <input class="form-field col-8" type="text" name="member-firstname" id="member-firstname" required>
+        </div>
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="member-password">{{ translate 'HOME_REGISTER_PASSWORD' }} <span style="color: red">*</span></label>
+          <input class="form-field col-8" type="password" name="member-password" id="member-password" required>
+        </div>
+        <div class="row" style="margin-bottom: 25px">
+          <label class="col-4 col-form-label" for="member-password-check">{{ translate 'HOME_REGISTER_PASSWORDCHECK' }} <span style="color: red">*</span></label>
+          <input class="form-field col-8" type="password" name="member-password-check" id="member-password-check" required>
+        </div>
+        <div class="row justify-content-center">
+          <button type="button" class="btn btn-success" id="btn-register">
+            {{ translate 'HOME_REGISTER_REGISTERBTN' }} <i id="wait-register" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  $(function() {
+    var invite_token = '{{ token }}';
+    var invite_email = '{{ email }}';
+
+    $('#btn-register').on('click', function() {
+      registerMember(
+        invite_token,
+        invite_email,
+        $('#member-firstname').val(),
+        $('#member-lastname').val(),
+        $('#member-password').val(),
+        $('#member-password-check').val()
+      );
+    });
+
+    getInvite(invite_token, invite_email);
+  });
+</script>
+
+{% endblock %}

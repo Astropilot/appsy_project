@@ -1,0 +1,466 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_ADMIN_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_ADMIN_TITLE' }}
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/styles/tabs.css">
+<link rel="stylesheet" href="/styles/paginator.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+  <div class="tab row">
+    <button type="button" class="tablinks" data-tab="user-tab">{{ translate 'DASHBOARD_ADMIN_USERTAB' }}</button>
+    <button type="button" class="tablinks" data-tab="tickets-tab">{{ translate 'DASHBOARD_ADMIN_TICKETSTAB' }}</button>
+    <button type="button" class="tablinks" data-tab="forum-tab">{{ translate 'DASHBOARD_ADMIN_FORUMTAB' }}</button>
+    <button type="button" class="tablinks" data-tab="faq-tab">{{ translate 'DASHBOARD_ADMIN_FAQTAB' }}</button>
+  </div>
+  <div id="user-tab" class="row tabcontent">
+    <div class="d-flex" style="justify-content: end; margin-bottom: 15px">
+      <button type="button" class="btn btn-success btn-sm btn-new-member" style="margin-right: 5px">
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_ADMIN_INVITEBTN' }}
+      </button>
+    </div>
+    <div class="d-flex justify-content-center align-items-center" style="margin-bottom: 15px">
+      <form class="form" style="width: 100%;margin: 0 55px">
+        <input type="text" style="width: 90%;" class="form-field" name="member-search" id="member-search" placeholder="Ex: John Doe">
+        <button type="button" class="btn btn-primary btn-sm" style="margin-left: 5px" id="btn-toggle-filter">
+          {{ translate 'DASHBOARD_ADMIN_FILTERBTN' }}
+        </button>
+      </form>
+    </div>
+    <div class="justify-content-center d-none" id="filters" style="margin-bottom: 15px">
+      <form class="form">
+        <select class="form-field" name="filter-role" id="filter-role" required>
+          <option value="" selected>---</option>
+          <option value="0">Utilisateur</option>
+          <option value="1">Examinateur</option>
+          <option value="2">Administrateur</option>
+         </select>
+         <select class="form-field" name="filter-banned" id="filter-banned" required>
+           <option value="" selected>---</option>
+           <option value="0">Non</option>
+           <option value="1">Oui</option>
+          </select>
+      </form>
+    </div>
+    <div class="d-flex justify-content-center">
+      <table class="mx-auto">
+        <thead>
+          <tr>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_NAME' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_EMAIL' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_ROLE' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_BANNED' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_SEARCH_ACTIONS' }}</th>
+          </tr>
+        </thead>
+        <tbody id="member-list">
+        </tbody>
+      </table>
+    </div>
+    <div class="row justify-content-center" id="wait-search-member" style="margin-top: 15px">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+    <div class="row justify-content-center paginator" id="contact-pagination"></div>
+  </div>
+  <div id="tickets-tab" class="row tabcontent">
+    TODO: A faire !
+  </div>
+  <div id="forum-tab" class="row tabcontent">
+    <div class="row">
+      <div class="offset-10 col-2">
+        <button type="button" class="btn btn-success btn-sm" id="btn-new-category">
+          <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_ADMIN_FORUM_ADDCATEGORYBTN' }}
+        </button>
+      </div>
+    </div>
+    <div class="row justify-content-center" id="forums-wait">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+    <div class="row justify-content-center" id="noforums" style="display: none">
+      <h3>{{ translate 'DASHBOARD_ADMIN_FORUM_NOCATEGORY' }}</h3>
+    </div>
+    <div id="forums">
+    </div>
+  </div>
+  <div id="faq-tab" class="row tabcontent">
+    <div class="row">
+      <div class="offset-10 col-2">
+        <button type="button" class="btn btn-success btn-sm" id="btn-new-faq">
+          <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_ADMIN_FAQ_CREATEBTN'}}
+        </button>
+      </div>
+    </div>
+    <div class="row justify-content-center" id="faq-wait">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+    <div class="row justify-content-center" id="nofaq" style="display: none">
+      <h3>{{ translate 'DASHBOARD_ADMIN_FAQ_NOFAQ' }}</h3>
+    </div>
+    <div id="faq-questions">
+    </div>
+  </div>
+</div>
+
+<div id="modal-new-member" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_INVITE_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="member-email">{{ translate 'DASHBOARD_ADMIN_INVITE_EMAIL' }} <span style="color: red">*</span></label><br>
+            <input type="email" class="form-field col-8" name="member-email" id="member-email" required>
+          </div>
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="member-firstname">{{ translate 'DASHBOARD_ADMIN_INVITE_FIRSTNAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="member-firstname" id="member-firstname" required>
+          </div>
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="member-lastname">{{ translate 'DASHBOARD_ADMIN_INVITE_LASTNAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="member-lastname" id="member-lastname" required>
+          </div>
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="member-role">{{ translate 'DASHBOARD_ADMIN_INVITE_ROLE' }} <span style="color: red">*</span></label><br>
+            <select class="form-field col-8" name="member-role" id="member-role" required>
+              <option value="0" selected>Utilisateur</option>
+              <option value="1">Examinateur</option>
+              <option value="2">Administrateur</option>
+             </select>
+          </div>
+          <div class="row">
+            <label class="col-4 col-form-label" for="mail-lang">{{ translate 'DASHBOARD_ADMIN_INVITE_LANG' }} <span style="color: red">*</span></label><br>
+            <select class="form-field col-8" name="mail-lang" id="mail-lang" required>
+              <option value="en" selected>English</option>
+              <option value="fr">Français</option>
+             </select>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm" id="btn-invite-member">
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_ADMIN_INVITE_ADDBTN' }} <i id="wait-invite-member" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-confirm-edit" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_FASTEDIT_CONFIRM_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-success" id="btn-confirm-edit">
+            <i class="fas fa-check"></i> {{ translate 'DASHBOARD_ADMIN_FASTEDIT_CONFIRMBTN' }}
+          </button>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-danger" id="btn-cancel-edit">
+            <i class="fas fa-ban"></i> {{ translate 'DASHBOARD_ADMIN_FASTEDIT_CANCELBTN' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-edit-user" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_EDIT_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="user-email">{{ translate 'DASHBOARD_ADMIN_EDIT_EMAIL' }} <span style="color: red">*</span></label><br>
+            <input type="email" class="form-field col-8" name="user-email" id="user-email" required>
+          </div>
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="user-firstname">{{ translate 'DASHBOARD_ADMIN_EDIT_FIRSTNAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="user-firstname" id="user-firstname" required>
+          </div>
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="user-lastname">{{ translate 'DASHBOARD_ADMIN_EDIT_LASTNAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="user-lastname" id="user-lastname" required>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm" id="btn-edit-user">
+        <i class="fas fa-edit"></i> {{ translate 'DASHBOARD_ADMIN_EDIT_EDITBTN' }} <i id="wait-edit-user" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-confirm-delete" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_USER_DELETE_CONFIRM_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-success" id="btn-confirm-delete">
+            <i class="fas fa-check"></i> {{ translate 'DASHBOARD_ADMIN_USER_DELETE_CONFIRM_CONFIRM' }}
+          </button>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-danger" id="btn-cancel-delete">
+            <i class="fas fa-ban"></i> {{ translate 'DASHBOARD_ADMIN_USER_DELETE_CONFIRM_CANCEL' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table id="member-template" class="d-none">
+  <tr>
+    <td class="member-name"></td>
+    <td class="member-email"></td>
+    <td class="member-role"></td>
+    <td class="member-banned"></td>
+    <td width="15%">
+      <button class="btn btn-primary btn-sm btn-modify-user">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="btn btn-danger btn-sm btn-delete-user">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </td>
+  </tr>
+</table>
+
+<div id="modal-new-category" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_FORUM_MODAL_NEWCATEGORY_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="category-name">{{ translate 'DASHBOARD_FORUM_MODAL_NAME' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="category-name" id="category-name" placeholder="{{ translate 'DASHBOARD_FORUM_MODAL_NAME_EXAMPLE' }}" required>
+          </div>
+          <div class="row">
+            <label class="col-4 col-form-label" for="category-description">{{ translate 'DASHBOARD_FORUM_MODAL_DESCRIPTION' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="category-description" id="category-description" required>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm" id="btn-create-category">
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_FORUM_MODAL_ADDBTN' }} <i id="wait-creating-category" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="category-first-template" class="row d-none">
+  <h2 class="col-3"><b class="category-title"></b></h2>
+  <h5 class="offset-5 col-2" style="align-self: end; margin-bottom: 0">Posts: <span class="category-posts"></span></h5>
+  <h5 class="col-2" style="align-self: end; margin-bottom: 0"><b class="category-date">${category.updated_at}</b></h5>
+</div>
+<div id="category-second-template" class="row d-none">
+  <div class="col-5 category-description"></div>
+  <button class="btn btn-danger btn-delete-category" style="margin-left: auto; margin-top: auto; margin-bottom: auto;">
+    <i class="fas fa-trash-alt"></i>
+  </button>
+  <div class="d-flex" style="flex-direction: column;">
+    <button class="btn btn-primary btn-move-up">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+    <button class="btn btn-primary btn-move-down">
+      <i class="fas fa-chevron-down"></i>
+    </button>
+  </div>
+</div>
+
+<div id="modal-new-faq" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_NEWFAQ_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row" style="margin-bottom: 10px">
+            <label class="col-4 col-form-label" for="faq-question">{{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_NEWFAQ_QUESTION' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="faq-question" id="faq-question" required>
+          </div>
+          <div class="row">
+            <label class="col-4 col-form-label" for="faq-answer">{{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_NEWFAQ_ANSWER' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="faq-answer" id="faq-answer" required>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm" id="btn-create-faq">
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_NEWFAQ_ADDBTN' }} <i id="wait-creating-faq" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="faq-template" class="d-none" style="margin-bottom: 5px">
+  <div class="row justify-content-center">
+    <h3 style="margin-bottom: 0"></h3>
+  </div>
+  <div class="row justify-content-center">
+    <p style="margin-top: 5px"></p>
+  </div>
+  <div class="row justify-content-center">
+    <button class="btn btn-danger btn-delete-faq">
+      <i class="fas fa-trash-alt"></i> {{ translate 'DASHBOARD_ADMIN_FORUM_MODAL_DELETEFAQ_DELBTN' }}
+    </button>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="/scripts/modal.js" ></script>
+<script type="text/javascript" src="/scripts/tabs.js" ></script>
+<script type="text/javascript" src="/scripts/paginator.js" ></script>
+<script type="text/javascript" src="/scripts/dashboard-admin.js" ></script>
+
+<script>
+  $(function() {
+    var modalNewMember = $('#modal-new-member');
+    var modalEditUser = $('#modal-edit-user');
+    var modalNewCategory = $('#modal-new-category');
+    var modalNewFaq = $('#modal-new-faq');
+
+    var contactPageSize = 5;
+    var paginatorContacts = new Paginator($('#contact-pagination'));
+
+    paginatorContacts.setOnPaginateChange(function(page) {
+      searchMember($('#member-search').val(), page, contactPageSize, paginatorContacts);
+    });
+
+    $("#member-search").bind("input", function () {
+      var that = this;
+      window.clearTimeout($(this).data('timeout'));
+      $(this).data('timeout', setTimeout(function () {
+        searchMember($(that).val(), 1, contactPageSize, paginatorContacts);
+      }, 500));
+    });
+
+    $('#btn-toggle-filter').on('click', function() {
+      $('#filters').toggleClass('d-flex').toggleClass('d-none');
+    });
+
+    $('.btn-new-member').on("click", function() {
+      modalNewMember.showModal();
+    });
+
+    $('#btn-cancel-edit').on('click', function() {
+      var member_id = $('#modal-confirm-edit').data('id');
+      var member_role = $('#modal-confirm-edit').data('role');
+      var member_banned = $('#modal-confirm-edit').data('banned');
+
+      if (member_role && !member_banned) {
+        var default_role = $('tr[data-id="' + member_id + '"]').find('.member-role select').attr('data-default');
+        $('tr[data-id="' + member_id + '"]').find('.member-role option').removeProp('selected');
+        $('tr[data-id=' + member_id + ']').find('.member-role option[value=' + default_role + ']').prop('selected', true);
+      } else {
+        var default_banned = $('tr[data-id="' + member_id + '"]').find('.member-banned select').attr('data-default');
+        $('tr[data-id="' + member_id + '"]').find('.member-banned option').removeProp('selected');
+        $('tr[data-id=' + member_id + ']').find('.member-banned option[value=' + default_banned + ']').prop('selected', true);
+      }
+      $('#modal-confirm-edit').closeModal();
+    });
+
+    $('#btn-confirm-edit').on('click', function() {
+      var member_id = $('#modal-confirm-edit').data('id');
+      var member_role = $('#modal-confirm-edit').data('role');
+      var member_banned = $('#modal-confirm-edit').data('banned');
+
+      if (member_role && !member_banned)
+        fastEditUser(member_id, member_role, null);
+      else
+        fastEditUser(member_id, null, member_banned);
+
+      $('#modal-confirm-edit').closeModal();
+    });
+
+    $('#btn-edit-user').on('click', function() {
+      var member_id = modalEditUser.data('id');
+      var member_email = modalEditUser.find('#user-email').val();
+      var member_firstname = modalEditUser.find('#user-firstname').val();
+      var member_lastname = modalEditUser.find('#user-lastname').val();
+      completeEditUser(member_id, member_email, member_firstname, member_lastname);
+    });
+
+    $('#btn-cancel-delete').on('click', function() {
+      $('#modal-confirm-delete').closeModal();
+    });
+
+    $('#btn-confirm-delete').on('click', function() {
+      var member_id = $('#modal-confirm-delete').data('id');
+
+      $('#modal-confirm-delete').closeModal();
+      deleteUser(member_id);
+    });
+
+    $('#btn-invite-member').on('click', function() {
+      inviteMember(
+        $('#member-email').val(),
+        $('#member-firstname').val(),
+        $('#member-lastname').val(),
+        $('#member-role').val(),
+        $('#mail-lang').val()
+      );
+    });
+
+    $('#btn-new-category').on("click", function() {
+      modalNewCategory.showModal();
+    });
+
+    $('#btn-create-category').on('click', function() {
+      createCategory($('#category-name').val(), $('#category-description').val());
+    });
+
+    $('#btn-new-faq').on("click", function() {
+      modalNewFaq.showModal();
+    });
+
+    $('#btn-create-faq').on('click', function() {
+      createFAQ($('#faq-question').val(), $('#faq-answer').val());
+    });
+
+    searchMember($('#member-search').val(), 1, contactPageSize, paginatorContacts);
+    getCategories();
+    getFAQ();
+
+  });
+</script>
+
+{% endblock %}

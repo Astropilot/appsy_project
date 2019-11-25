@@ -47,6 +47,7 @@ body {
 .side-nav .nav-element {
   margin-bottom: 35px;
   text-align: center;
+  font-size: 0.8rem;
 }
 
 .side-nav .nav-element > a.menu-active {
@@ -85,6 +86,7 @@ body {
   display: flex;
   justify-content: space-between;
   z-index: 1;
+  align-items: center;
 }
 
 .header-nav > h1 {
@@ -167,4 +169,31 @@ footer p {
 .msgZone > textarea {
   width: 80%;
   margin-right: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td,
+table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table tr:hover {
+  background-color: #ddd;
+}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #004e86;
+  color: white;
 }

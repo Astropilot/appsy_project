@@ -1,0 +1,60 @@
+{% extends 'base_home.html' %}
+
+{% block title %}
+{{ translate 'HOME_CONTACT_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'HOME_CONTACT_TITLE' }}
+{% endblock %}
+
+{% block body %}
+
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+      <h2>{{ translate 'HOME_CONTACT_TITLE' }}</h2>
+    </div>
+    <div class="row justify-content-center" id="invite-form">
+      <form class="form">
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="contact-name">{{ translate 'HOME_CONTACT_NAME' }} <span style="color: red">*</span></label>
+          <input class="form-field col-8" type="text" name="contact-name" id="contact-name" required>
+        </div>
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="contact-email">{{ translate 'HOME_CONTACT_EMAIL' }} <span style="color: red">*</span></label>
+          <input class="form-field col-8" type="email" name="contact-email" id="contact-email" required>
+        </div>
+        <div class="row" style="margin-bottom: 15px">
+          <label class="col-4 col-form-label" for="contact-message">{{ translate 'HOME_CONTACT_MESSAGE' }} <span style="color: red">*</span></label>
+          <textarea class="form-field col-8" id="contact-message" name="contact-message"rows="5" cols="33" style="width: 466px" required></textarea>
+        </div>
+        <div class="row justify-content-center">
+          <button type="button" class="btn btn-success" id="btn-contact">
+            {{ translate 'HOME_CONTACT_SENDBTN' }} <i id="wait-contact" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  $(function() {
+
+    $('#btn-contact').on('click', function() {
+      sendContact(
+        $('#contact-name').val(),
+        $('#contact-email').val(),
+        $('#contact-message').val()
+      );
+    });
+
+  });
+</script>
+
+{% endblock %}

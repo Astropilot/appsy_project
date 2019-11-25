@@ -1,0 +1,134 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_FORUMCATEGORY_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_FORUMCATEGORY_TITLE' }}
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/styles/paginator.css">
+<link rel="stylesheet" href="/styles/wysiwyg.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid" style="padding-bottom: 60px;">
+  <div class="row justify-content-center">
+    <h2>{{ translate 'DASHBOARD_FORUMCATEGORY_TITLE' }} - <span id="category"></span></h2>
+  </div>
+  <div class="row" style="justify-content: end; margin-bottom: 15px">
+    <button type="button" class="btn btn-primary btn-sm btn-new-post" style="margin-right: 5px">
+      {{ translate 'DASHBOARD_FORUMCATEGORY_NEWPOSTBTN' }}
+    </button>
+  </div>
+  <div class="row justify-content-center" id="posts-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row flex-column justify-content-center align-items-center" id="nopost" style="display: none">
+    <h3>{{ translate 'DASHBOARD_FORUMCATEGORY_NOPOST' }}</h3>
+    <div class="row">
+      <button type="button" class="btn btn-primary btn-new-post">
+        {{ translate 'DASHBOARD_FORUMCATEGORY_NEWFIRSTPOSTBTN' }}
+      </button>
+    </div>
+  </div>
+  <div class="row" id="post-list-row" style="display: none">
+    <table>
+      <thead>
+        <tr>
+          <th width="70%">{{ translate 'DASHBOARD_FORUMCATEGORY_SUBJECT' }}</th>
+          <th>{{ translate 'DASHBOARD_FORUMCATEGORY_LASTMESSAGE' }}</th>
+          <th>{{ translate 'DASHBOARD_FORUMCATEGORY_COUNT' }}</th>
+        </tr>
+      </thead>
+      <tbody id="post-list">
+      </tbody>
+    </table>
+  </div>
+  <div class="row justify-content-center paginator" id="posts-pagination"></div>
+</div>
+
+<div id="modal-new-post" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_FORUMCATEGORY_POSTMODAL_MAINTITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row">
+            <label class="col-4 col-form-label" for="post-title">{{ translate 'DASHBOARD_FORUMCATEGORY_POSTMODAL_TITLE' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="post-title" id="post-title" required>
+          </div>
+          <div style="margin-top: 15px">
+            <div class="wysiwyg"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm" id="btn-create-post">
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_FORUMCATEGORY_POSTMODAL_ADDBTN' }} <i id="wait-creating-post" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<table id="post-template" class="d-none">
+  <tr>
+    <td class="post-title"></td>
+    <td class="post-updated"></td>
+    <td class="post-count"></td>
+  </tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="/scripts/modal.js" ></script>
+<script type="text/javascript" src="/scripts/paginator.js" ></script>
+<script type="text/javascript" src="/scripts/wysiwyg.js" ></script>
+
+<script type="text/javascript">
+  var postPageSize = 15;
+  var paginatorPosts = null;
+
+  $(function() {
+    var category_id = {{ category_id }};
+
+    var url = new URL(window.location.href);
+    var page = url.searchParams.get('page') || 1;
+    paginatorPosts = new Paginator($('#posts-pagination'));
+    var modal = $('#modal-new-post');
+
+    paginatorPosts.setOnPaginateChange(function(page) {
+      history.pushState({page: page}, '', '?page=' + page);
+      getPosts(category_id, page, postPageSize, paginatorPosts);
+    });
+
+    window.onpopstate = function(event) {
+      var page = 1;
+      if (event.state !== null)
+        page = event.state.page;
+      getPosts(category_id, page, postPageSize, paginatorPosts);
+    };
+
+    getPosts(category_id, page, postPageSize, paginatorPosts);
+
+    $('.btn-new-post').on("click", function() {
+      modal.showModal();
+    });
+
+    $('#btn-create-post').on('click', function() {
+      createPost(category_id, $('#post-title').val(), $('.wysiwyg .editor').html());
+    });
+  });
+</script>
+
+{% endblock %}

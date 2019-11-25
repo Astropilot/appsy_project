@@ -1,0 +1,89 @@
+.editor {
+  box-shadow: 0 0 2px #ccc;
+  min-height: 150px;
+  overflow: auto;
+  padding: 1em;
+  margin-top: 20px;
+  resize: vertical;
+  outline: none;
+}
+
+.toolbar {
+  text-align: center;
+}
+
+.toolbar button,
+.fore-wrapper {
+  border: 1px solid #aaa;
+  background: #fff;
+  border-radius: 1px;
+  color: black;
+  padding: 5px;
+  margin: -2px;
+  margin-top: 10px;
+  display: inline-block;
+  text-decoration: none;
+  box-shadow: 0 1px 0 #ccc;
+}
+
+.toolbar button:hover,
+.fore-wrapper:hover {
+  background: #f2f2f2;
+  border-color: #8c8c8c;
+}
+
+button[data-command='redo'],
+button[data-command='strikeThrough'],
+button[data-command='justifyFull'],
+button[data-command='insertOrderedList'],
+button[data-command='unlink'] {
+  margin-right: 5px;
+  border-radius: 0 3px 3px 0;
+}
+
+button[data-command='undo'],
+.fore-wrapper,
+button[data-command='justifyLeft'],
+button[data-command='insertUnorderedList'],
+button[data-command='h1'] {
+  border-radius: 3px 0 0 3px;
+}
+
+button.palette-item {
+  height: 1em;
+  border-radius: 3px;
+  margin: 2px;
+  width: 1em;
+  border: 1px solid #ccc;
+}
+
+button.palette-item:hover {
+  border: 1px solid #ccc;
+  box-shadow: 0 0 3px #333;
+}
+
+.fore-palette {
+  display: none;
+}
+
+.fore-wrapper {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.fore-wrapper:hover .fore-palette {
+  display: block;
+  float: left;
+  position: absolute;
+  padding: 3px;
+  width: 160px;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 5px #ccc;
+  height: 70px;
+}
+
+.fore-palette button {
+  background: #fff;
+  margin-bottom: 2px;
+}

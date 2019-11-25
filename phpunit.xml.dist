@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    bootstrap="app/autoload.php">
+
+    <testsuites>
+        <testsuite name="Test Source">
+            <directory suffix=".php">./tests/src</directory>
+        </testsuite>
+
+        <testsuite name="Test App">
+            <directory suffix=".php">./tests/app</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./app</directory>
+            <directory suffix=".php">./src/models</directory>
+        </whitelist>
+    </filter>
+</phpunit>
