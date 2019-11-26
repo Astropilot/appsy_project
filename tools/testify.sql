@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  jeu. 21 nov. 2019 à 15:31
+-- Généré le :  mar. 26 nov. 2019 à 14:51
 -- Version du serveur :  10.4.8-MariaDB
 -- Version de PHP :  7.3.11
 
@@ -100,6 +100,20 @@ CREATE TABLE `tf_ticket` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `tf_ticket_comment`
+--
+
+CREATE TABLE `tf_ticket_comment` (
+  `id` int(11) NOT NULL,
+  `author` int(11) NOT NULL,
+  `content` text NOT NULL,
+  `ticket` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `tf_user`
 --
 
@@ -180,6 +194,14 @@ ALTER TABLE `tf_ticket`
   ADD KEY `FK_ticket_user` (`author`);
 
 --
+-- Index pour la table `tf_ticket_comment`
+--
+ALTER TABLE `tf_ticket_comment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_ticket_comment_ticket` (`ticket`),
+  ADD KEY `fk_ticket_comment_user` (`author`);
+
+--
 -- Index pour la table `tf_user`
 --
 ALTER TABLE `tf_user`
@@ -201,31 +223,37 @@ ALTER TABLE `tf_user_invited`
 -- AUTO_INCREMENT pour la table `tf_faq`
 --
 ALTER TABLE `tf_faq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `tf_forum_category`
 --
 ALTER TABLE `tf_forum_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `tf_forum_post`
 --
 ALTER TABLE `tf_forum_post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `tf_message`
 --
 ALTER TABLE `tf_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pour la table `tf_ticket`
 --
 ALTER TABLE `tf_ticket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `tf_ticket_comment`
+--
+ALTER TABLE `tf_ticket_comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `tf_user`
@@ -237,7 +265,7 @@ ALTER TABLE `tf_user`
 -- AUTO_INCREMENT pour la table `tf_user_invited`
 --
 ALTER TABLE `tf_user_invited`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Contraintes pour les tables déchargées
@@ -263,6 +291,13 @@ ALTER TABLE `tf_message`
 --
 ALTER TABLE `tf_ticket`
   ADD CONSTRAINT `FK_ticket_user` FOREIGN KEY (`author`) REFERENCES `tf_user` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `tf_ticket_comment`
+--
+ALTER TABLE `tf_ticket_comment`
+  ADD CONSTRAINT `fk_ticket_comment_ticket` FOREIGN KEY (`ticket`) REFERENCES `tf_ticket` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_ticket_comment_user` FOREIGN KEY (`author`) REFERENCES `tf_user` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
