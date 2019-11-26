@@ -10,6 +10,7 @@
 
 {% block styles %}
 <link rel="stylesheet" href="/styles/paginator.css">
+<link rel="stylesheet" href="/styles/wysiwyg.css">
 {% endblock %}
 
 {% block body %}
@@ -17,6 +18,11 @@
 <div class="container-fluid" style="padding-bottom: 60px;">
   <div class="row justify-content-center">
     <h2>{{ translate 'DASHBOARD_TICKETS_TITLE' }}</h2>
+  </div>
+  <div class="row" style="justify-content: end; margin-bottom: 15px">
+    <button type="button" class="btn btn-primary btn-sm btn-new-ticket" style="margin-right: 5px">
+      {{ translate 'DASHBOARD_TICKETS_NEWBTN' }}
+    </button>
   </div>
   <div class="row justify-content-center" id="tickets-wait">
     <i class="fas fa-circle-notch fa-spin fa-2x"></i>
@@ -56,11 +62,40 @@
   </tr>
 </table>
 
+<div id="modal-new-ticket" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_TICKETS_MODAL_MAINTITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="row">
+            <label class="col-4 col-form-label" for="ticket-title">{{ translate 'DASHBOARD_TICKETS_MODAL_TITLE' }} <span style="color: red">*</span></label><br>
+            <input type="text" class="form-field col-8" name="ticket-title" id="ticket-title" required>
+          </div>
+          <div style="margin-top: 15px">
+            <div class="wysiwyg"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-success btn-sm" id="btn-create-ticket">
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_TICKETS_MODAL_ADDBTN' }} <i id="wait-creating-ticket" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
 
+<script type="text/javascript" src="/scripts/modal.js" ></script>
 <script type="text/javascript" src="/scripts/paginator.js" ></script>
+<script type="text/javascript" src="/scripts/wysiwyg.js" ></script>
 
 <script type="text/javascript">
   var ticketPageSize = 10;
@@ -70,6 +105,7 @@
     var url = new URL(window.location.href);
     var page = url.searchParams.get('page') || 1;
     paginatorTickets = new Paginator($('#tickets-pagination'));
+    var modal = $('#modal-new-ticket');
 
     paginatorTickets.setOnPaginateChange(function(page) {
       history.pushState({page: page}, '', '?page=' + page);
@@ -82,6 +118,14 @@
         page = event.state.page;
       getUserTickets(page, ticketPageSize, paginatorTickets);
     };
+
+    $('.btn-new-ticket').on("click", function() {
+      modal.showModal();
+    });
+
+    $('#btn-create-ticket').on('click', function() {
+      createTicket($('#ticket-title').val(), $('.wysiwyg .editor').html());
+    });
 
     getUserTickets(page, ticketPageSize, paginatorTickets);
   });

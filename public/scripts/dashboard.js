@@ -485,6 +485,7 @@ function getTicketComments(ticket_id, page, pageSize, paginator) {
     success: function(data) {
       $('#comments-list').empty();
       $('#ticket-title').text(data.ticket.title).find('i').hide();
+      $('#ticket-content').html($.parseHTML(data.ticket.content));
       if (data.comments.length == 0) {
         $('#nocomment').show();
         return;
@@ -493,7 +494,7 @@ function getTicketComments(ticket_id, page, pageSize, paginator) {
         var comment_template = $('#comment-template tr').clone().removeClass('d-none');
 
         comment_template.find('.comment-author').text(`${comment.author.firstname} ${comment.author.lastname}`);
-        comment_template.find('.comment-content').text(comment.content);
+        comment_template.find('.comment-content').text($.parseHTML(comment.content));
         comment_template.find('.comment-created').text(comment.created_at);
 
         $('#comments-list').append(
@@ -509,6 +510,25 @@ function getTicketComments(ticket_id, page, pageSize, paginator) {
     },
     complete: function() {
       $('#comments-wait').hide();
+    }
+  });
+}
+
+function createTicket(title, content) {
+  var user = JSON.parse(localStorage.getItem('user'));
+  $('#wait-creating-ticket').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/api/users/${user.id}/tickets`,
+    data: {title: title, content: content},
+    dataType: 'json',
+    success: function(data) {
+      $('#modal-new-ticket').closeModal();
+      getUserTickets(1, ticketPageSize, paginatorTickets);
+    },
+    complete: function() {
+      $('#wait-creating-ticket').hide();
     }
   });
 }

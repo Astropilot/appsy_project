@@ -46,7 +46,10 @@ class Ticket {
         $req->execute(array(
             'id' => $ticket_id
         ));
-        return ($req->fetch());
+        $ticket = $req->fetch();
+        if($ticket)
+            $ticket['content'] = html_entity_decode($ticket['content']);
+        return ($ticket);
     }
 
     public function getTicketComments($ticket) : array {
@@ -61,9 +64,26 @@ class Ticket {
         while ($row = $req->fetch()) {
             $row['ticket'] = $ticket;
             $row['author'] = User::getInstance()->getUser($row['author']);
+            $row['content'] = html_entity_decode($row['content']);
             array_push($comments, $row);
         }
 
         return ($comments);
+    }
+
+    public function createTicket($author, $title, $content, $status) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "INSERT INTO tf_ticket
+             SET `author`=:author, `title`=:title, `content`=:content, `status`=:status, `updated_at`=NOW()"
+        );
+        $req->execute(array(
+            'author' => $author,
+            'title' => $title,
+            'content' => $content,
+            "status" => $status
+        ));
+
+        $ticket_id = Database::getInstance()->getPDO()->lastInsertId();
+        return self::getTicket($ticket_id);
     }
 }

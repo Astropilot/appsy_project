@@ -49,6 +49,36 @@ $router->get('/api/users/<user_id:int>/tickets', function($request, $user_id) {
     );
 });
 
+$router->post('/api/users/<user_id:int>/tickets', function($request, $user_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+
+    $errors_arr=array();
+    $data = $request->getBody();
+
+    if(!isset($data['title']) || empty($data['title']))
+        $errors_arr[] = I18n::getInstance()->translate('API_TICKETS_NO_NAME_GIVEN');
+    if(!isset($data['content']) || empty($data['content']))
+        $errors_arr[] = I18n::getInstance()->translate('API_TICKETS_NO_DESCRIPTION_GIVEN');
+
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
+    }
+
+    $title = $data['title'];
+    $content = $data['content'];
+
+    $ticket = Ticket::getInstance()->createTicket($user_id, $title, $content, 0);
+    if($ticket) {
+        return new Response(
+            json_encode(array('ticket' => $ticket)),
+            201
+        );
+    } else {
+        return API::makeResponseError(I18n::getInstance()->translate('API_TICKETS_CREATE_ERROR'), 500);
+    }
+});
+
 $router->get('/api/tickets/<ticket_id:int>/comments', function($request, $ticket_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
