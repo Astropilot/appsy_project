@@ -37,4 +37,33 @@ class Ticket {
 
         return ($tickets);
     }
+
+    public function getTicket($ticket_id) {
+        $req = Database::getInstance()->getPDO()->prepare(
+            "SELECT * FROM tf_ticket WHERE `id`=:id"
+        );
+
+        $req->execute(array(
+            'id' => $ticket_id
+        ));
+        return ($req->fetch());
+    }
+
+    public function getTicketComments($ticket) : array {
+        $comments = array();
+        $req = Database::getInstance()->getPDO()->prepare(
+            "SELECT * FROM tf_ticket_comment WHERE `ticket`=:id"
+        );
+        $req->execute(array(
+            'id' => $ticket['id']
+        ));
+
+        while ($row = $req->fetch()) {
+            $row['ticket'] = $ticket;
+            $row['author'] = User::getInstance()->getUser($row['author']);
+            array_push($comments, $row);
+        }
+
+        return ($comments);
+    }
 }

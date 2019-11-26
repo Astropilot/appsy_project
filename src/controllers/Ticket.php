@@ -48,3 +48,38 @@ $router->get('/api/users/<user_id:int>/tickets', function($request, $user_id) {
         ))
     );
 });
+
+$router->get('/api/tickets/<ticket_id:int>/comments', function($request, $ticket_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+
+    $errors_arr=array();
+    $data = $request->getBody();
+
+    if(!isset($data['page']) || empty($data['page']))
+        $errors_arr[] = I18n::getInstance()->translate('API_TICKET_NOPAGE');
+    if(!isset($data['pageSize']) || empty($data['pageSize']))
+        $errors_arr[] = I18n::getInstance()->translate('API_TICKET_NOSIZEPAGE');
+
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
+    }
+
+    $ticket = Ticket::getInstance()->getTicket($ticket_id);
+    if(!$ticket) {
+        return API::makeResponseError(I18n::getInstance()->translate('API_TICKET_NOT_FOUND'), 404);
+    }
+
+    $page = $data['page'];
+    $pageSize = $data['pageSize'];
+
+    $paginator = new Paginator($page, $pageSize);
+    $comments = $paginator->paginate(Ticket::getInstance()->getTicketComments($ticket));
+    return new Response(
+        json_encode(array(
+            'ticket' => $ticket,
+            'comments' => $comments['data'],
+            'paginator' => $comments['paginator']
+        ))
+    );
+});

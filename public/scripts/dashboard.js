@@ -435,13 +435,13 @@ function deletePost(post_id) {
   });
 }
 
-function getUserTickets(ticketPage, ticketPageSize, paginator) {
+function getUserTickets(page, pageSize, paginator) {
   var user = JSON.parse(localStorage.getItem('user'));
 
   $('#tickets-wait').show();
   $.ajax({
     type: 'GET',
-    url: '/api/users/' + user.id + '/tickets?page=' + ticketPage + '&pageSize=' + ticketPageSize,
+    url: '/api/users/' + user.id + '/tickets?page=' + page + '&pageSize=' + pageSize,
     dataType: 'json',
     success: function(data) {
       $('#tickets-list').empty();
@@ -457,7 +457,7 @@ function getUserTickets(ticketPage, ticketPageSize, paginator) {
         ticket_template.find('.ticket-status').text(TICKET_STATUS[ticket.status]);
         ticket_template.find('.ticket-created').text(ticket.created_at);
         ticket_template.find('.ticket-updated').text(ticket.updated_at);
-        ticket_template.find('.btn-view-ticket').attr('href', `/dashboard/tickets/${ticket.id}`);
+        ticket_template.find('.btn-view-ticket').attr('href', `/dashboard/ticket/${ticket.id}`);
 
         $('#tickets-list').append(
           ticket_template
@@ -472,6 +472,43 @@ function getUserTickets(ticketPage, ticketPageSize, paginator) {
     },
     complete: function() {
       $('#tickets-wait').hide();
+    }
+  });
+}
+
+function getTicketComments(ticket_id, page, pageSize, paginator) {
+  $('#comments-wait').show();
+  $.ajax({
+    type: 'GET',
+    url: '/api/tickets/' + ticket_id + '/comments?page=' + page + '&pageSize=' + pageSize,
+    dataType: 'json',
+    success: function(data) {
+      $('#comments-list').empty();
+      $('#ticket-title').text(data.ticket.title).find('i').hide();
+      if (data.comments.length == 0) {
+        $('#nocomment').show();
+        return;
+      }
+      data.comments.forEach(function(comment) {
+        var comment_template = $('#comment-template tr').clone().removeClass('d-none');
+
+        comment_template.find('.comment-author').text(`${comment.author.firstname} ${comment.author.lastname}`);
+        comment_template.find('.comment-content').text(comment.content);
+        comment_template.find('.comment-created').text(comment.created_at);
+
+        $('#comments-list').append(
+          comment_template
+        );
+      });
+      $('#comments-list-row').show();
+      paginator.paginate(
+        data.paginator.page,
+        data.paginator.pageSize,
+        data.paginator.total
+      );
+    },
+    complete: function() {
+      $('#comments-wait').hide();
     }
   });
 }
