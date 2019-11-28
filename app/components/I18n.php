@@ -40,7 +40,7 @@ class I18n {
 
                 preg_match_all(
                     '~([\w-]+)(?:[^,\d]+([\d.]+))?~',
-                    strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]),
+                    strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']),
                     $matches,
                     PREG_SET_ORDER
                 );

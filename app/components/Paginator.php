@@ -18,12 +18,12 @@ class Paginator {
         $seriePaginate = array_slice($serie, $startIndex, $this->pageSize);
 
         return array(
-            "paginator" => array(
-                "page" => $this->page,
-                "pageSize" => $this->pageSize,
-                "total" => $serieLength
+            'paginator' => array(
+                'page' => $this->page,
+                'pageSize' => $this->pageSize,
+                'total' => $serieLength
             ),
-            "data" => $seriePaginate,
+            'data' => $seriePaginate,
         );
     }
 }

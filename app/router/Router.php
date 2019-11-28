@@ -10,10 +10,10 @@ class Router {
 
     private $request;
     private $supportedHttpMethods = array(
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE"
+        'GET',
+        'POST',
+        'PUT',
+        'DELETE'
     );
 
     private function __construct(IRequest $request) {
@@ -21,7 +21,7 @@ class Router {
 
         $this->get('/404', function($request) {
             return new Response(
-                "404: Page not found!",
+                '404: Page not found!',
                 404
             );
         });
@@ -30,7 +30,7 @@ class Router {
     protected function __clone() { }
 
     public function __wakeup() {
-        throw new \Exception("Cannot unserialize a singleton.");
+        throw new \Exception('Cannot unserialize a singleton.');
     }
 
     function __call($method, $args) {
@@ -81,7 +81,7 @@ class Router {
                 }
                 $response = call_user_func_array($handler, $values);
                 if (!($response instanceof \Testify\Router\Response))
-                    throw new \Exception("The controller response need to be a Response object!");
+                    throw new \Exception('The controller response need to be a Response object!');
 
                 http_response_code($response->getHttpCode());
                 echo $response->getContent();
