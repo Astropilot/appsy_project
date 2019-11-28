@@ -38,22 +38,24 @@ class I18n {
                 $path_file = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'langs' . DIRECTORY_SEPARATOR;
                 $langs = array();
 
-                preg_match_all(
-                    '~([\w-]+)(?:[^,\d]+([\d.]+))?~',
-                    strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']),
-                    $matches,
-                    PREG_SET_ORDER
-                );
-                foreach($matches as $match) {
-                    list($a, $b) = explode('-', $match[1]) + array('', '');
-                    $value = isset($match[2]) ? (float) $match[2] : 1.0;
+                if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+                    preg_match_all(
+                        '~([\w-]+)(?:[^,\d]+([\d.]+))?~',
+                        strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']),
+                        $matches,
+                        PREG_SET_ORDER
+                    );
+                    foreach($matches as $match) {
+                        list($a, $b) = explode('-', $match[1]) + array('', '');
+                        $value = isset($match[2]) ? (float) $match[2] : 1.0;
 
-                    if (file_exists($path_file . $match[1] . '.json')) {
-                        $langs[$match[1]] = $value;
-                        continue;
+                        if (file_exists($path_file . $match[1] . '.json')) {
+                            $langs[$match[1]] = $value;
+                            continue;
+                        }
+                        if (file_exists($path_file . $a . '.json'))
+                            $langs[$a] = $value - 0.1;
                     }
-                    if (file_exists($path_file . $a . '.json'))
-                        $langs[$a] = $value - 0.1;
                 }
                 if ($langs) {
                     arsort($langs);

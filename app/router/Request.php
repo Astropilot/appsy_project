@@ -18,17 +18,6 @@ class Request implements IRequest {
         $this->requestUri = $_SERVER['REQUEST_URI'];
     }
 
-    private function toCamelCase($string) {
-        $result = strtolower($string);
-
-        preg_match_all('/_[a-z]/', $result, $matches);
-        foreach($matches[0] as $match) {
-            $c = str_replace('_', '', strtoupper($match));
-            $result = str_replace($match, $c, $result);
-        }
-        return $result;
-    }
-
     public function getBody() {
         $body = array();
         if($this->requestMethod === 'GET') {
