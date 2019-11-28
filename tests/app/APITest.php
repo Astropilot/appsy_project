@@ -8,10 +8,7 @@ use Testify\Router\Response;
 
 class APITest extends TestCase {
 
-    /**
-     * @runInSeparateProcess
-     */
-    public function testAPIHeaders() {
+    /*public function testAPIHeaders() {
         API::setAPIHeaders();
 
         $headers = xdebug_get_headers();
@@ -21,7 +18,7 @@ class APITest extends TestCase {
         $this->assertContains('Access-Control-Allow-Methods: GET, POST, PUT, DELETE', $headers);
         $this->assertContains('Access-Control-Max-Age: 3600', $headers);
         $this->assertContains('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With', $headers);
-    }
+    }*/
 
     public function testSimpleResponseError() {
         $response = API::makeResponseError('Resource not found!', 404);
