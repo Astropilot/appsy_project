@@ -147,8 +147,10 @@ class I18n {
 
         if (!file_exists($cache_file)) {
             $this->notCached = true;
-            file_put_contents($cache_file, '<?php $strings='.
-                var_export(json_decode(file_get_contents($lang_file)), true).';', LOCK_EX);
+            $cache_content = '<?php $strings='.var_export(json_decode(file_get_contents($lang_file)), true).';';
+            // Fixing wrong exporting in PHP Version < 7.3
+            $cache_content = str_replace('stdClass::__set_state', '(object)', $cache_content);
+            file_put_contents($cache_file, $cache_content, LOCK_EX);
         }
     }
 
