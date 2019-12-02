@@ -32,7 +32,7 @@ $router->get('/api/users/<user_id:int>/tickets', function($request, $user_id) {
     }
 
     $user = User::getInstance()->getUser($user_id);
-    if(!$user) {
+    if($user === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
     }
 
@@ -40,7 +40,12 @@ $router->get('/api/users/<user_id:int>/tickets', function($request, $user_id) {
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $tickets = $paginator->paginate(Ticket::getInstance()->getTicketsFromUser($user));
+    $tickets = Ticket::getInstance()->getTicketsFromUser($user);
+    if ($tickets === FALSE)
+        return API::makeResponseError(I18n::getInstance()->translate('API_TICKET_GET_TICKETS_ERROR'), 500);
+
+    $tickets = $paginator->paginate($tickets);
+
     return new Response(
         json_encode(array(
             'tickets' => $tickets['data'],
@@ -69,14 +74,13 @@ $router->post('/api/users/<user_id:int>/tickets', function($request, $user_id) {
     $content = $data['content'];
 
     $ticket = Ticket::getInstance()->createTicket($user_id, $title, $content, 0);
-    if($ticket) {
-        return new Response(
-            json_encode(array('ticket' => $ticket)),
-            201
-        );
-    } else {
+    if($ticket === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_TICKETS_CREATE_ERROR'), 500);
-    }
+
+    return new Response(
+        json_encode(array('ticket' => $ticket)),
+        201
+    );
 });
 
 $router->get('/api/tickets/<ticket_id:int>/comments', function($request, $ticket_id) {
@@ -96,7 +100,7 @@ $router->get('/api/tickets/<ticket_id:int>/comments', function($request, $ticket
     }
 
     $ticket = Ticket::getInstance()->getTicket($ticket_id);
-    if(!$ticket) {
+    if($ticket === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_TICKET_NOT_FOUND'), 404);
     }
 
@@ -104,7 +108,12 @@ $router->get('/api/tickets/<ticket_id:int>/comments', function($request, $ticket
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $comments = $paginator->paginate(Ticket::getInstance()->getTicketComments($ticket));
+    $comments = Ticket::getInstance()->getTicketComments($ticket);
+    if ($comments === FALSE)
+        return API::makeResponseError(I18n::getInstance()->translate('API_TICKET_GET_COMMENTS_ERROR'), 500);
+
+    $comments = $paginator->paginate($comments);
+
     return new Response(
         json_encode(array(
             'ticket' => $ticket,
