@@ -21,7 +21,10 @@ li a {
 }
 
 .btn-group-1 li a {
+  background-color:red;
   color: inherit;
+  padding: 2px 40px 2px 40px;
+  margin-top: 0px ;
 }
 
 .btn-group-1 li:hover {
@@ -51,6 +54,7 @@ li a {
   text-align: center;
   font-size: 16px;
   padding: 5px 0 5px 0;
+  border: 1px solid #004e86;
 }
 
 .btn-group-2 li a {
@@ -67,5 +71,5 @@ li a {
 /* Rajoute un effet dynamique d'enfoncement lorsque le bouton est pressé */
 .btn-group-1 li:active,
 .btn-group-2 li:active {
-  transform: translateY(4px);
+  transform: translateY(2px);
 }
