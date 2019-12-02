@@ -3,7 +3,6 @@
 namespace Testify\Router;
 
 use Testify\Component\I18n;
-use Testify\Component\Arrays;
 
 class Router {
 
@@ -11,10 +10,10 @@ class Router {
 
     private $request;
     private $supportedHttpMethods = array(
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE"
+        'GET',
+        'POST',
+        'PUT',
+        'DELETE'
     );
 
     private function __construct(IRequest $request) {
@@ -22,7 +21,7 @@ class Router {
 
         $this->get('/404', function($request) {
             return new Response(
-                "404: Page not found!",
+                '404: Page not found!',
                 404
             );
         });
@@ -31,15 +30,15 @@ class Router {
     protected function __clone() { }
 
     public function __wakeup() {
-        throw new \Exception("Cannot unserialize a singleton.");
+        throw new \Exception('Cannot unserialize a singleton.');
     }
 
-    function __call($name, $args) {
-        list($route, $method) = $args;
-        if(!in_array(strtoupper($name), $this->supportedHttpMethods)) {
+    function __call($method, $args) {
+        list($route, $handler) = $args;
+        if(!in_array(strtoupper($method), $this->supportedHttpMethods)) {
             $this->invalidMethodHandler();
         }
-        $this->{strtolower($name)}[$this->formatRoute($route)] = $method;
+        $this->{strtolower($method)}[$this->formatRoute($route)] = $handler;
     }
 
     private function formatRoute($route) {
@@ -58,30 +57,31 @@ class Router {
     }
 
     private function resolve() {
-        $methodsList = array();
+        $routesList = array();
         if (property_exists($this, strtolower($this->request->requestMethod)))
-            $methodsList = $this->{strtolower($this->request->requestMethod)};
+            $routesList = $this->{strtolower($this->request->requestMethod)};
         $formatedRoute = parse_url($this->request->requestUri, PHP_URL_PATH);
         $formatedRoute = $this->formatRoute($formatedRoute);
         $formatedRoute = I18n::getInstance()->setLangFromURL($formatedRoute);
 
-        foreach ($methodsList as $route => $method) {
+        foreach ($routesList as $route => $handler) {
 
             $route_cmp = preg_replace('/\<[a-z_]+:int\>/i', '([0-9]+)', $route);
             $route_cmp = preg_replace('/\<[a-z_]+:str\>/i', '(.+)', $route_cmp);
             $route_cmp = str_replace('/', '\/', $route_cmp);
             $route_cmp = str_replace('?', '\?', $route_cmp);
 
-            $values = array();
             if (preg_match('/^' . $route_cmp . '$/i', $formatedRoute, $matches)) {
+                $values = array();
+
                 array_shift($matches);
                 array_push($values, $this->request);
                 foreach ($matches as $value) {
                     array_push($values, $value);
                 }
-                $response = call_user_func_array($method, $values);
+                $response = call_user_func_array($handler, $values);
                 if (!($response instanceof \Testify\Router\Response))
-                    throw new \Exception("The controller response need to be a Response object!");
+                    throw new \Exception('The controller response need to be a Response object!');
 
                 http_response_code($response->getHttpCode());
                 echo $response->getContent();

@@ -27,7 +27,7 @@ class Mail {
             $mail->IsSMTP();
             $mail->Host       = $this->sender['smtp_host'];
             $mail->SMTPAuth   = true;
-            $mail->SMTPSecure = "tls";
+            $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
             $mail->SMTPOptions = array(
                 'ssl' => array(

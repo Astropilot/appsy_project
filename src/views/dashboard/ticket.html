@@ -1,0 +1,76 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_TICKET_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_TICKET_TITLE' }}
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/styles/paginator.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid" style="padding-bottom: 60px;">
+  <div class="row justify-content-center">
+    <h2>{{ translate 'DASHBOARD_TICKET_TITLE' }} - <span id="ticket-title"><i class="fas fa-circle-notch fa-spin fa-2x"></i></span></h2>
+  </div>
+  <div class="row justify-content-center" id="comments-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row flex-column justify-content-center align-items-center" id="ticket-content">
+    <h4></h4>
+  </div>
+  <div class="row flex-column justify-content-center align-items-center" id="nocomment" style="display: none">
+    <h3>{{ translate 'DASHBOARD_TICKET_NOCOMMENT' }}</h3>
+  </div>
+  <div class="row" id="comments-list-row" style="display: none">
+    <table>
+      <thead>
+        <tr>
+          <th>{{ translate 'DASHBOARD_TICKET_COMMENT_AUTHOR' }}</th>
+          <th width="60%">{{ translate 'DASHBOARD_TICKET_COMMENT_CONTENT' }}</th>
+          <th>{{ translate 'DASHBOARD_TICKET_COMMENT_CREATEDAT' }}</th>
+        </tr>
+      </thead>
+      <tbody id="comments-list">
+      </tbody>
+    </table>
+  </div>
+  <div class="row justify-content-center paginator" id="comments-pagination"></div>
+</div>
+
+<table id="comment-template" class="d-none">
+  <tr>
+    <td class="comment-author"></td>
+    <td width="60%" class="comment-content"></td>
+    <td class="comment-created"></td>
+  </tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="/scripts/paginator.js" ></script>
+
+<script type="text/javascript">
+  var ticket_id = {{ ticket_id }};
+  var commentPageSize = 10;
+  var paginatorComments = null;
+
+  $(function() {
+    paginatorComments = new Paginator($('#comments-pagination'));
+
+    paginatorComments.setOnPaginateChange(function(page) {
+      getTicketComments(ticket_id, page, commentPageSize, paginatorComments);
+    });
+
+    getTicketComments(ticket_id, 1, commentPageSize, paginatorComments);
+  });
+</script>
+
+{% endblock %}

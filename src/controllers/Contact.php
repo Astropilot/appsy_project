@@ -48,12 +48,11 @@ $router->post('/api/contact', function($request) {
         Response::fromView('mails/contact.html', $context, 'fr')->getContent()
     );
 
-    if ($mail->sendMail()) {
-        return new Response(
-            json_encode(array("message" => I18n::getInstance()->translate('API_CONTACT_SUCCESS'))),
-            201
-        );
-    } else {
+    if ($mail->sendMail() === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_CONTACT_ERROR'), 500);
-    }
+
+    return new Response(
+        json_encode(array("message" => I18n::getInstance()->translate('API_CONTACT_SUCCESS'))),
+        201
+    );
 });

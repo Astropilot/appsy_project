@@ -40,6 +40,16 @@ $router->get('/dashboard/profile', function($request) {
     return Response::fromView('dashboard/profile.html');
 });
 
+$router->get('/dashboard/tickets', function($request) {
+    return Response::fromView('dashboard/tickets.html');
+});
+
+$router->get('/dashboard/ticket/<ticket_id:int>', function($request, $ticket_id) {
+    $context = array('ticket_id' => $ticket_id);
+
+    return Response::fromView('dashboard/ticket.html', $context);
+});
+
 $router->get('/dashboard/chat', function($request) {
     return Response::fromView('dashboard/chat.html');
 });

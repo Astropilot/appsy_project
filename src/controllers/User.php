@@ -33,12 +33,18 @@ $router->post('/api/users/login', function($request) {
     $email = $data['email'];
     $password = Security::hashPass($data['password'], Config::HASH_SALT);
 
-    if(!User::getInstance()->userExist($email, $password)) {
+    if(User::getInstance()->userExist($email, $password) === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NO_USER'), 404);
     }
 
     $user_id = User::getInstance()->getUserID($email);
+    if ($user_id === FALSE)
+        return API::makeResponseError(I18n::getInstance()->translate('API_USER_GET_USER_ERROR'), 500);
+
     $user = User::getInstance()->getUser($user_id);
+    if ($user === FALSE)
+        return API::makeResponseError(I18n::getInstance()->translate('API_USER_GET_USER_ERROR'), 500);
+
     $_SESSION['email'] = $user['email'];
     $_SESSION['id'] = $user['id'];
     $_SESSION['role'] = $user['role'];
@@ -67,9 +73,8 @@ $router->get('/api/users/invite', function($request) {
     $email = $data['email'];
 
     $invite = UserInvite::getInstance()->getValidInvite($token, $email);
-    if(!$invite) {
+    if($invite === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_INVITE_NOT_FOUND'), 404);
-    }
 
     return new Response(
         json_encode(array('invite' => $invite))
@@ -84,9 +89,9 @@ $router->get('/api/users/<userid:int>', function($request, $user_id) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOACCESS'), 403);
 
     $user = User::getInstance()->getUser($user_id);
-    if(!$user) {
+    if($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
-    }
+
     return new Response(
         json_encode(array('user' => $user))
     );
@@ -121,9 +126,8 @@ $router->put('/api/users/<userid:int>', function($request, $user_id) {
     }
 
     $user = User::getInstance()->getUser($user_id, true);
-    if(!$user) {
+    if($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
-    }
 
     $email = isset($data['email']) ? $data['email'] : $user['email'];
     $lastname = isset($data['lastname']) ? $data['lastname'] : $user['lastname'];
@@ -137,12 +141,12 @@ $router->put('/api/users/<userid:int>', function($request, $user_id) {
         $password = $user['password'];
 
     $res = User::getInstance()->updateUser($user['id'], $email, $password, $lastname, $firstname, $role, $banned);
-    if ($res) {
-        return new Response(
-            json_encode(array("message" => I18n::getInstance()->translate('API_USER_UPDATE_SUCCESS')))
-        );
-    } else
+    if ($res === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_UPDATE_ERROR'), 500);
+
+    return new Response(
+        json_encode(array("message" => I18n::getInstance()->translate('API_USER_UPDATE_SUCCESS')))
+    );
 });
 
 $router->delete('/api/users/<user_id:int>', function($request, $user_id) {
@@ -150,14 +154,13 @@ $router->delete('/api/users/<user_id:int>', function($request, $user_id) {
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
-    if (User::getInstance()->deleteUser($user_id)) {
-        return new Response(
-            '',
-            204
-        );
-    } else {
+    if (User::getInstance()->deleteUser($user_id) === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_DELETE_ERROR'), 500);
-    }
+
+    return new Response(
+        '',
+        204
+    );
 });
 
 $router->post('/api/contacts/search', function($request) {
@@ -183,7 +186,11 @@ $router->post('/api/contacts/search', function($request) {
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $contacts = $paginator->paginate(User::getInstance()->findContacts($search, !Role::isUser()));
+    $contacts = User::getInstance()->findContacts($search, !Role::isUser());
+    if ($contacts === FALSE)
+        return API::makeResponseError(I18n::getInstance()->translate('API_USER_GET_CONTACTS_ERROR'), 500);
+
+    $contacts = $paginator->paginate($contacts);
 
     return new Response(
         json_encode(array(
@@ -196,15 +203,14 @@ $router->post('/api/contacts/search', function($request) {
 $router->get('/api/users/logoff', function($request) {
     API::setAPIHeaders();
 
-    if(isset($_SESSION['email']) && isset($_SESSION['id'])) {
-        unset($_SESSION['email']);
-        unset($_SESSION['role']);
-        unset($_SESSION['id']);
-        session_destroy();
-        return new Response('');
-    }
-    else
+    if(!isset($_SESSION['email']) || !isset($_SESSION['id']))
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_DECONNECT_ERROR'), 500);
+
+    unset($_SESSION['email']);
+    unset($_SESSION['role']);
+    unset($_SESSION['id']);
+    session_destroy();
+    return new Response('', 204);
 });
 
 $router->post('/api/users', function($request) {
@@ -241,7 +247,7 @@ $router->post('/api/users', function($request) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_CREATE_PASSWORD_NOT_MATCH'), 400);
 
     $invite = UserInvite::getInstance()->getValidInvite($token, $email);
-    if(!$invite)
+    if($invite === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_CREATE_INVITE_EXPIRED'), 404);
 
     $res = User::getInstance()->createUser(
@@ -251,12 +257,13 @@ $router->post('/api/users', function($request) {
         $invite['role'],
         Security::hashPass($password, Config::HASH_SALT)
     );
-    if ($res) {
-        UserInvite::getInstance()->unActiveInvite($invite['id']);
-        return new Response(
-            json_encode(array('message' => I18n::getInstance()->translate('API_USER_CREATE_USER_SUCCESS'))),
-            201
-        );
-    } else
+    if ($res === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_CREATE_USER_ERROR'), 500);
+
+    UserInvite::getInstance()->unActiveInvite($invite['id']);
+
+    return new Response(
+        json_encode(array('message' => I18n::getInstance()->translate('API_USER_CREATE_USER_SUCCESS'))),
+        201
+    );
 });

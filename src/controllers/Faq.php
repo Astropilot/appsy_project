@@ -15,6 +15,8 @@ $router->get('/api/faq/questions', function($request) {
     API::setAPIHeaders();
 
     $faq = Faq::getInstance()->getFaq();
+    if ($faq === FALSE)
+        return API::makeResponseError(I18n::getInstance()->translate('API_FAQ_GET_FAQ_ERROR'), 500);
     return new Response(
         json_encode(array('faq' => $faq))
     );
@@ -41,14 +43,13 @@ $router->post('/api/faq/questions', function($request) {
     $answer = $data['answer'];
 
     $question = Faq::getInstance()->createQuestion($question, $answer);
-    if($question) {
-        return new Response(
-            json_encode(array('question' => $question)),
-            201
-        );
-    } else {
+    if($question === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FAQ_CREATE_FAQ_ERROR'), 500);
-    }
+
+    return new Response(
+        json_encode(array('question' => $question)),
+        201
+    );
 });
 
 $router->delete('/api/faq/questions/<question_id:int>', function($request, $question_id) {
@@ -56,12 +57,11 @@ $router->delete('/api/faq/questions/<question_id:int>', function($request, $ques
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
-    if (Faq::getInstance()->deleteQuestion($question_id)) {
-        return new Response(
-            '',
-            204
-        );
-    } else {
+    if (Faq::getInstance()->deleteQuestion($question_id) === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FAQ_DELETE_FAQ_ERROR'), 500);
-    }
+
+    return new Response(
+        '',
+        204
+    );
 });
