@@ -21,6 +21,10 @@ body {
   color: #004570;
 }
 
+.side-nav::-webkit-scrollbar {
+  display: none;
+}
+
 .side-nav {
   height: 100%;
   width: 160px;
@@ -29,7 +33,7 @@ body {
   top: 0;
   left: 0;
   background-color: #004e86;
-  overflow-x: hidden;
+  overflow-x:hidden;
   padding-top: 20px;
   display: flex;
   flex: auto;
@@ -42,12 +46,14 @@ body {
   display: flex;
   flex-direction: column;
   margin-top: 40px;
+
 }
 
 .side-nav .nav-element {
   margin-bottom: 35px;
   text-align: center;
   font-size: 0.8rem;
+
 }
 
 .side-nav .nav-element > a.menu-active {
@@ -55,7 +61,7 @@ body {
 }
 
 .side-nav .nav-bottom {
-  margin-top: auto;
+  margin-top: 50px;
 }
 
 .side-nav .nav-element > a {
