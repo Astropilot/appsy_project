@@ -1,0 +1,39 @@
+{% extends 'base_home.html' %}
+
+{% block title %}
+{{ translate 'HOME_CONNECT_CONNECTION' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'HOME_CONNECT_CONNECTION' }}
+{% endblock %}
+
+{% block body %}
+
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+      <h2>{{ translate 'HOME_CONNECT_CONNECTION' }}</h2>
+    </div>
+    <div class="row justify-content-center">
+      <form class="form text-center">
+        <div>
+          <input type="email" class="form-field" name="email" id="email" placeholder="{{ translate 'HOME_CONNECT_EMAIL' }}" required>
+        </div>
+        <br>
+        <div>
+          <input type="password" class="form-field" name="password" id="password" placeholder="{{ translate 'HOME_CONNECT_PASSWORD' }}" required>
+        </div>
+
+        <br>
+
+        <button id="btn-login" type="button" class="btn btn-primary">
+          {{ translate 'HOME_CONNECT_BUTTON' }} <i id="wait-login" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        </button>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

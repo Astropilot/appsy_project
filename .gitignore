@@ -72,3 +72,12 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# PHPUnit
+
+.phpunit.result.cache
+
+# Cache
+
+/app/cache/*
+!/app/cache/.gitkeep

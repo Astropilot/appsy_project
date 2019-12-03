@@ -1,0 +1,50 @@
+{% extends 'base_home.html' %}
+
+{% block title %}
+{{ translate 'HOME_FAQ_TITLESHORT' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'HOME_FAQ_TITLESHORT' }}
+{% endblock %}
+
+{% block body %}
+
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+      <h2>{{ translate 'HOME_FAQ_TITLE' }}</h2>
+    </div>
+    <div class="row justify-content-center" id="faq-wait">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+    <div class="row justify-content-center" id="nofaq" style="display: none">
+      <h3>{{ translate 'HOME_FAQ_NOFAQ' }}</h3>
+    </div>
+    <div id="faq-questions" class="row flex-column justify-content-center">
+    </div>
+  </div>
+</section>
+
+<div id="faq-template" class="d-none" style="margin-bottom: 5px">
+  <div class="row justify-content-center">
+    <h3 style="margin-bottom: 0"></h3>
+  </div>
+  <div class="row justify-content-center">
+    <p style="margin-top: 5px"></p>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  $(function() {
+
+    getFAQ();
+
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+  <head>
+    <title>Testify - {% block title %}{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/styles/testify.css">
+    <link rel="stylesheet" href="/vendor/noty/noty.css">
+    <link rel="stylesheet" href="/vendor/noty/themes/metroui.css">
+    <link rel="stylesheet" href="/vendor/fontawesome/all.min.css">
+    <link rel="stylesheet" href="/styles/dropdown.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
+
+    {% block styles %}
+    {% endblock %}
+  </head>
+  <body>
+
+    <nav class="header-nav">
+      <a href="/">
+        <img src="/images/logo_testify.png" width="70px" height="70px" style="margin-left: 10px">
+      </a>
+      <h1>{% block navtitle %}{% endblock %}</h1>
+      <ul class="btn-group-1">
+        <li><a href="/connexion">{{ translate 'HOME_NAVBAR_CONNECT' }}</a></li>
+        <li><a href="/contact">{{ translate 'HOME_NAVBAR_CONTACT' }}</a></li>
+      </ul>
+      <div class="dropdown">
+        <button class="dropbtn">{{ translate 'LANGUAGE_NAME' }} <i class="fas fa-caret-down"></i></button>
+        <div class="dropdown-content">
+          <a href="/fr" class="translation" id-tr="fr">Français</a>
+          <a href="/en" class="translation" id-tr="en">English</a>
+        </div>
+      </div>
+    </nav>
+
+    {% block body %}
+    {% endblock %}
+
+    <footer>
+      <p>
+        <a href="/cgu">{{ translate 'CGU' }}</a> &#xa9; 2019, Testify.fr Powered by our own skills
+      </p>
+    </footer>
+
+    <script type="text/javascript" src="/vendor/jquery/jquery-3.4.1.min.js" ></script>
+    <script type="text/javascript" src="/vendor/noty/noty.min.js" ></script>
+    <script type="text/javascript" src="/scripts/main.js" ></script>
+    <script type="text/javascript" src="/scripts/home.js" ></script>
+    <script type="text/javascript" src="/scripts/scrolling.js" ></script>
+
+    <script>
+      $('.dropbtn').on('click', function() {
+        $(this).next().toggleClass('show');
+      });
+
+      $(window).on('click.windowdropdown', function (event) {
+        if (!event.target.matches('.dropbtn')) {
+          $('.dropdown-content').removeClass('show');
+        }
+      });
+    </script>
+
+    {% block scripts %}
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,118 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_FORUM_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_FORUMPOST_TITLE' }}
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/styles/paginator.css">
+<link rel="stylesheet" href="/styles/wysiwyg.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid" style="padding-bottom: 60px;">
+  <div class="row justify-content-center">
+    <h2>{{ translate 'DASHBOARD_FORUMPOST_TITLE' }} - <span id="post-title"><i class="fas fa-circle-notch fa-spin fa-2x"></i></span></h2>
+  </div>
+  <div class="row" style="justify-content: end; margin-bottom: 15px">
+    <button type="button" class="btn btn-danger btn-sm d-none" id="btn-delete-post">
+      <i class="fas fa-trash-alt"></i> Supprimer
+    </button>
+  </div>
+
+  <div class="row justify-content-center" id="responses-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row" id="responses-list-row" style="display: none">
+    <table>
+      <thead>
+        <tr>
+          <th>{{ translate 'DASHBOARD_FORUMPOST_AUTHOR' }}</th>
+          <th width="60%">{{ translate 'DASHBOARD_FORUMPOST_CONTENT' }}</th>
+          <th>{{ translate 'DASHBOARD_FORUMPOST_CREATEDAT' }}</th>
+          <th>{{ translate 'DASHBOARD_FORUMPOST_UPDATEDAT' }}</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="response-list">
+      </tbody>
+    </table>
+  </div>
+  <div class="row justify-content-center paginator" id="response-pagination"></div>
+  <div class="row justify-content-center" style="margin-top: 30px;">
+    <form class="form">
+      <div class="wysiwyg"></div>
+      <div class="row" style="justify-content: end; margin-top: 15px">
+        <button type="button" class="btn btn-primary btn-sm" id="btn-new-response" style="margin-right: 5px">
+          {{ translate 'DASHBOARD_FORUMPOST_REPLYBTN' }} <i id="wait-creating-response" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<table id="response-template" class="d-none">
+  <tr>
+    <td class="response-author"></td>
+    <td class="response-content"></td>
+    <td class="response-created"></td>
+    <td class="response-updated"></td>
+    <td class="response-actions">
+      <button type="button" class="btn btn-primary btn-sm btn-edit-response d-none">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button type="button" class="btn btn-danger btn-sm btn-delete-response d-none">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </td>
+  </tr>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="/scripts/paginator.js" ></script>
+<script type="text/javascript" src="/scripts/wysiwyg.js" ></script>
+
+<script type="text/javascript">
+  var responsePageSize = 15;
+  var paginatorResponses = null;
+
+  $(function() {
+    var post_id = {{ post_id }};
+
+    var url = new URL(window.location.href);
+    var page = url.searchParams.get('page') || 1;
+    paginatorResponses = new Paginator($('#response-pagination'));
+
+    paginatorResponses.setOnPaginateChange(function(page) {
+      history.pushState({page: page}, '', '?page=' + page);
+      getPostResponses(post_id, page, responsePageSize, paginatorResponses);
+    });
+
+    window.onpopstate = function(event) {
+      var page = 1;
+      if (event.state !== null)
+        page = event.state.page;
+      getPostResponses(post_id, page, responsePageSize, paginatorResponses);
+    };
+
+    $('#btn-new-response').on('click', function() {
+      createResponse(post_id, $('.wysiwyg .editor').html());
+    });
+
+    $('#btn-delete-post').on('click', function() {
+      deletePost(post_id);
+    });
+
+    getPostResponses(post_id, page, responsePageSize, paginatorResponses);
+  });
+</script>
+
+{% endblock %}

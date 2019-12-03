@@ -16,6 +16,7 @@ html {
 
 body {
   position: relative;
+  z-index: 1;
   min-height: 100%;
   margin: 0;
   padding: 0;
@@ -43,6 +44,7 @@ a {
   display: flex;
   justify-content: space-between;
   z-index: 1;
+  align-items: center;
 }
 
 .header-nav > h1 {
@@ -59,13 +61,13 @@ a {
 /* Style de la barre de navigation */
 .navigation {
   position: sticky;
-  top: 70px;
+  top: 73px;
   background-color: #004e86;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  z-index: 1;
+  z-index: 0;
 }
 
 /* Style pour les tableaux (à optimiser) */
@@ -93,6 +95,7 @@ th {
 
 /* Style pour les zones de texte */
 section {
+  position: relative;
   z-index: -1; /* Gere la disposition par rapport aux autres éléments */
   display: flex;
   justify-content: space-around;
@@ -126,7 +129,6 @@ footer {
   right: 0;
   height: 50px;
   color: white;
-  margin-top: auto;
 }
 
 footer a {

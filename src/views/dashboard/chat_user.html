@@ -1,0 +1,62 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_USERCHAT_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_USERCHAT_TITLE' }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid" style="padding-bottom: 60px;">
+  <div class="row justify-content-center">
+    <h2>{{ translate 'DASHBOARD_USERCHAT_TITLE' }} - <span id="contact"></span></h2>
+  </div>
+  <div class="row justify-content-center" id="messages-wait">
+    <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+  </div>
+  <div class="row justify-content-center" id="nomessage" style="display: none">
+    <h3>{{ translate 'DASHBOARD_USERCHAT_NODISCUSSION' }}</h3>
+  </div>
+  <div id="messages">
+  </div>
+</div>
+<div class="msgZone">
+  <textarea id="text-message" placeholder="Message"></textarea>
+  <button type="button" class="btn btn-primary" id="btn-send-message">
+    {{ translate 'DASHBOARD_USERCHAT_SENDBTN' }} <i id="wait-send-message" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+  </button>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  $(function() {
+    var contact_id = {{ contact_id }};
+
+    function getMessages() {
+      getUserContactMessages(contact_id);
+
+      setTimeout(getMessages, 10000);
+    }
+
+    getMessages();
+
+    $('#text-message').keypress(function (e) {
+      if (e.which == 13) {
+        sendMessageTo(contact_id, $('#text-message').val());
+        return false;
+      }
+    });
+
+    $('#btn-send-message').on('click', function() {
+      sendMessageTo(contact_id, $('#text-message').val());
+    });
+  });
+</script>
+
+{% endblock %}

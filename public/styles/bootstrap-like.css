@@ -225,6 +225,10 @@
   justify-content: flex-end !important;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
@@ -261,6 +265,10 @@
   overflow: auto;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-active {
+  display: block !important;
 }
 
 .modal-content {
@@ -328,4 +336,8 @@
 
 .modal-footer {
   padding: 2px 16px;
+}
+
+a, button {
+  outline : none;
 }
