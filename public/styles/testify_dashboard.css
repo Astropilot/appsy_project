@@ -19,11 +19,10 @@ body {
   margin: 0;
   padding: 0;
   color: #004570;
+  overflow-x:hidden;
 }
 
-.side-nav::-webkit-scrollbar {
-  display: none;
-}
+
 
 .side-nav {
   height: 100%;
@@ -61,7 +60,7 @@ body {
 }
 
 .side-nav .nav-bottom {
-  margin-top: 50px;
+  margin-top: auto;
 }
 
 .side-nav .nav-element > a {
