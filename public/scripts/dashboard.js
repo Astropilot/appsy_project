@@ -88,7 +88,7 @@ function getUserContacts(contactPage, contactPageSize, paginatorContacts) {
           $('#contacts').append(
             `<div class="contact row bg-grey" style="display: flex; align-items: center; padding: 10px; margin-bottom: 5px">
               <b>${contact.user.firstname} ${contact.user.lastname}</b> : <span style="text-color: gray">${contact.message}</span>
-              <a href="/appsy_project/dashboard/chat_user?id=${contact.user.id}" class="btn btn-primary" style="margin-left: auto">
+              <a href="/appsy_project/dashboard/chat/user?id=${contact.user.id}" class="btn btn-primary" style="margin-left: auto">
                 Accéder aux messages
               </a>
              </div>`
@@ -133,11 +133,16 @@ function getUserContactMessages(contact_id) {
         }
         data.messages.forEach(function(message) {
           var message_class = (message.author.id == user.id) ? 'msgMe' : 'msgOthers';
+          var offset_col = (message.author.id == user.id) ? 'offset-6' : '';
           $('#messages').append(
-            `<div class="message ${message_class}">
-              <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
-              <p>${message.message}</p>
-              <small>${message.created_at}</small>
+            `<div class="row">
+              <div class="col-6 ${offset_col}">
+                <div class="message ${message_class}">
+                  <h6><b>${message.author.firstname} ${message.author.lastname}</b></h6>
+                  <p>${message.message}</p>
+                  <small>${message.created_at}</small>
+               </div>
+              </div>
              </div>`
           );
         });
@@ -214,13 +219,48 @@ function searchContact(search) {
               <td>${contact.firstname} ${contact.lastname}</td>
               <td>${contact.email}</td>
               <td>${ROLES[contact.role]}</td>
-              <td><a href="/appsy_project/dashboard/chat_user?id=${contact.id}" class="btn btn-primary">
+              <td><a href="/appsy_project/dashboard/chat/user?id=${contact.id}" class="btn btn-primary">
                 Envoyer un message
               </a></td>
              </tr>`
           );
         });
         $('#contact-list-row').show();
+      } else {
+        data.errors.forEach(function(error) {
+          new Noty({
+            theme: 'metroui',
+            type: 'error',
+            layout: 'centerRight',
+            timeout: 4000,
+            text: error
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+function getCategories() {
+  $.ajax({
+    type: 'GET',
+    url: `/appsy_project/api/forums/categories`,
+    dataType: 'json',
+    success: function(data) {
+      $('#forums-wait').hide();
+      if (data.r) {
+        $('#forums').empty();
+        if (data.categories.length == 0) {
+          $('#noforums').show();
+          return;
+        }
+        data.categories.forEach(function(category) {
+          $('#forums').append(
+            `<div class="forum-category">
+              <h6><b>${category.title}</b></h6>
+             </div>`
+          );
+        });
       } else {
         data.errors.forEach(function(error) {
           new Noty({

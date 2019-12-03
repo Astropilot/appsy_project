@@ -1,0 +1,134 @@
+@import 'bootstrap-like.css';
+@import 'buttons.css';
+@import 'form.css';
+
+/* Style par défault du texte */
+* {
+  font-family: 'Lato', sans-serif;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #004570;
+}
+
+footer p,
+a {
+  text-decoration: none;
+}
+
+.page_accueil {
+  display: flex;
+  align-items: center;
+}
+
+/* Style pour l'entête d'accueil, logo, titre et boutons */
+.header-nav {
+  background-color: #004570;
+  color: white;
+
+  /* Pour que la banière reste en haut lorsque l'on scroll */
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.header-nav > h1 {
+  margin-left: auto;
+  margin-right: auto;
+  color: inherit;
+}
+
+.header-nav > ul {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* Style de la barre de navigation */
+.navigation {
+  position: sticky;
+  top: 70px;
+  background-color: #004e86;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 1;
+}
+
+/* Style pour les tableaux (à optimiser) */
+table,
+tr,
+td,
+th {
+  text-align: center;
+  border-bottom: solid #004e86 1px;
+  border-top: solid #004e86 1px;
+  margin-left: 100px;
+  border-collapse: collapse;
+}
+
+table {
+  border: solid #004e86 1px;
+  width: 400px;
+  height: 170px;
+}
+
+th {
+  background-color: #004e86;
+  color: white;
+}
+
+/* Style pour les zones de texte */
+section {
+  z-index: -1; /* Gere la disposition par rapport aux autres éléments */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.bg-grey {
+  background-color: #f7f7f9;
+}
+
+hr.secsep {
+  border: 0;
+  height: 1px;
+  background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+}
+
+/* Style pour le bas de page */
+footer {
+  display: flex;
+  background-color: #004570;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  color: white;
+  margin-top: auto;
+}
+
+footer a {
+  color: inherit;
+}
