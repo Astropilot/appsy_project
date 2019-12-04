@@ -19,7 +19,10 @@ body {
   margin: 0;
   padding: 0;
   color: #004570;
+  overflow-x:hidden;
 }
+
+
 
 .side-nav {
   height: 100%;
@@ -29,7 +32,7 @@ body {
   top: 0;
   left: 0;
   background-color: #004e86;
-  overflow-x: hidden;
+  overflow-x:hidden;
   padding-top: 20px;
   display: flex;
   flex: auto;
@@ -42,12 +45,14 @@ body {
   display: flex;
   flex-direction: column;
   margin-top: 40px;
+
 }
 
 .side-nav .nav-element {
   margin-bottom: 35px;
   text-align: center;
   font-size: 0.8rem;
+
 }
 
 .side-nav .nav-element > a.menu-active {
