@@ -494,7 +494,7 @@ function getTicketComments(ticket_id, page, pageSize, paginator) {
         var comment_template = $('#comment-template tr').clone().removeClass('d-none');
 
         comment_template.find('.comment-author').text(`${comment.author.firstname} ${comment.author.lastname}`);
-        comment_template.find('.comment-content').text($.parseHTML(comment.content));
+        comment_template.find('.comment-content').html($.parseHTML(comment.content));
         comment_template.find('.comment-created').text(comment.created_at);
 
         $('#comments-list').append(

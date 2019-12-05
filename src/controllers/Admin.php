@@ -152,3 +152,35 @@ $router->post('/admin/api/tickets', function($request) {
         ))
     );
 });
+
+
+$router->post('/admin/api/tickets/<ticket_id:int>/comments', function($request, $ticket_id) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+    Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
+
+    $errors_arr=array();
+    $data = $request->getBody();
+
+    if(!isset($data['author']) || empty($data['author']))
+        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_COMMENT_NOAUTHOR');
+    if(!isset($data['content']) || empty($data['content']))
+        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_COMMENT_NOCONTENT');
+
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
+    }
+
+    $author = $data['author'];
+    $content = $data['content'];
+
+    $comment = Ticket::getInstance()->createTicketComment($ticket_id, $author, $content);
+    if ($comment === FALSE)
+        return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_TICKET_CREATE_COMMENT_ERROR'), 500);
+
+    return new Response(
+        json_encode(array(
+            'comment' => $comment,
+        ))
+    );
+});

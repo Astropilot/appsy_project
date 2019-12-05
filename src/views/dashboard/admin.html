@@ -11,6 +11,7 @@
 {% block styles %}
 <link rel="stylesheet" href="/styles/tabs.css">
 <link rel="stylesheet" href="/styles/paginator.css">
+<link rel="stylesheet" href="/styles/wysiwyg.css">
 {% endblock %}
 
 {% block body %}
@@ -301,12 +302,63 @@
     <td class="ticket-created"></td>
     <td class="ticket-updated"></td>
     <td class="ticket-actions">
-      <a href="" class="btn btn-primary btn-sm btn-view-ticket">
+      <button type="button" class="btn btn-primary btn-sm btn-view-ticket">
         <i class="fas fa-eye"></i>
-      </a>
+      </button>
     </td>
   </tr>
 </table>
+
+<table id="comment-template" class="d-none">
+  <tr>
+    <td class="comment-author"></td>
+    <td width="60%" class="comment-content"></td>
+    <td class="comment-created"></td>
+  </tr>
+</table>
+
+<div id="modal-view-ticket" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_MODAL_TICKET_TITLE' }} - <span id="ticket-title"></span></h2>
+    </div>
+    <div class="modal-body">
+      <div class="row flex-column justify-content-center align-items-center" id="ticket-content" style="margin-top: 30px; margin-bottom: 30px;">
+      </div>
+      <div class="row justify-content-center" id="comments-wait">
+        <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+      </div>
+      <div class="row flex-column justify-content-center align-items-center" id="nocomment" style="display: none">
+        <h3>{{ translate 'DASHBOARD_ADMIN_TICKET_NOCOMMENT' }}</h3>
+      </div>
+      <div class="row" id="comments-list-row" style="display: none">
+        <table>
+          <thead>
+            <tr>
+              <th>{{ translate 'DASHBOARD_ADMIN_TICKET_COMMENT_AUTHOR' }}</th>
+              <th width="60%">{{ translate 'DASHBOARD_ADMIN_TICKET_COMMENT_CONTENT' }}</th>
+              <th>{{ translate 'DASHBOARD_ADMIN_TICKET_COMMENT_CREATEDAT' }}</th>
+            </tr>
+          </thead>
+          <tbody id="comments-list">
+          </tbody>
+        </table>
+      </div>
+      <div class="row justify-content-center paginator" id="comments-pagination"></div>
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <form class="form">
+          <div class="wysiwyg"></div>
+          <div class="row justify-content-center" style="margin-top: 15px">
+            <button type="button" class="btn btn-primary btn-sm" id="btn-new-comment" style="margin-right: 5px">
+              {{ translate 'DASHBOARD_ADMIN_TICKET_MODAL_NEWCOMMENT' }} <i id="wait-creating-comment" class="fas fa-circle-notch fa-spin" style="display: none"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="modal-new-category" class="modal">
   <div class="modal-content">
@@ -405,23 +457,29 @@
 <script type="text/javascript" src="/scripts/modal.js" ></script>
 <script type="text/javascript" src="/scripts/tabs.js" ></script>
 <script type="text/javascript" src="/scripts/paginator.js" ></script>
+<script type="text/javascript" src="/scripts/wysiwyg.js" ></script>
 <script type="text/javascript" src="/scripts/dashboard-admin.js" ></script>
 
 <script>
   var contactPageSize = 5;
   var paginatorContacts = null;
 
-  var ticketPageSize = 10;
+  var ticketPageSize = 5;
   var paginatorTickets = null;
+
+  var commentPageSize = 5;
+  var paginatorComments = null;
 
   $(function() {
     var modalNewMember = $('#modal-new-member');
     var modalEditUser = $('#modal-edit-user');
     var modalNewCategory = $('#modal-new-category');
     var modalNewFaq = $('#modal-new-faq');
+    var modalViewTicket = $('#modal-view-ticket');
 
     paginatorContacts = new Paginator($('#contact-pagination'));
     paginatorTickets = new Paginator($('#tickets-pagination'));
+    paginatorComments = new Paginator($('#comments-pagination'));
 
     paginatorContacts.setOnPaginateChange(function(page) {
       searchMember($('#member-search').val(), page, contactPageSize, paginatorContacts);
@@ -429,6 +487,10 @@
 
     paginatorTickets.setOnPaginateChange(function(page) {
       getAdminTickets($('#ticket-search').val(), page, ticketPageSize, paginatorTickets);
+    });
+
+    paginatorComments.setOnPaginateChange(function(page) {
+      getTicketComments(modalViewTicket.data('id'), page, commentPageSize, paginatorComments);
     });
 
     $("#member-search").bind("input", function () {
@@ -532,6 +594,10 @@
 
     $('#btn-create-faq').on('click', function() {
       createFAQ($('#faq-question').val(), $('#faq-answer').val());
+    });
+
+    $('#btn-new-comment').on('click', function() {
+      createTicketComment(modalViewTicket.data('id'), $('.wysiwyg .editor').html());
     });
 
     searchMember($('#member-search').val(), 1, contactPageSize, paginatorContacts);
