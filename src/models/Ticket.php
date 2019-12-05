@@ -185,4 +185,21 @@ class Ticket {
             return FALSE;
         }
     }
+
+    public function updateTicketStatus($ticket_id, $status) {
+        try {
+            $req = Database::getInstance()->getPDO()->prepare(
+                "UPDATE tf_ticket
+                 SET `status`=:status
+                 WHERE `id`=:id"
+            );
+            return $req->execute(array(
+                'id' => $ticket_id,
+                'status' => $status
+            ));
+        } catch (\PDOException $e) {
+            Database::throwIfDeveloppment($e, Config::ENVIRONNEMENT);
+            return FALSE;
+        }
+    }
 }

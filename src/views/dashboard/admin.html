@@ -317,6 +317,29 @@
   </tr>
 </table>
 
+<div id="modal-confirm-update-ticket" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{ translate 'DASHBOARD_ADMIN_TICKET_UPDATE_CONFIRM_TITLE' }}</h2>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center" style="margin-top: 30px;">
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-success" id="btn-confirm-update-ticket">
+            <i class="fas fa-check"></i> {{ translate 'DASHBOARD_ADMIN_TICKET_UPDATE_CONFIRM_CONFIRM' }}
+          </button>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+          <button type="button" class="btn btn-danger" id="btn-cancel-update-ticket">
+            <i class="fas fa-ban"></i> {{ translate 'DASHBOARD_ADMIN_TICKET_UPDATE_CONFIRM_CANCEL' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="modal-view-ticket" class="modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -594,6 +617,25 @@
 
     $('#btn-create-faq').on('click', function() {
       createFAQ($('#faq-question').val(), $('#faq-answer').val());
+    });
+
+    $('#btn-cancel-update-ticket').on('click', function() {
+      var ticket_id = $('#modal-confirm-update-ticket').data('id');
+      var ticket_status = $('#modal-confirm-update-ticket').data('status');
+
+      var default_status = $('#tickets-list').find('tr[data-id="' + ticket_id + '"]').find('.ticket-status select').attr('data-default');
+      $('#tickets-list').find('tr[data-id="' + ticket_id + '"]').find('.ticket-status option').removeProp('selected');
+      $('#tickets-list').find('tr[data-id=' + ticket_id + ']').find('.ticket-status option[value=' + default_status + ']').prop('selected', true);
+      $('#modal-confirm-update-ticket').closeModal();
+    });
+
+    $('#btn-confirm-update-ticket').on('click', function() {
+      var ticket_id = $('#modal-confirm-update-ticket').data('id');
+      var ticket_status = $('#modal-confirm-update-ticket').data('status');
+
+      updateTicketStatus(ticket_id, ticket_status);
+
+      $('#modal-confirm-update-ticket').closeModal();
     });
 
     $('#btn-new-comment').on('click', function() {

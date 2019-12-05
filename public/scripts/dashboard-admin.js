@@ -312,6 +312,7 @@ function deleteFAQ(faq_id) {
 function getAdminTickets(search, page, pageSize, paginator) {
   var user = JSON.parse(localStorage.getItem('user'));
   var modalViewTicket = $('#modal-view-ticket');
+  var modalUpdateTicket = $('#modal-confirm-update-ticket');
 
   $('#tickets-wait').show();
   $.ajax({
@@ -326,7 +327,7 @@ function getAdminTickets(search, page, pageSize, paginator) {
         return;
       }
       data.tickets.forEach(function(ticket) {
-        var ticket_template = $('#ticket-template tr').clone().removeClass('d-none');
+        var ticket_template = $('#ticket-template tr').clone().removeClass('d-none').attr('data-id', ticket.id);
 
         ticket_template.addClass('status-' + ticket.status);
         ticket_template.find('.ticket-title').text(ticket.title);
@@ -342,6 +343,15 @@ function getAdminTickets(search, page, pageSize, paginator) {
            </form>`
         ) .find('select').attr('data-default', ticket.status)
           .find('option[value="' + ticket.status + '"]').prop('selected', true);
+
+        ticket_template.find('.ticket-status').find('select').on('change', function() {
+          modalUpdateTicket
+            .data('id', ticket.id)
+            .data('status', this.value)
+            .showModal();
+        });
+
+
         ticket_template.find('.ticket-created').text(ticket.created_at);
         ticket_template.find('.ticket-updated').text(ticket.updated_at);
 
@@ -406,6 +416,25 @@ function getTicketComments(ticket_id, page, pageSize, paginator) {
     },
     complete: function() {
       modalViewTicket.find('#comments-wait').hide();
+    }
+  });
+}
+
+function updateTicketStatus(ticket_id, ticket_status) {
+  $.ajax({
+    type: 'PUT',
+    url: `/admin/api/tickets/${ticket_id}`,
+    data: {status: ticket_status},
+    dataType: 'json',
+    success: function(data) {
+      new Noty({
+        theme: 'metroui',
+        type: 'success',
+        layout: 'centerRight',
+        timeout: 4000,
+        text: data.message
+      }).show();
+      getAdminTickets($('#ticket-search').val(), 1, ticketPageSize, paginatorTickets);
     }
   });
 }

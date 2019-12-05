@@ -126,9 +126,9 @@ $router->post('/admin/api/tickets', function($request) {
     if(!isset($data['search']))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_SEARCH_NO_CRITERIA');
     if(!isset($data['page']) || empty($data['page']))
-        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_NOPAGE');
+        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_SEARCH_NOPAGE');
     if(!isset($data['pageSize']) || empty($data['pageSize']))
-        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_NOSIZEPAGE');
+        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_SEARCH_NOSIZEPAGE');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
@@ -150,6 +150,30 @@ $router->post('/admin/api/tickets', function($request) {
             'tickets' => $tickets['data'],
             'paginator' => $tickets['paginator']
         ))
+    );
+});
+
+$router->put('/admin/api/tickets/<ticket_id:int>', function($request, $ticket_id) {
+    $data = $request->getBody();
+
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+    Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
+
+    $ticket = Ticket::getInstance()->getTicket($ticket_id);
+
+    if($ticket === FALSE) {
+        return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_TICKET_NOT_FOUND'), 404);
+    }
+
+    $status = isset($data['status']) ? $data['status'] : $ticket['status'];
+
+    $res = Ticket::getInstance()->updateTicketStatus($ticket['id'], $status);
+    if ($res === FALSE)
+        return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_TICKET_UPDATE_ERROR'), 500);
+
+    return new Response(
+        json_encode(array('message' => I18n::getInstance()->translate('API_ADMIN_TICKET_UPDATE_SUCCESS')))
     );
 });
 
