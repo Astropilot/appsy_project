@@ -72,7 +72,48 @@
     <div class="row justify-content-center paginator" id="contact-pagination"></div>
   </div>
   <div id="tickets-tab" class="row tabcontent">
-    TODO: A faire !
+    <div class="d-flex justify-content-center align-items-center" style="margin-bottom: 15px">
+      <form class="form" style="width: 100%;margin: 0 55px">
+        <input type="text" style="width: 90%;" class="form-field" name="ticket-search" id="ticket-search" placeholder="">
+        <button type="button" class="btn btn-primary btn-sm" style="margin-left: 5px" id="btn-toggle-ticket-filter">
+          {{ translate 'DASHBOARD_ADMIN_TICKETS_FILTERBTN' }}
+        </button>
+      </form>
+    </div>
+    <div class="justify-content-center d-none" id="tickets-filters" style="margin-bottom: 15px">
+      <form class="form">
+        <select class="form-field" name="filter-status" id="filter-status" required>
+          <option value="" selected>---</option>
+          <option value="0">Envoyé</option>
+          <option value="1">En cours d'examination</option>
+          <option value="2">Terminé</option>
+          <option value="3">Refusé</option>
+         </select>
+      </form>
+    </div>
+    <div class="row justify-content-center" id="tickets-wait">
+      <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+    </div>
+    <div class="row flex-column justify-content-center align-items-center" id="noticket" style="display: none">
+      <h3>{{ translate 'DASHBOARD_ADMIN_TICKETS_NOTICKET' }}</h3>
+    </div>
+    <div class="row" id="tickets-list-row" style="display: none">
+      <table>
+        <thead>
+          <tr>
+            <th width="50%">{{ translate 'DASHBOARD_ADMIN_TICKETS_TICKETTITLE' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_TICKETS_AUTHOR' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_TICKETS_STATUS' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_TICKETS_CREATEDAT' }}</th>
+            <th>{{ translate 'DASHBOARD_ADMIN_TICKETS_UPDATEDAT' }}</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tickets-list">
+        </tbody>
+      </table>
+    </div>
+    <div class="row justify-content-center paginator" id="tickets-pagination"></div>
   </div>
   <div id="forum-tab" class="row tabcontent">
     <div class="row">
@@ -252,6 +293,21 @@
   </tr>
 </table>
 
+<table id="ticket-template" class="d-none">
+  <tr>
+    <td width="50%" class="ticket-title"></td>
+    <td class="ticket-author"></td>
+    <td class="ticket-status"></td>
+    <td class="ticket-created"></td>
+    <td class="ticket-updated"></td>
+    <td class="ticket-actions">
+      <a href="" class="btn btn-primary btn-sm btn-view-ticket">
+        <i class="fas fa-eye"></i>
+      </a>
+    </td>
+  </tr>
+</table>
+
 <div id="modal-new-category" class="modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -355,6 +411,9 @@
   var contactPageSize = 5;
   var paginatorContacts = null;
 
+  var ticketPageSize = 10;
+  var paginatorTickets = null;
+
   $(function() {
     var modalNewMember = $('#modal-new-member');
     var modalEditUser = $('#modal-edit-user');
@@ -362,9 +421,14 @@
     var modalNewFaq = $('#modal-new-faq');
 
     paginatorContacts = new Paginator($('#contact-pagination'));
+    paginatorTickets = new Paginator($('#tickets-pagination'));
 
     paginatorContacts.setOnPaginateChange(function(page) {
       searchMember($('#member-search').val(), page, contactPageSize, paginatorContacts);
+    });
+
+    paginatorTickets.setOnPaginateChange(function(page) {
+      getAdminTickets($('#ticket-search').val(), page, ticketPageSize, paginatorTickets);
     });
 
     $("#member-search").bind("input", function () {
@@ -375,8 +439,20 @@
       }, 500));
     });
 
+    $("#ticket-search").bind("input", function () {
+      var that = this;
+      window.clearTimeout($(this).data('timeout'));
+      $(this).data('timeout', setTimeout(function () {
+        getAdminTickets($(that).val(), 1, ticketPageSize, paginatorTickets);
+      }, 500));
+    });
+
     $('#btn-toggle-filter').on('click', function() {
       $('#filters').toggleClass('d-flex').toggleClass('d-none');
+    });
+
+    $('#btn-toggle-ticket-filter').on('click', function() {
+      $('#tickets-filters').toggleClass('d-flex').toggleClass('d-none');
     });
 
     $('.btn-new-member').on("click", function() {
@@ -459,6 +535,7 @@
     });
 
     searchMember($('#member-search').val(), 1, contactPageSize, paginatorContacts);
+    getAdminTickets($('#ticket-search').val(), 1, ticketPageSize, paginatorTickets);
     getCategories();
     getFAQ();
 

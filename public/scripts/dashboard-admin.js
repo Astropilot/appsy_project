@@ -308,3 +308,56 @@ function deleteFAQ(faq_id) {
     }
   });
 }
+
+function getAdminTickets(search, page, pageSize, paginator) {
+  var user = JSON.parse(localStorage.getItem('user'));
+
+  $('#tickets-wait').show();
+  $.ajax({
+    type: 'POST',
+    url: '/admin/api/tickets',
+    data: {search: search, page: page, pageSize: pageSize},
+    dataType: 'json',
+    success: function(data) {
+      $('#tickets-list').empty();
+      if (data.tickets.length == 0) {
+        $('#noticket').show();
+        return;
+      }
+      data.tickets.forEach(function(ticket) {
+        var ticket_template = $('#ticket-template tr').clone().removeClass('d-none');
+
+        ticket_template.addClass('status-' + ticket.status);
+        ticket_template.find('.ticket-title').text(ticket.title);
+        ticket_template.find('.ticket-author').text(`${ticket.author.firstname} ${ticket.author.lastname}`);
+        ticket_template.find('.ticket-status').append(
+          `<form class="form">
+             <select class="form-field" style="width: 100% !important">
+               <option value="0">Envoyé</option>
+               <option value="1">En cours d'examination</option>
+               <option value="2">Terminé</option>
+               <option value="3">Refusé</option>
+              </select>
+           </form>`
+        ) .find('select').attr('data-default', ticket.status)
+          .find('option[value="' + ticket.status + '"]').prop('selected', true);
+        ticket_template.find('.ticket-created').text(ticket.created_at);
+        ticket_template.find('.ticket-updated').text(ticket.updated_at);
+        //ticket_template.find('.btn-view-ticket').attr('href', `/dashboard/ticket/${ticket.id}`);
+
+        $('#tickets-list').append(
+          ticket_template
+        );
+      });
+      $('#tickets-list-row').show();
+      paginator.paginate(
+        data.paginator.page,
+        data.paginator.pageSize,
+        data.paginator.total
+      );
+    },
+    complete: function() {
+      $('#tickets-wait').hide();
+    }
+  });
+}
