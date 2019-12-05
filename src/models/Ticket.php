@@ -107,4 +107,39 @@ class Ticket {
             return FALSE;
         }
     }
+
+    public function findTickets($search) {
+        try {
+            $tickets = array();
+            $req = Database::getInstance()->getPDO()->prepare(
+                "SELECT tf_ticket.* FROM tf_ticket
+                 INNER JOIN tf_user
+                 ON tf_ticket.author = tf_user.id
+                 WHERE (tf_user.firstname LIKE :search1
+                            OR
+                        tf_user.lastname LIKE :search2
+                            OR
+                        tf_ticket.title LIKE :search3
+                            OR
+                        tf_ticket.content LIKE :search4
+                        )
+                 ORDER BY tf_ticket.status ASC, tf_ticket.updated_at ASC"
+            );
+            $req->bindValue(':search1', '%' . $search . '%');
+            $req->bindValue(':search2', '%' . $search . '%');
+            $req->bindValue(':search3', '%' . $search . '%');
+            $req->bindValue(':search4', '%' . $search . '%');
+            $req->execute();
+
+            while ($row = $req->fetch()) {
+                $row['author'] = User::getInstance()->getUser($row['author']);
+                array_push($tickets, $row);
+            }
+
+            return ($tickets);
+        } catch (\PDOException $e) {
+            Database::throwIfDeveloppment($e, Config::ENVIRONNEMENT);
+            return FALSE;
+        }
+    }
 }

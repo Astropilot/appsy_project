@@ -27,6 +27,7 @@
     "HOME_CONTACT_EMAIL": "Votre email",
     "HOME_CONTACT_MESSAGE": "Votre message",
     "HOME_CONTACT_SENDBTN": "Envoyer mon message",
+    "HOME_CONTACT_MAIL": "Vous pouvez contacter l'administrateur de ce site par email à l'adresse",
 
     "API_CONTACT_NO_NAME": "Le nom n'a pas été fourni !",
     "API_CONTACT_NO_EMAIL": "L'email n'a pas été fourni !",

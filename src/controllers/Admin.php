@@ -4,11 +4,13 @@ use Testify\Router\Router;
 use Testify\Router\Response;
 use Testify\Model\User;
 use Testify\Model\UserInvite;
+use Testify\Model\Ticket;
 use Testify\Model\Role;
 use Testify\Component\Security;
 use Testify\Component\API;
 use Testify\Component\I18n;
 use Testify\Component\Mail;
+use Testify\Component\Paginator;
 
 use \Testify\Config;
 
@@ -110,5 +112,43 @@ $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
 
     return new Response(
         json_encode(array('message' => I18n::getInstance()->translate('API_ADMIN_USER_UPDATE_SUCCESS')))
+    );
+});
+
+$router->post('/admin/api/tickets', function($request) {
+    API::setAPIHeaders();
+    Security::checkAPIConnected();
+    Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
+
+    $errors_arr=array();
+    $data = $request->getBody();
+
+    if(!isset($data['search']))
+        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_SEARCH_NO_CRITERIA');
+    if(!isset($data['page']) || empty($data['page']))
+        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_NOPAGE');
+    if(!isset($data['pageSize']) || empty($data['pageSize']))
+        $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_NOSIZEPAGE');
+
+    if(count($errors_arr) > 0) {
+        return API::makeResponseError($errors_arr, 400);
+    }
+
+    $search = $data['search'];
+    $page = $data['page'];
+    $pageSize = $data['pageSize'];
+
+    $paginator = new Paginator($page, $pageSize);
+    $tickets = Ticket::getInstance()->findTickets($search);
+    if ($tickets === FALSE)
+        return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_TICKET_GET_TICKETS_ERROR'), 500);
+
+    $tickets = $paginator->paginate($tickets);
+
+    return new Response(
+        json_encode(array(
+            'tickets' => $tickets['data'],
+            'paginator' => $tickets['paginator']
+        ))
     );
 });
