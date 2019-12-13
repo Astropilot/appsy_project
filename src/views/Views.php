@@ -33,7 +33,15 @@ $router->get('/inscription/<token:str>/<email:str>', function($request, $token, 
 });
 
 $router->get('/dashboard', function($request) {
-    return Response::fromView('dashboard/home.html');
+    if ($_SESSION['role']===0){
+        return Response::fromView('dashboard/home_user.html');
+    }
+    if ($_SESSION['role']===1){
+        return Response::fromView('dashboard/home_examiner.html');
+    }
+    else{
+    return Response::fromView('dashboard/home_admin.html');
+    }
 });
 
 $router->get('/dashboard/profile', function($request) {
