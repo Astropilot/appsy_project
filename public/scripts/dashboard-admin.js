@@ -308,3 +308,152 @@ function deleteFAQ(faq_id) {
     }
   });
 }
+
+function getAdminTickets(search, page, pageSize, paginator) {
+  var user = JSON.parse(localStorage.getItem('user'));
+  var modalViewTicket = $('#modal-view-ticket');
+  var modalUpdateTicket = $('#modal-confirm-update-ticket');
+
+  $('#tickets-wait').show();
+  $.ajax({
+    type: 'POST',
+    url: '/admin/api/tickets',
+    data: {search: search, page: page, pageSize: pageSize},
+    dataType: 'json',
+    success: function(data) {
+      $('#tickets-list').empty();
+      if (data.tickets.length == 0) {
+        $('#noticket').show();
+        return;
+      }
+      data.tickets.forEach(function(ticket) {
+        var ticket_template = $('#ticket-template tr').clone().removeClass('d-none').attr('data-id', ticket.id);
+
+        ticket_template.addClass('status-' + ticket.status);
+        ticket_template.find('.ticket-title').text(ticket.title);
+        ticket_template.find('.ticket-author').text(`${ticket.author.firstname} ${ticket.author.lastname}`);
+        ticket_template.find('.ticket-status').append(
+          `<form class="form">
+             <select class="form-field" style="width: 100% !important">
+               <option value="0">Envoyé</option>
+               <option value="1">En cours d'examination</option>
+               <option value="2">Terminé</option>
+               <option value="3">Refusé</option>
+              </select>
+           </form>`
+        ) .find('select').attr('data-default', ticket.status)
+          .find('option[value="' + ticket.status + '"]').prop('selected', true);
+
+        ticket_template.find('.ticket-status').find('select').on('change', function() {
+          modalUpdateTicket
+            .data('id', ticket.id)
+            .data('status', this.value)
+            .showModal();
+        });
+
+
+        ticket_template.find('.ticket-created').text(ticket.created_at);
+        ticket_template.find('.ticket-updated').text(ticket.updated_at);
+
+        ticket_template.find('.btn-view-ticket').on('click', function() {
+          modalViewTicket.data('id', ticket.id);
+          modalViewTicket.find('#ticket-content').html($.parseHTML(ticket.content));
+          modalViewTicket.find('#ticket-title').text(ticket.title);
+          modalViewTicket.showModal();
+          getTicketComments(ticket.id, 1, commentPageSize, paginatorComments);
+        });
+
+        $('#tickets-list').append(
+          ticket_template
+        );
+      });
+      $('#tickets-list-row').show();
+      paginator.paginate(
+        data.paginator.page,
+        data.paginator.pageSize,
+        data.paginator.total
+      );
+    },
+    complete: function() {
+      $('#tickets-wait').hide();
+    }
+  });
+}
+
+function getTicketComments(ticket_id, page, pageSize, paginator) {
+  var modalViewTicket = $('#modal-view-ticket');
+
+  modalViewTicket.find('#comments-wait').show();
+  $.ajax({
+    type: 'GET',
+    url: '/api/tickets/' + ticket_id + '/comments?page=' + page + '&pageSize=' + pageSize,
+    dataType: 'json',
+    success: function(data) {
+      modalViewTicket.find('#comments-list').empty();
+      modalViewTicket.find('#comments-list-row').hide();
+      modalViewTicket.find('#nocomment').hide();
+      if (data.comments.length == 0) {
+        modalViewTicket.find('#nocomment').show();
+        return;
+      }
+      data.comments.forEach(function(comment) {
+        var comment_template = $('#comment-template tr').clone().removeClass('d-none');
+
+        comment_template.find('.comment-author').text(`${comment.author.firstname} ${comment.author.lastname}`);
+        comment_template.find('.comment-content').html($.parseHTML(comment.content));
+        comment_template.find('.comment-created').text(comment.created_at);
+
+        modalViewTicket.find('#comments-list').append(
+          comment_template
+        );
+      });
+      modalViewTicket.find('#comments-list-row').show();
+      paginator.paginate(
+        data.paginator.page,
+        data.paginator.pageSize,
+        data.paginator.total
+      );
+    },
+    complete: function() {
+      modalViewTicket.find('#comments-wait').hide();
+    }
+  });
+}
+
+function updateTicketStatus(ticket_id, ticket_status) {
+  $.ajax({
+    type: 'PUT',
+    url: `/admin/api/tickets/${ticket_id}`,
+    data: {status: ticket_status},
+    dataType: 'json',
+    success: function(data) {
+      new Noty({
+        theme: 'metroui',
+        type: 'success',
+        layout: 'centerRight',
+        timeout: 4000,
+        text: data.message
+      }).show();
+      getAdminTickets($('#ticket-search').val(), 1, ticketPageSize, paginatorTickets);
+    }
+  });
+}
+
+function createTicketComment(ticket_id, content) {
+  var user = JSON.parse(localStorage.getItem('user'));
+  $('#wait-creating-comment').show();
+
+  $.ajax({
+    type: 'POST',
+    url: `/admin/api/tickets/${ticket_id}/comments`,
+    data: {author: user.id, content: content},
+    dataType: 'json',
+    success: function(data) {
+      $('.wysiwyg .editor').html('');
+      getTicketComments(ticket_id, 1, commentPageSize, paginatorComments);
+    },
+    complete: function() {
+      $('#wait-creating-comment').hide();
+    }
+  });
+}
