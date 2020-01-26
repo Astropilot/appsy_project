@@ -9,18 +9,9 @@ use Testify\Config;
 
 class Message {
 
-    private static $instance = null;
-
     private function __construct() {}
 
-    public static function getInstance() : Message {
-        if(is_null(self::$instance)) {
-            self::$instance = new Message();
-        }
-        return self::$instance;
-    }
-
-    public function getUserContactMessages($user, $contact) {
+    public static function getUserContactMessages($user, $contact) {
         try {
             $messages = array();
             $req = Database::getInstance()->getPDO()->prepare(
@@ -57,7 +48,7 @@ class Message {
         }
     }
 
-    public function getContacts($user) {
+    public static function getContacts($user) {
         try {
             $contacts_id = array();
             $contacts = array();
@@ -96,7 +87,7 @@ class Message {
 
             foreach ($contacts_id as $contact_id) {
                 $contact = array(
-                    'user' => User::getInstance()->getUser($contact_id['id']),
+                    'user' => User::getUser($contact_id['id']),
                     'message' => $contact_id['message'],
                     'created_at' => $contact_id['created_at']
                 );
@@ -110,7 +101,7 @@ class Message {
         }
     }
 
-    public function getMessage($message_id, $user, $contact) {
+    public static function getMessage($message_id, $user, $contact) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT id, author, recipient, message, created_at
@@ -132,7 +123,7 @@ class Message {
         }
     }
 
-    public function createMessage($user, $contact, $message) {
+    public static function createMessage($user, $contact, $message) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "INSERT INTO tf_message

@@ -31,7 +31,7 @@ $router->get('/api/users/<user_id:int>/tickets', function($request, $user_id) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $user = User::getInstance()->getUser($user_id);
+    $user = User::getUser($user_id);
     if($user === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
     }
@@ -40,7 +40,7 @@ $router->get('/api/users/<user_id:int>/tickets', function($request, $user_id) {
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $tickets = Ticket::getInstance()->getTicketsFromUser($user);
+    $tickets = Ticket::getTicketsFromUser($user);
     if ($tickets === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_TICKET_GET_TICKETS_ERROR'), 500);
 
@@ -73,7 +73,7 @@ $router->post('/api/users/<user_id:int>/tickets', function($request, $user_id) {
     $title = $data['title'];
     $content = $data['content'];
 
-    $ticket = Ticket::getInstance()->createTicket($user_id, $title, $content, 0);
+    $ticket = Ticket::createTicket($user_id, $title, $content, 0);
     if($ticket === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_TICKETS_CREATE_ERROR'), 500);
 
@@ -99,7 +99,7 @@ $router->get('/api/tickets/<ticket_id:int>/comments', function($request, $ticket
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $ticket = Ticket::getInstance()->getTicket($ticket_id);
+    $ticket = Ticket::getTicket($ticket_id);
     if($ticket === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_TICKET_NOT_FOUND'), 404);
     }
@@ -108,7 +108,7 @@ $router->get('/api/tickets/<ticket_id:int>/comments', function($request, $ticket
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $comments = Ticket::getInstance()->getTicketComments($ticket);
+    $comments = Ticket::getTicketComments($ticket);
     if ($comments === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_TICKET_GET_COMMENTS_ERROR'), 500);
 

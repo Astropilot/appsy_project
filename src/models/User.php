@@ -7,18 +7,9 @@ use Testify\Config;
 
 class User {
 
-    private static $instance = null;
-
     private function __construct() {}
 
-    public static function getInstance() : User {
-        if(is_null(self::$instance)) {
-            self::$instance = new User();
-        }
-        return self::$instance;
-    }
-
-    public function createUser($email, $firstname, $lastname, $role, $password) {
+    public static function createUser($email, $firstname, $lastname, $role, $password) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "INSERT INTO tf_user
@@ -38,7 +29,7 @@ class User {
         }
     }
 
-    public function deleteUser($user_id) {
+    public static function deleteUser($user_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "DELETE FROM tf_user WHERE `id`=:uid"
@@ -52,7 +43,7 @@ class User {
         }
     }
 
-    public function userExist($email, $password) {
+    public static function userExist($email, $password) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT 1 FROM tf_user WHERE `email`=:email AND `password`=:pass AND `banned`=0"
@@ -68,7 +59,7 @@ class User {
         }
     }
 
-    public function getUserID($email) {
+    public static function getUserID($email) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT id FROM tf_user WHERE `email`=:email"
@@ -83,7 +74,7 @@ class User {
         }
     }
 
-    public function getUserRole($user_id) {
+    public static function getUserRole($user_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT role FROM tf_user WHERE `id`=:userid"
@@ -98,7 +89,7 @@ class User {
         }
     }
 
-    public function getUser($user_id, $with_password=false) {
+    public static function getUser($user_id, $with_password=false) {
         $password_field = '';
         if ($with_password)
             $password_field = 'password,';
@@ -117,7 +108,7 @@ class User {
         }
     }
 
-    public function findContacts($search, $include_users) {
+    public static function findContacts($search, $include_users) {
         $exclude_users = '';
         if (!$include_users)
             $exclude_users = " AND `role`>0";
@@ -148,7 +139,7 @@ class User {
         }
     }
 
-    public function updateUser($userid, $email, $password, $lastname, $firstname, $role, $banned) {
+    public static function updateUser($userid, $email, $password, $lastname, $firstname, $role, $banned) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "UPDATE tf_user

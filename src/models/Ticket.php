@@ -8,18 +8,9 @@ use Testify\Config;
 
 class Ticket {
 
-    private static $instance = null;
-
     private function __construct() {}
 
-    public static function getInstance() : Ticket {
-        if(is_null(self::$instance)) {
-            self::$instance = new Ticket();
-        }
-        return self::$instance;
-    }
-
-    public function getTicketsFromUser($user) {
+    public static function getTicketsFromUser($user) {
         try {
             $tickets = array();
             $req = Database::getInstance()->getPDO()->prepare(
@@ -45,7 +36,7 @@ class Ticket {
         }
     }
 
-    public function getTicket($ticket_id) {
+    public static function getTicket($ticket_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT * FROM tf_ticket WHERE `id`=:id"
@@ -64,7 +55,7 @@ class Ticket {
         }
     }
 
-    public function getTicketComments($ticket) {
+    public static function getTicketComments($ticket) {
         try {
             $comments = array();
             $req = Database::getInstance()->getPDO()->prepare(
@@ -78,7 +69,7 @@ class Ticket {
 
             while ($row = $req->fetch()) {
                 $row['ticket'] = $ticket;
-                $row['author'] = User::getInstance()->getUser($row['author']);
+                $row['author'] = User::getUser($row['author']);
                 $row['content'] = html_entity_decode($row['content']);
                 array_push($comments, $row);
             }
@@ -90,7 +81,7 @@ class Ticket {
         }
     }
 
-    public function createTicket($author, $title, $content, $status) {
+    public static function createTicket($author, $title, $content, $status) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "INSERT INTO tf_ticket
@@ -111,7 +102,7 @@ class Ticket {
         }
     }
 
-    public function findTickets($search) {
+    public static function findTickets($search) {
         try {
             $tickets = array();
             $req = Database::getInstance()->getPDO()->prepare(
@@ -136,7 +127,7 @@ class Ticket {
 
             while ($row = $req->fetch()) {
                 $row['content'] = html_entity_decode($row['content']);
-                $row['author'] = User::getInstance()->getUser($row['author']);
+                $row['author'] = User::getUser($row['author']);
                 array_push($tickets, $row);
             }
 
@@ -147,7 +138,7 @@ class Ticket {
         }
     }
 
-    public function getTicketComment($comment_id) {
+    public static function getTicketComment($comment_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT * FROM tf_ticket_comment WHERE `id`=:id"
@@ -166,7 +157,7 @@ class Ticket {
         }
     }
 
-    public function createTicketComment($ticket_id, $author, $content) {
+    public static function createTicketComment($ticket_id, $author, $content) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "INSERT INTO tf_ticket_comment
@@ -186,7 +177,7 @@ class Ticket {
         }
     }
 
-    public function updateTicketStatus($ticket_id, $status) {
+    public static function updateTicketStatus($ticket_id, $status) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "UPDATE tf_ticket

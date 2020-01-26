@@ -14,7 +14,7 @@ $router = Router::getInstance();
 $router->get('/api/faq/questions', function($request) {
     API::setAPIHeaders();
 
-    $faq = Faq::getInstance()->getFaq();
+    $faq = Faq::getFaq();
     if ($faq === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FAQ_GET_FAQ_ERROR'), 500);
     return new Response(
@@ -42,7 +42,7 @@ $router->post('/api/faq/questions', function($request) {
     $question = $data['question'];
     $answer = $data['answer'];
 
-    $question = Faq::getInstance()->createQuestion($question, $answer);
+    $question = Faq::createQuestion($question, $answer);
     if($question === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FAQ_CREATE_FAQ_ERROR'), 500);
 
@@ -57,7 +57,7 @@ $router->delete('/api/faq/questions/<question_id:int>', function($request, $ques
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
-    if (Faq::getInstance()->deleteQuestion($question_id) === FALSE)
+    if (Faq::deleteQuestion($question_id) === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FAQ_DELETE_FAQ_ERROR'), 500);
 
     return new Response(

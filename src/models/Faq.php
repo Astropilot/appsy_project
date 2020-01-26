@@ -7,18 +7,9 @@ use Testify\Config;
 
 class Faq {
 
-    private static $instance = null;
-
     private function __construct() {}
 
-    public static function getInstance() : Faq {
-        if(is_null(self::$instance)) {
-            self::$instance = new Faq();
-        }
-        return self::$instance;
-    }
-
-    public function getFaq() {
+    public static function getFaq() {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT * FROM tf_faq ORDER BY `created_at`"
@@ -31,7 +22,7 @@ class Faq {
         }
     }
 
-    public function getQuestion($question_id) {
+    public static function getQuestion($question_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT id, question, answer, created_at FROM tf_faq WHERE `id`=:qid"
@@ -46,7 +37,7 @@ class Faq {
         }
     }
 
-    public function createQuestion($question, $answer) {
+    public static function createQuestion($question, $answer) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "INSERT INTO tf_faq SET `question`=:question, `created_at`= NOW(), `answer`=:answer"
@@ -64,7 +55,7 @@ class Faq {
         }
     }
 
-    public function deleteQuestion($question_id) {
+    public static function deleteQuestion($question_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "DELETE FROM tf_faq WHERE `id`=:qid"

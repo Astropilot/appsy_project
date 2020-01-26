@@ -8,18 +8,9 @@ use Testify\Config;
 
 class Forum {
 
-    private static $instance = null;
-
     private function __construct() {}
 
-    public static function getInstance() : Forum {
-        if(is_null(self::$instance)) {
-            self::$instance = new Forum();
-        }
-        return self::$instance;
-    }
-
-    public function getCategories() {
+    public static function getCategories() {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT tf_forum_category.*, COUNT(tf_forum_post.category) AS count_posts
@@ -39,7 +30,7 @@ class Forum {
         }
     }
 
-    public function getCategory($category_id) {
+    public static function getCategory($category_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT tf_forum_category.*, COUNT(tf_forum_post.category) AS count_posts
@@ -61,7 +52,7 @@ class Forum {
         }
     }
 
-    public function getNewCategoryDisplayOrder() {
+    public static function getNewCategoryDisplayOrder() {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT COALESCE(MAX(display_order) + 1, 0) FROM tf_forum_category"
@@ -74,7 +65,7 @@ class Forum {
         }
     }
 
-    public function getSiblingCategoryOrder($order, $direction) {
+    public static function getSiblingCategoryOrder($order, $direction) {
         if ($direction === "up")
             $sql = "SELECT COALESCE(MAX(display_order), -1) FROM tf_forum_category WHERE `display_order`<:order";
         else
@@ -94,7 +85,7 @@ class Forum {
         }
     }
 
-    public function updateCategoryDisplayOrder($category_id, $display_order) {
+    public static function updateCategoryDisplayOrder($category_id, $display_order) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "UPDATE tf_forum_category SET `display_order`=:order WHERE `id`=:id"
@@ -109,7 +100,7 @@ class Forum {
         }
     }
 
-    public function getCategoryFromDisplayOrder($display_order) {
+    public static function getCategoryFromDisplayOrder($display_order) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT *
@@ -127,7 +118,7 @@ class Forum {
         }
     }
 
-    public function createCategory($name, $description, $display_order) {
+    public static function createCategory($name, $description, $display_order) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "INSERT INTO tf_forum_category SET `title`=:title, `description`=:description, `display_order`=:order, `updated_at`=NOW()"
@@ -146,7 +137,7 @@ class Forum {
         }
     }
 
-    public function deleteCategory($category_id) {
+    public static function deleteCategory($category_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "DELETE FROM tf_forum_category
@@ -159,7 +150,7 @@ class Forum {
         }
     }
 
-    public function getPosts($category_id) {
+    public static function getPosts($category_id) {
         try {
             $posts = array();
 
@@ -189,7 +180,7 @@ class Forum {
         }
     }
 
-    public function getPost($post_id) {
+    public static function getPost($post_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT tf_forum_post.*, COUNT(tf_post_2.post_response) AS count_responses
@@ -207,7 +198,7 @@ class Forum {
             $req->execute(array('pid' => $post_id));
 
             $post = $req->fetch();
-            $post['author'] = User::getInstance()->getUser($post['author']);
+            $post['author'] = User::getUser($post['author']);
             $post['content'] = html_entity_decode($post['content']);
             return ($post);
         } catch (\PDOException $e) {
@@ -216,7 +207,7 @@ class Forum {
         }
     }
 
-    public function createPost($author, $category_id, $title, $content, $response=null) {
+    public static function createPost($author, $category_id, $title, $content, $response=null) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "INSERT INTO tf_forum_post SET `author`=:uid, `title`=:title,
@@ -238,7 +229,7 @@ class Forum {
         }
     }
 
-    public function getPostResponses($post_id) {
+    public static function getPostResponses($post_id) {
         try {
             $responses = array();
 
@@ -253,7 +244,7 @@ class Forum {
             $req->execute(array('pid' => $post_id, 'pid2' => $post_id));
 
             while ($row = $req->fetch()) {
-                $row['author'] = User::getInstance()->getUser($row['author']);
+                $row['author'] = User::getUser($row['author']);
                 $row['content'] = html_entity_decode($row['content']);
                 array_push($responses, $row);
             }
@@ -264,7 +255,7 @@ class Forum {
         }
     }
 
-    public function getPostResponse($post_id, $response_id) {
+    public static function getPostResponse($post_id, $response_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT *
@@ -274,7 +265,7 @@ class Forum {
             );
             $req->execute(array('pid' => $post_id, 'rid' => $response_id));
             $row = $req->fetch();
-            $row['author'] = User::getInstance()->getUser($row['author']);
+            $row['author'] = User::getUser($row['author']);
             return $row;
         } catch (\PDOException $e) {
             Database::throwIfDeveloppment($e, Config::ENVIRONNEMENT);
@@ -282,7 +273,7 @@ class Forum {
         }
     }
 
-    public function deletePostResponse($post_id, $response_id) {
+    public static function deletePostResponse($post_id, $response_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "DELETE FROM tf_forum_post
@@ -295,7 +286,7 @@ class Forum {
         }
     }
 
-    public function deletePost($post_id) {
+    public static function deletePost($post_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "DELETE FROM tf_forum_post

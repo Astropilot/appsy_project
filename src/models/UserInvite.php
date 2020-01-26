@@ -7,18 +7,9 @@ use Testify\Config;
 
 class UserInvite {
 
-    private static $instance = null;
-
     private function __construct() {}
 
-    public static function getInstance() : UserInvite {
-        if(is_null(self::$instance)) {
-            self::$instance = new UserInvite();
-        }
-        return self::$instance;
-    }
-
-    public function createInvite($email, $firstname, $lastname, $role, $token, $expire_date) {
+    public static function createInvite($email, $firstname, $lastname, $role, $token, $expire_date) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "INSERT INTO tf_user_invited
@@ -39,7 +30,7 @@ class UserInvite {
         }
     }
 
-    public function getValidInvite($token, $email) {
+    public static function getValidInvite($token, $email) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "SELECT id, email, firstname, lastname, role
@@ -58,7 +49,7 @@ class UserInvite {
         }
     }
 
-    public function unActiveInvite($invite_id) {
+    public static function unActiveInvite($invite_id) {
         try {
             $req = Database::getInstance()->getPDO()->prepare(
                 "UPDATE tf_user_invited

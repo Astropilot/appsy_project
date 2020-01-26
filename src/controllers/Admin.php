@@ -54,7 +54,7 @@ $router->post('/admin/api/users', function($request) {
     $datetime->add(new \DateInterval('P3D'));
     $expire_date = $datetime->format('Y-m-d');
 
-    $res = UserInvite::getInstance()->createInvite($email, $firstname, $lastname, $role, $token, $expire_date);
+    $res = UserInvite::createInvite($email, $firstname, $lastname, $role, $token, $expire_date);
 
     if ($res === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_INVITE_CREATE_ERROR'), 500);
@@ -93,7 +93,7 @@ $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
-    $user = User::getInstance()->getUser($user_id, true);
+    $user = User::getUser($user_id, true);
 
     if($user === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_USER_NOT_FOUND'), 404);
@@ -106,7 +106,7 @@ $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
     $role = isset($data['role']) ? $data['role'] : $user['role'];
     $banned = isset($data['banned']) ? $data['banned'] : $user['banned'];
 
-    $res = User::getInstance()->updateUser($user['id'], $email, $password, $lastname, $firstname, $role, $banned);
+    $res = User::updateUser($user['id'], $email, $password, $lastname, $firstname, $role, $banned);
     if ($res === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_USER_UPDATE_ERROR'), 500);
 
@@ -139,7 +139,7 @@ $router->post('/admin/api/tickets', function($request) {
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $tickets = Ticket::getInstance()->findTickets($search);
+    $tickets = Ticket::findTickets($search);
     if ($tickets === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_TICKET_GET_TICKETS_ERROR'), 500);
 
@@ -160,7 +160,7 @@ $router->put('/admin/api/tickets/<ticket_id:int>', function($request, $ticket_id
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
-    $ticket = Ticket::getInstance()->getTicket($ticket_id);
+    $ticket = Ticket::getTicket($ticket_id);
 
     if($ticket === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_TICKET_NOT_FOUND'), 404);
@@ -168,7 +168,7 @@ $router->put('/admin/api/tickets/<ticket_id:int>', function($request, $ticket_id
 
     $status = isset($data['status']) ? $data['status'] : $ticket['status'];
 
-    $res = Ticket::getInstance()->updateTicketStatus($ticket['id'], $status);
+    $res = Ticket::updateTicketStatus($ticket['id'], $status);
     if ($res === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_TICKET_UPDATE_ERROR'), 500);
 
@@ -198,7 +198,7 @@ $router->post('/admin/api/tickets/<ticket_id:int>/comments', function($request, 
     $author = $data['author'];
     $content = $data['content'];
 
-    $comment = Ticket::getInstance()->createTicketComment($ticket_id, $author, $content);
+    $comment = Ticket::createTicketComment($ticket_id, $author, $content);
     if ($comment === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_TICKET_CREATE_COMMENT_ERROR'), 500);
 

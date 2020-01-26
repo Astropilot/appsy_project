@@ -32,7 +32,7 @@ $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $user = User::getInstance()->getUser($user_id);
+    $user = User::getUser($user_id);
     if($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND'), 404);
 
@@ -40,7 +40,7 @@ $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $contacts = Message::getInstance()->getContacts($user);
+    $contacts = Message::getContacts($user);
 
     if ($contacts === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_GET_CONTACTS_ERROR'), 500);
@@ -64,15 +64,15 @@ $router->get('/api/users/<user_id:int>/<contact_id:int>/messages', function($req
     if (intval($user_id) !== $_SESSION['id'])
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_NOACCESS'), 403);
 
-    $user = User::getInstance()->getUser($user_id);
+    $user = User::getUser($user_id);
     if($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND'), 404);
 
-    $contact = User::getInstance()->getUser($contact_id);
+    $contact = User::getUser($contact_id);
     if ($contact === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_CONTACT_NOT_FOUND'), 404);
 
-    $messages = Message::getInstance()->getUserContactMessages($user, $contact);
+    $messages = Message::getUserContactMessages($user, $contact);
     if ($messages === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_GET_MESSAGES_ERROR'), 500);
 
@@ -90,11 +90,11 @@ $router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($re
     if (intval($user_id) !== $_SESSION['id'])
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_NOACCESS'), 403);
 
-    $user = User::getInstance()->getUser($user_id);
+    $user = User::getUser($user_id);
     if($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND'), 404);
 
-    $contact = User::getInstance()->getUser($contact_id);
+    $contact = User::getUser($contact_id);
     if ($contact === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_CONTACT_NOT_FOUND'), 404);
 
@@ -103,7 +103,7 @@ $router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($re
 
     $message = $data['message'];
 
-    $message = Message::getInstance()->createMessage($user, $contact, $message);
+    $message = Message::createMessage($user, $contact, $message);
     if($message === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_CREATE_ERROR'), 500);
 

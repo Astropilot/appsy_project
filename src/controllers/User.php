@@ -33,15 +33,15 @@ $router->post('/api/users/login', function($request) {
     $email = $data['email'];
     $password = Security::hashPass($data['password'], Config::HASH_SALT);
 
-    if(User::getInstance()->userExist($email, $password) === FALSE) {
+    if(User::userExist($email, $password) === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NO_USER'), 404);
     }
 
-    $user_id = User::getInstance()->getUserID($email);
+    $user_id = User::getUserID($email);
     if ($user_id === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_GET_USER_ERROR'), 500);
 
-    $user = User::getInstance()->getUser($user_id);
+    $user = User::getUser($user_id);
     if ($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_GET_USER_ERROR'), 500);
 
@@ -72,7 +72,7 @@ $router->get('/api/users/invite', function($request) {
     $token = $data['token'];
     $email = $data['email'];
 
-    $invite = UserInvite::getInstance()->getValidInvite($token, $email);
+    $invite = UserInvite::getValidInvite($token, $email);
     if($invite === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_INVITE_NOT_FOUND'), 404);
 
@@ -88,7 +88,7 @@ $router->get('/api/users/<userid:int>', function($request, $user_id) {
     if (intval($user_id) !== $_SESSION['id'])
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOACCESS'), 403);
 
-    $user = User::getInstance()->getUser($user_id);
+    $user = User::getUser($user_id);
     if($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
 
@@ -125,7 +125,7 @@ $router->put('/api/users/<userid:int>', function($request, $user_id) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $user = User::getInstance()->getUser($user_id, true);
+    $user = User::getUser($user_id, true);
     if($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
 
@@ -140,7 +140,7 @@ $router->put('/api/users/<userid:int>', function($request, $user_id) {
     } else
         $password = $user['password'];
 
-    $res = User::getInstance()->updateUser($user['id'], $email, $password, $lastname, $firstname, $role, $banned);
+    $res = User::updateUser($user['id'], $email, $password, $lastname, $firstname, $role, $banned);
     if ($res === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_UPDATE_ERROR'), 500);
 
@@ -154,7 +154,7 @@ $router->delete('/api/users/<user_id:int>', function($request, $user_id) {
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
-    if (User::getInstance()->deleteUser($user_id) === FALSE)
+    if (User::deleteUser($user_id) === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_DELETE_ERROR'), 500);
 
     return new Response(
@@ -186,7 +186,7 @@ $router->post('/api/contacts/search', function($request) {
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $contacts = User::getInstance()->findContacts($search, !Role::isUser());
+    $contacts = User::findContacts($search, !Role::isUser());
     if ($contacts === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_GET_CONTACTS_ERROR'), 500);
 
@@ -246,11 +246,11 @@ $router->post('/api/users', function($request) {
     if ($password !== $password_check)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_CREATE_PASSWORD_NOT_MATCH'), 400);
 
-    $invite = UserInvite::getInstance()->getValidInvite($token, $email);
+    $invite = UserInvite::getValidInvite($token, $email);
     if($invite === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_CREATE_INVITE_EXPIRED'), 404);
 
-    $res = User::getInstance()->createUser(
+    $res = User::createUser(
         $invite['email'],
         $firstname,
         $lastname,
@@ -260,7 +260,7 @@ $router->post('/api/users', function($request) {
     if ($res === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_CREATE_USER_ERROR'), 500);
 
-    UserInvite::getInstance()->unActiveInvite($invite['id']);
+    UserInvite::unActiveInvite($invite['id']);
 
     return new Response(
         json_encode(array('message' => I18n::getInstance()->translate('API_USER_CREATE_USER_SUCCESS'))),

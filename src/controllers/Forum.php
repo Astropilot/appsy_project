@@ -16,7 +16,7 @@ $router->get('/api/forum/categories', function($request) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
-    $categories = Forum::getInstance()->getCategories();
+    $categories = Forum::getCategories();
     if ($categories === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_GET_CATEGORIES_ERROR'), 500);
 
@@ -45,11 +45,11 @@ $router->post('/api/forum/categories', function($request) {
     $name = $data['name'];
     $description = $data['description'];
 
-    $display_order = Forum::getInstance()->getNewCategoryDisplayOrder();
+    $display_order = Forum::getNewCategoryDisplayOrder();
     if ($display_order === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CREATE_CATEGORY_ERROR'), 500);
 
-    $category = Forum::getInstance()->createCategory($name, $description, $display_order);
+    $category = Forum::createCategory($name, $description, $display_order);
     if($category === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CREATE_CATEGORY_ERROR'), 500);
 
@@ -72,24 +72,24 @@ $router->post('/api/forum/categories/<category_id:int>/reorder', function($reque
 
     $direction = $data['direction'];
 
-    $category = Forum::getInstance()->getCategory($category_id);
+    $category = Forum::getCategory($category_id);
     if ($category === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
     }
 
-    $order_sibling = Forum::getInstance()->getSiblingCategoryOrder($category['display_order'], $direction);
+    $order_sibling = Forum::getSiblingCategoryOrder($category['display_order'], $direction);
     if ($order_sibling === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_REORDER_CATEGORY_ERROR'), 500);
 
-    $category_sibling = Forum::getInstance()->getCategoryFromDisplayOrder($order_sibling);
+    $category_sibling = Forum::getCategoryFromDisplayOrder($order_sibling);
 
     if ($category_sibling !== FALSE) {
-        if(!Forum::getInstance()->updateCategoryDisplayOrder($category_sibling['id'], $category['display_order']))
+        if(!Forum::updateCategoryDisplayOrder($category_sibling['id'], $category['display_order']))
             return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_REORDER_CATEGORY_ERROR'), 500);
     } else
         $order_sibling = $category['display_order'];
 
-    if(!Forum::getInstance()->updateCategoryDisplayOrder($category['id'], $order_sibling))
+    if(!Forum::updateCategoryDisplayOrder($category['id'], $order_sibling))
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_REORDER_CATEGORY_ERROR'), 500);
 
     return new Response('', 204);
@@ -100,11 +100,11 @@ $router->delete('/api/forum/categories/<category_id:int>', function($request, $c
     Security::checkAPIConnected();
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
-    $category = Forum::getInstance()->getCategory($category_id);
+    $category = Forum::getCategory($category_id);
     if ($category === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
 
-    if (Forum::getInstance()->deleteCategory($category_id) === FALSE)
+    if (Forum::deleteCategory($category_id) === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_DELETE_CATEGORY_ERROR'), 500);
 
     return new Response(
@@ -129,7 +129,7 @@ $router->get('/api/forum/categories/<category_id:int>/posts', function($request,
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $category = Forum::getInstance()->getCategory($category_id);
+    $category = Forum::getCategory($category_id);
     if ($category === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
     }
@@ -138,7 +138,7 @@ $router->get('/api/forum/categories/<category_id:int>/posts', function($request,
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $posts = Forum::getInstance()->getPosts($category_id);
+    $posts = Forum::getPosts($category_id);
     if ($posts === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_GET_POSTS_ERROR'), 500);
 
@@ -172,7 +172,7 @@ $router->post('/api/forum/categories/<category_id:int>/posts', function($request
     $title = $data['title'];
     $content = $data['content'];
 
-    $post = Forum::getInstance()->createPost($_SESSION['id'], $category_id, $title, $content);
+    $post = Forum::createPost($_SESSION['id'], $category_id, $title, $content);
     if($post === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_POST_CREATE_ERROR'), 500);
 
@@ -198,7 +198,7 @@ $router->get('/api/forum/posts/<post_id:int>/responses', function($request, $pos
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $post = Forum::getInstance()->getPost($post_id);
+    $post = Forum::getPost($post_id);
     if ($post === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
     }
@@ -207,7 +207,7 @@ $router->get('/api/forum/posts/<post_id:int>/responses', function($request, $pos
     $pageSize = $data['pageSize'];
 
     $paginator = new Paginator($page, $pageSize);
-    $responses = Forum::getInstance()->getPostResponses($post_id);
+    $responses = Forum::getPostResponses($post_id);
 
     if ($responses === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_GET_RESPONSES_ERROR'), 500);
@@ -239,11 +239,11 @@ $router->post('/api/forum/posts/<post_id:int>/responses', function($request, $po
 
     $content = $data['content'];
 
-    $post = Forum::getInstance()->getPost($post_id);
+    $post = Forum::getPost($post_id);
     if ($post === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_POST_NOT_FOUND'), 404);
 
-    $response = Forum::getInstance()->createPost($_SESSION['id'], $post['category'], $post['title'], $content, $post['id']);
+    $response = Forum::createPost($_SESSION['id'], $post['category'], $post['title'], $content, $post['id']);
     if($response === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_RESPONSE_CREATE_ERROR'), 500);
 
@@ -257,7 +257,7 @@ $router->delete('/api/forum/posts/<post_id:int>/responses/<response_id:int>', fu
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
-    $response = Forum::getInstance()->getPostResponse($post_id, $response_id);
+    $response = Forum::getPostResponse($post_id, $response_id);
 
     if ($response === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_RESPONSE_NOT_FOUND'), 404);
@@ -266,7 +266,7 @@ $router->delete('/api/forum/posts/<post_id:int>/responses/<response_id:int>', fu
         return API::makeResponseError(I18n::getInstance('API_FORUM_RESPONSE_NOACCESS'), 403);
     }
 
-    if (Forum::getInstance()->deletePostResponse($post_id, $response_id) === FALSE)
+    if (Forum::deletePostResponse($post_id, $response_id) === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_DELETE_RESPONSE_ERROR'), 500);
 
     return new Response(
@@ -279,7 +279,7 @@ $router->delete('/api/forum/posts/<post_id:int>', function($request, $post_id) {
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
-    $post = Forum::getInstance()->getPost($post_id);
+    $post = Forum::getPost($post_id);
 
     if ($post === FALSE)
         return API::makeResponseError("Post not found!", 404);
@@ -287,7 +287,7 @@ $router->delete('/api/forum/posts/<post_id:int>', function($request, $post_id) {
     if (intval($post['author']['id']) !== $_SESSION['id'] && intval($_SESSION['role']) < Role::$ROLES['ADMINISTRATOR'])
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_POST_NOACCESS'), 403);
 
-    if (Forum::getInstance()->deletePost($post_id) === FALSE)
+    if (Forum::deletePost($post_id) === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_DELETE_POST_ERROR'), 500);
 
     return new Response(
