@@ -33,7 +33,35 @@ $router->get('/inscription/<token:str>/<email:str>', function($request, $token, 
 });
 
 $router->get('/dashboard', function($request) {
-    return Response::fromView('dashboard/home.html');
+    if ($_SESSION['role'] === 0) {
+        return Response::fromView('dashboard/home_user.html');
+    } elseif ($_SESSION['role'] === 1) {
+        return Response::fromView('dashboard/home_examiner.html');
+    } else {
+        return Response::fromView('dashboard/home_admin.html');
+    }
+});
+
+$router->get('/dashboard/tests', function($request) {
+    if ($_SESSION['role'] === 0) {
+        return Response::fromView('dashboard/tests_user.html');
+    } elseif ($_SESSION['role'] === 1) {
+        return Response::fromView('dashboard/tests_examiner.html');
+    } else {
+        return Response::fromView('dashboard/tests_admin.html');
+    }
+});
+
+$router->get('/dashboard/test/<test_id:int>', function($request, $test_id) {
+    return Response::fromView('dashboard/test.html');
+});
+
+$router->get('/dashboard/test/new/<user_id:int>', function($request, $user_id) {
+    return Response::fromView('dashboard/new_test.html');
+});
+
+$router->get('/dashboard/subjects', function($request) {
+    return Response::fromView('dashboard/subjects.html');
 });
 
 $router->get('/dashboard/profile', function($request) {

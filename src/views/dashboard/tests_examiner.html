@@ -1,0 +1,74 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_TESTS_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_TESTS_TITLE' }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <h2>{{ translate 'DASHBOARD_TESTSEXAMINER_LASTTESTS' }}</h2>
+  </div>
+
+  <div class="row">
+    <table>
+      <thead>
+        <tr>
+          <th>{{ translate 'DASHBOARD_TESTS_AVSCORE' }}</th>
+          <th width="60%">{{ translate 'DASHBOARD_TESTS_DATE' }}</th>
+          <th>{{ translate 'DASHBOARD_TESTS_SUBJECT' }}</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="color: green">76%</span></td>
+          <td>19/12/2019</td>
+          <td>Ben Lousier</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSEXAMINER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><span style="color: red">23%</span></td>
+          <td>11/12/2019</td>
+          <td>Ben Lousier</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSEXAMINER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><span style="color: green">97%</span></td>
+          <td>16/12/2019</td>
+          <td>Yohann Martin</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSEXAMINER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><span style="color: orange">54%</span></td>
+          <td>5/12/2019</td>
+          <td>Ben Lousier</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSEXAMINER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

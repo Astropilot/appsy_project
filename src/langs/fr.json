@@ -144,6 +144,53 @@
 
     "DASHBOARD_HOME_TITLE": "Accueil",
 
+    "DASHBOARD_HOMEUSER_LASTCARD": "Résultat du dernier test cardiaque",
+    "DASHBOARD_HOMEUSER_LASTREFX": "Résultat du dernier test de reflexe",
+    "DASHBOARD_HOMEUSER_LASTSCORE": "Vos derniers scores",
+
+    "DASHBOARD_TESTSUSER_LASTTESTS": "Vos tests réalisés",
+    "DASHBOARD_TESTSUSER_SEEBTN": "Voir les détails",
+
+    "DASHBOARD_TESTSEXAMINER_LASTTESTS": "Vos tests réalisés",
+    "DASHBOARD_TESTSEXAMINER_SEEBTN": "Voir les détails / Modifier",
+
+    "DASHBOARD_TESTSADMIN_LASTTESTS": "Tous les tests réalisés",
+    "DASHBOARD_TESTSADMIN_SEEBTN": "Voir les détails",
+
+    "DASHBOARD_NEWTEST_TITLE": "Nouveau Test",
+    "DASHBOARD_NEWTEST_USERTITLE": "Informations du sujet",
+    "DASHBOARD_NEWTEST_EMAIL": "Adresse Email",
+    "DASHBOARD_NEWTEST_FIRSTNAME": "Prénom",
+    "DASHBOARD_NEWTEST_LASTNAME": "Nom",
+    "DASHBOARD_NEWTEST_CHALLENGESTITLE": "Les challenges du test",
+    "DASHBOARD_NEWTEST_HEARTRATE": "Fréquence cardiaque",
+    "DASHBOARD_NEWTEST_SKINTEMP": "Température superficielle de la peau",
+    "DASHBOARD_NEWTEST_QUALTONALITY": "Qualité de reconnaissance de tonalité",
+    "DASHBOARD_NEWTEST_REACTSOUND": "Réaction à un stimulus sonore",
+    "DASHBOARD_NEWTEST_REACTLIGHT": "Réaction à une lumière inattendue dans le noir",
+    "DASHBOARD_NEWTEST_HEARRANGE": "Etendue de perception auditive",
+    "DASHBOARD_NEWTEST_ADDCHALLENGE": "Ajouter un challenge",
+    "DASHBOARD_NEWTEST_STARTTEST": "Démarrer le test",
+
+    "DASHBOARD_SUBJECTS_TITLE": "Sujets d'examen",
+    "DASHBOARD_SUBJECTS_SUBTITLE": "Vos sujets d'examen",
+    "DASHBOARD_SUBJECTS_SEARCHBTN": "Rechercher",
+    "DASHBOARD_SUBJECTS_NAME": "Nom / Prénom",
+    "DASHBOARD_SUBJECTS_EMAIL": "Email",
+    "DASHBOARD_SUBJECTS_PHONE": "Téléphone",
+    "DASHBOARD_SUBJECTS_ACTION": "Action",
+    "DASHBOARD_SUBJECTS_SEEBTN": "Voir le profil",
+    "DASHBOARD_SUBJECTS_TESTBTN": "Faire passer un test",
+
+    "DASHBOARD_TEST_TITLE": "Test",
+
+    "DASHBOARD_TESTS_TITLE": "Les tests",
+    "DASHBOARD_TESTS_AVSCORE": "Score moyen",
+    "DASHBOARD_TESTS_DATE": "Date du test",
+    "DASHBOARD_TESTS_SUBJECT": "Sujet du test",
+    "DASHBOARD_TESTS_EXAMINER": "Examinateur",
+
+
     "DASHBOARD_CHAT_TITLE": "Messagerie",
     "DASHBOARD_CHAT_MAINTITLE": "Messagerie - Vos discussions",
     "DASHBOARD_CHAT_NODISCUSSION": "Vous n'avez pas encore de discussion !",

@@ -1,0 +1,82 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_NEWTEST_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_NEWTEST_TITLE' }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <h2>{{ translate 'DASHBOARD_NEWTEST_TITLE' }}</h2>
+  </div>
+
+  <div class="row justify-content-center">
+    <h3>{{ translate 'DASHBOARD_NEWTEST_USERTITLE' }}</h3>
+  </div>
+
+  <div class="row justify-content-center">
+    <form class="form">
+      <div class="row" style="margin-bottom: 10px">
+        <label class="col-5 col-form-label" for="profile-email">{{ translate 'DASHBOARD_NEWTEST_EMAIL' }} <span style="color: red">*</span></label><br>
+        <input type="email" class="form-field col-7" name="profile-email" id="profile-email" value="john.doe@gmail.com" readonly>
+      </div>
+      <div class="row" style="margin-bottom: 10px">
+        <label class="col-5 col-form-label" for="profile-firstname">{{ translate 'DASHBOARD_NEWTEST_FIRSTNAME' }} <span style="color: red">*</span></label><br>
+        <input type="text" class="form-field col-7" name="profile-firstname" id="profile-firstname" value="John" readonly>
+      </div>
+      <div class="row" style="margin-bottom: 10px">
+        <label class="col-5 col-form-label" for="profile-lastname">{{ translate 'DASHBOARD_NEWTEST_LASTNAME' }} <span style="color: red">*</span></label><br>
+        <input type="text" class="form-field col-7" name="profile-lastname" id="profile-lastname" value="Doe" readonly>
+      </div>
+    </form>
+  </div>
+
+  <div class="row justify-content-center">
+    <h3>{{ translate 'DASHBOARD_NEWTEST_CHALLENGESTITLE' }}</h3>
+  </div>
+
+  <div class="row justify-content-center">
+    <form class="form">
+      <select class="form-field" name="test-challenge" id="test-challenge" required>
+        <option value="" selected>---</option>
+        <option value="{{ translate 'DASHBOARD_NEWTEST_HEARTRATE' }}">{{ translate 'DASHBOARD_NEWTEST_HEARTRATE' }}</option>
+        <option value="{{ translate 'DASHBOARD_NEWTEST_SKINTEMP' }}">{{ translate 'DASHBOARD_NEWTEST_SKINTEMP' }}</option>
+        <option value="{{ translate 'DASHBOARD_NEWTEST_QUALTONALITY' }}">{{ translate 'DASHBOARD_NEWTEST_QUALTONALITY' }}</option>
+        <option value="{{ translate 'DASHBOARD_NEWTEST_REACTSOUND' }}">{{ translate 'DASHBOARD_NEWTEST_REACTSOUND' }}</option>
+        <option value="{{ translate 'DASHBOARD_NEWTEST_REACTLIGHT' }}">{{ translate 'DASHBOARD_NEWTEST_REACTLIGHT' }}</option>
+        <option value="{{ translate 'DASHBOARD_NEWTEST_HEARRANGE' }}">{{ translate 'DASHBOARD_NEWTEST_HEARRANGE' }}</option>
+       </select>
+      <button id="btn-addchallenge" type="button" class="btn btn-success btn-sm">
+        <i class="fas fa-plus"></i> {{ translate 'DASHBOARD_NEWTEST_ADDCHALLENGE' }}
+      </button>
+    </form>
+  </div>
+
+  <div class="row justify-content-center">
+    <ul id="challenges"></ul>
+  </div>
+
+  <div class="row justify-content-center">
+    <button id="btn-starttest" type="button" class="btn btn-success">
+      <i class="fas fa-play"></i> {{ translate 'DASHBOARD_NEWTEST_STARTTEST' }}
+    </button>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  $('#btn-addchallenge').on('click', function() {
+    $('#challenges').append('<li>' + $('#test-challenge').val() + '</li>');
+  });
+</script>
+
+{% endblock %}

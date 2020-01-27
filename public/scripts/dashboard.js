@@ -37,10 +37,10 @@ function handleSideNavigation() {
   $('#wait-nav').hide();
   if (user.role >= 0)
     $('#tests-nav').show();
-  if (user.role >= 1)
+  if (user.role == 1)
     $('#subjects-nav').show();
   if (user.role >= 2) {
-    $('#examiners-nav').show();
+    //$('#examiners-nav').show();
     $('#admin-nav').show();
   }
   if (user.role < 2)

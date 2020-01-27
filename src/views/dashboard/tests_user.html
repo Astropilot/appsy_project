@@ -1,0 +1,99 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_TESTS_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_TESTS_TITLE' }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <h2>{{ translate 'DASHBOARD_TESTSUSER_LASTTESTS' }}</h2>
+  </div>
+
+  <div class="row justify-content-center">
+    <canvas id="testsChart" width="400" height="100"></canvas>
+  </div>
+
+  <div class="row" style="margin-top: 15px">
+    <table>
+      <thead>
+        <tr>
+          <th>{{ translate 'DASHBOARD_TESTS_AVSCORE' }}</th>
+          <th width="60%">{{ translate 'DASHBOARD_TESTS_DATE' }}</th>
+          <th>{{ translate 'DASHBOARD_TESTS_EXAMINER' }}</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="color: green">76%</span></td>
+          <td>19/12/2019</td>
+          <td>Jean Dupont</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSUSER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><span style="color: red">23%</span></td>
+          <td>11/12/2019</td>
+          <td>Jean Dupont</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSUSER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><span style="color: green">97%</span></td>
+          <td>16/12/2019</td>
+          <td>Kévin Maulier</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSUSER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><span style="color: orange">54%</span></td>
+          <td>5/12/2019</td>
+          <td>Jean Dupont</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSUSER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+<script type="text/javascript">
+  var ctx = document.getElementById('testsChart').getContext('2d');
+  var testsChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['05/12/19', '11/12/10', '16/12/19', '19/12/19'],
+          datasets: [{
+            label: ["Score moyen du test"],
+            backgroundColor: 'rgb(54, 162, 235)',
+            borderColor: 'rgb(54, 162, 235)',
+            data: [54,23,97,76],
+            fill: false
+          }]
+      }
+  });
+</script>
+{% endblock %}

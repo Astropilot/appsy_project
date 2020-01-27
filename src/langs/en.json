@@ -140,6 +140,53 @@
 
     "DASHBOARD_HOME_TITLE": "Home",
 
+    "DASHBOARD_HOMEUSER_LASTCARD": "Result of the last cardiac test",
+    "DASHBOARD_HOMEUSER_LASTREFX": "Result of the last reflex test",
+    "DASHBOARD_HOMEUSER_LASTSCORE": "Your latest scores",
+
+    "DASHBOARD_TESTSUSER_LASTTESTS": "Your tests carried out",
+    "DASHBOARD_TESTSUSER_SEEBTN": "See details",
+
+    "DASHBOARD_TESTSEXAMINER_LASTTESTS": "Your tests carried out",
+    "DASHBOARD_TESTSEXAMINER_SEEBTN": "See details / Edit",
+
+    "DASHBOARD_TESTSADMIN_LASTTESTS": "All tests performed",
+    "DASHBOARD_TESTSADMIN_SEEBTN": "See details",
+
+    "DASHBOARD_NEWTEST_TITLE": "New Test",
+    "DASHBOARD_NEWTEST_USERTITLE": "Subject's information",
+    "DASHBOARD_NEWTEST_EMAIL": "Email",
+    "DASHBOARD_NEWTEST_FIRSTNAME": "Firstname",
+    "DASHBOARD_NEWTEST_LASTNAME": "Lastname",
+    "DASHBOARD_NEWTEST_CHALLENGESTITLE": "The challenges of the test",
+    "DASHBOARD_NEWTEST_HEARTRATE": "Heart rate",
+    "DASHBOARD_NEWTEST_SKINTEMP": "Skin surface temperature",
+    "DASHBOARD_NEWTEST_QUALTONALITY": "Tone recognition quality",
+    "DASHBOARD_NEWTEST_REACTSOUND": "Reaction to a sound stimulus",
+    "DASHBOARD_NEWTEST_REACTLIGHT": "Reaction to unexpected light in the dark",
+    "DASHBOARD_NEWTEST_HEARRANGE": "Range of auditory perception",
+    "DASHBOARD_NEWTEST_ADDCHALLENGE": "Add a challenge",
+    "DASHBOARD_NEWTEST_STARTTEST": "Start the test",
+
+    "DASHBOARD_SUBJECTS_TITLE": "Subjects",
+    "DASHBOARD_SUBJECTS_SUBTITLE": "Your subjects",
+    "DASHBOARD_SUBJECTS_SEARCHBTN": "Search",
+    "DASHBOARD_SUBJECTS_NAME": "Last name / First name",
+    "DASHBOARD_SUBJECTS_EMAIL": "Email",
+    "DASHBOARD_SUBJECTS_PHONE": "Phone number",
+    "DASHBOARD_SUBJECTS_ACTION": "Action",
+    "DASHBOARD_SUBJECTS_SEEBTN": "Go to profile",
+    "DASHBOARD_SUBJECTS_TESTBTN": "Take a test",
+
+    "DASHBOARD_TEST_TITLE": "Test",
+
+    "DASHBOARD_TESTS_TITLE": "The tests",
+    "DASHBOARD_TESTS_AVSCORE": "Average score",
+    "DASHBOARD_TESTS_DATE": "Test date",
+    "DASHBOARD_TESTS_SUBJECT": "Subject",
+    "DASHBOARD_TESTS_EXAMINER": "Examiner",
+
+
     "DASHBOARD_CHAT_TITLE": "Messaging",
     "DASHBOARD_CHAT_MAINTITLE": "Messaging - Your discussions",
     "DASHBOARD_CHAT_NODISCUSSION": "You don't have a discussion yet!",

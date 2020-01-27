@@ -1,0 +1,96 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+{{ translate 'DASHBOARD_SUBJECTS_TITLE' }}
+{% endblock %}
+
+{% block navtitle %}
+{{ translate 'DASHBOARD_SUBJECTS_TITLE' }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <h2>{{ translate 'DASHBOARD_SUBJECTS_SUBTITLE' }}</h2>
+  </div>
+
+  <div class="row justify-content-center">
+    <form class="form">
+      <input type="text" class="form-field" name="subject-search" id="subject-search" placeholder="Ex: John Doe">
+      <button id="btn-search" type="button" class="btn btn-primary btn-sm">
+        {{ translate 'DASHBOARD_SUBJECTS_SEARCHBTN' }} <i class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </form>
+  </div>
+
+  <div class="row justify-content-center" style="margin-top: 15px">
+    <table class="mx-auto">
+      <thead>
+        <tr>
+          <th>{{ translate 'DASHBOARD_SUBJECTS_NAME' }}</th>
+          <th>{{ translate 'DASHBOARD_SUBJECTS_EMAIL' }}</th>
+          <th>{{ translate 'DASHBOARD_SUBJECTS_PHONE' }}</th>
+          <th>{{ translate 'DASHBOARD_SUBJECTS_ACTION' }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>John Doe</td>
+          <td>john.doe@gmail.com</td>
+          <td>06 24 52 14 47</td>
+          <td>
+            <a href="/dashboard/profile/1" class="btn btn-primary btn-sm">
+              {{ translate 'DASHBOARD_SUBJECTS_SEEBTN' }}
+            </a>
+            <a href="/dashboard/test/new/1" class="btn btn-success btn-sm">
+              {{ translate 'DASHBOARD_SUBJECTS_TESTBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Camille Pelat</td>
+          <td>pelat.camille@gmail.com</td>
+          <td>06 65 40 47 16</td>
+          <td>
+            <a href="/dashboard/profile/1" class="btn btn-primary btn-sm">
+              {{ translate 'DASHBOARD_SUBJECTS_SEEBTN' }}
+            </a>
+            <a href="/dashboard/test/new/1" class="btn btn-success btn-sm">
+              {{ translate 'DASHBOARD_SUBJECTS_TESTBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Maxime Daulier</td>
+          <td>maxdaulier@outlook.com</td>
+          <td>07 48 11 01 65</td>
+          <td>
+            <a href="/dashboard/profile/1" class="btn btn-primary btn-sm">
+              {{ translate 'DASHBOARD_SUBJECTS_SEEBTN' }}
+            </a>
+            <a href="/dashboard/test/new/1" class="btn btn-success btn-sm">
+              {{ translate 'DASHBOARD_SUBJECTS_TESTBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Alice Aulière</td>
+          <td>aliceauliere@gmx.fr</td>
+          <td>06 22 23 47 82</td>
+          <td>
+            <a href="/dashboard/profile/1" class="btn btn-primary btn-sm">
+              {{ translate 'DASHBOARD_SUBJECTS_SEEBTN' }}
+            </a>
+            <a href="/dashboard/test/new/1" class="btn btn-success btn-sm">
+              {{ translate 'DASHBOARD_SUBJECTS_TESTBTN' }}
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}
