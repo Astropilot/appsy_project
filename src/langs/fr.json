@@ -74,9 +74,11 @@
     "API_USER_DECONNECT_ERROR": "Une erreur est survenue pendant la deconnexion !",
     "API_USER_CREATE_NO_TOKEN": "Le code d'invitation n'a pas été fourni !",
     "API_USER_CREATE_NO_EMAIL": "L'email d'invitation n'a pas été fourni !",
+    "API_USER_CREATE_EMAIL_NOTVALIDE": "L'email n'est pas valide !",
     "API_USER_CREATE_NO_FIRSTNAME": "Le prénom n'a pas été fourni !",
     "API_USER_CREATE_NO_LASTNAME": "Le nom n'a pas été fourni !",
     "API_USER_CREATE_NO_PASSWORD": "Le mot de passe n'a pas été fourni !",
+    "API_USER_CREATE_PASSWORD_SHORT": "Le mot de passe doit faire au moins 6 caractères !",
     "API_USER_CREATE_NO_PASSWORDCHECK": "La vérification du mot de passe n'a pas été fournie !",
     "API_USER_CREATE_PASSWORD_NOT_MATCH": "La vérification et le mot de passe ne correspondent pas !",
     "API_USER_CREATE_INVITE_EXPIRED": "L'invitation n'a pas été trouvée ou est expirée",
@@ -147,6 +149,8 @@
     "DASHBOARD_HOMEUSER_LASTCARD": "Résultat du dernier test cardiaque",
     "DASHBOARD_HOMEUSER_LASTREFX": "Résultat du dernier test de reflexe",
     "DASHBOARD_HOMEUSER_LASTSCORE": "Vos derniers scores",
+
+    "DASHBOARD_HOMEEXAMINER_SEARCHBTN": "Rechercher",
 
     "DASHBOARD_TESTSUSER_LASTTESTS": "Vos tests réalisés",
     "DASHBOARD_TESTSUSER_SEEBTN": "Voir les détails",

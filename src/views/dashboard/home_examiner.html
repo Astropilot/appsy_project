@@ -14,6 +14,97 @@
   <div class="row justify-content-center">
     <h2>Dashboard</h2>
   </div>
+
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <canvas id="usageChart" width="400" height="150"></canvas>
+    </div>
+  </div>
+
+  <div class="row justify-content-center" style="margin-top: 15px">
+    <form class="form">
+      <input type="text" class="form-field" name="subject-search" id="subject-search" placeholder="Ex: John Doe">
+      <button id="btn-search" type="button" class="btn btn-primary btn-sm">
+        {{ translate 'DASHBOARD_HOMEEXAMINER_SEARCHBTN' }} <i class="fas fa-circle-notch fa-spin" style="display: none"></i>
+      </button>
+    </form>
+  </div>
+
+  <div class="row" style="margin-top: 10px">
+    <table>
+      <thead>
+        <tr>
+          <th>{{ translate 'DASHBOARD_TESTS_AVSCORE' }}</th>
+          <th width="60%">{{ translate 'DASHBOARD_TESTS_DATE' }}</th>
+          <th>{{ translate 'DASHBOARD_TESTS_SUBJECT' }}</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="color: green">76%</span></td>
+          <td>19/12/2019</td>
+          <td>Ben Lousier</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSEXAMINER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><span style="color: red">23%</span></td>
+          <td>11/12/2019</td>
+          <td>Ben Lousier</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSEXAMINER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><span style="color: green">97%</span></td>
+          <td>16/12/2019</td>
+          <td>Yohann Martin</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSEXAMINER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td><span style="color: orange">54%</span></td>
+          <td>5/12/2019</td>
+          <td>Ben Lousier</td>
+          <td>
+            <a href="/dashboard/test/1" class="btn btn-primary btn-sm">
+              <i class="fas fa-eye"></i> {{ translate 'DASHBOARD_TESTSEXAMINER_SEEBTN' }}
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+<script type="text/javascript">
+  var ctx = document.getElementById('usageChart').getContext('2d');
+  var usageChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['01/11/19', '10/11/10', '29/11/19', '15/12/19'],
+          datasets: [{
+            label: ["Nombre de tests passés"],
+            backgroundColor: 'rgb(54, 162, 235)',
+            borderColor: 'rgb(54, 162, 235)',
+            data: [70,75,73,70],
+            fill: false
+          }]
+      }
+  });
+</script>
 {% endblock %}

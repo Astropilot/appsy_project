@@ -70,9 +70,11 @@
     "API_USER_DECONNECT_ERROR": "An error occurred during the disconnection!",
     "API_USER_CREATE_NO_TOKEN": "The invite code was not provided!",
     "API_USER_CREATE_NO_EMAIL": "The invite email was not provided!",
+    "API_USER_CREATE_EMAIL_NOTVALIDE": "The email is not valid!",
     "API_USER_CREATE_NO_FIRSTNAME": "The firstname was not provided!",
     "API_USER_CREATE_NO_LASTNAME": "The lastname was not provided!",
     "API_USER_CREATE_NO_PASSWORD": "The password was not provided!",
+    "API_USER_CREATE_PASSWORD_SHORT": "The password must be at least 6 characters long!",
     "API_USER_CREATE_NO_PASSWORDCHECK": "The password check was not provided!",
     "API_USER_CREATE_PASSWORD_NOT_MATCH": "The password verification do not match with the password!",
     "API_USER_CREATE_INVITE_EXPIRED": "The invitation is not found or has been expired!",
@@ -143,6 +145,8 @@
     "DASHBOARD_HOMEUSER_LASTCARD": "Result of the last cardiac test",
     "DASHBOARD_HOMEUSER_LASTREFX": "Result of the last reflex test",
     "DASHBOARD_HOMEUSER_LASTSCORE": "Your latest scores",
+
+    "DASHBOARD_HOMEEXAMINER_SEARCHBTN": "Search",
 
     "DASHBOARD_TESTSUSER_LASTTESTS": "Your tests carried out",
     "DASHBOARD_TESTSUSER_SEEBTN": "See details",

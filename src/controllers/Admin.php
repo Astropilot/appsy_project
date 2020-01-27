@@ -27,6 +27,8 @@ $router->post('/admin/api/users', function($request) {
 
     if(!isset($data['email']) || empty($data['email']))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_EMAIL');
+    if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_EMAIL_NOTVALIDE');
     if(!isset($data['firstname']) || empty($data['firstname']))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_FIRSTNAME');
     if(!isset($data['lastname']) || empty($data['lastname']))

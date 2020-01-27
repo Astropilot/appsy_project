@@ -223,12 +223,16 @@ $router->post('/api/users', function($request) {
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_TOKEN');
     if(!isset($data['email']) || empty($data['email']))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_EMAIL');
+    if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_EMAIL_NOTVALIDE');
     if(!isset($data['firstname']) || empty($data['firstname']))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_FIRSTNAME');
     if(!isset($data['lastname']) || empty($data['lastname']))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_LASTNAME');
     if(!isset($data['password']) || empty($data['password']))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_PASSWORD');
+    if (strlen($data['password']) < 6)
+        $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_PASSWORD_SHORT');
     if(!isset($data['password_check']) || empty($data['password_check']))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_PASSWORDCHECK');
 
