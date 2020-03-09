@@ -15,7 +15,7 @@ $router = Router::getInstance();
 
 $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
     $errors_arr = array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
@@ -23,9 +23,9 @@ $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
     if (intval($user_id) !== $_SESSION['id'])
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_NOACCESS'), 403);
 
-    if(!isset($data['page']) || empty($data['page']))
+    if(!$data->existAndNotEmpty('page'))
         $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOPAGE');
-    if(!isset($data['pageSize']) || empty($data['pageSize']))
+    if(!$data->existAndNotEmpty('pageSize'))
         $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOSIZEPAGE');
 
     if(count($errors_arr) > 0) {
@@ -36,8 +36,8 @@ $router->get('/api/users/<user_id:int>/contacts', function($request, $user_id) {
     if($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_USER_NOT_FOUND'), 404);
 
-    $page = $data['page'];
-    $pageSize = $data['pageSize'];
+    $page = $data->get('page');
+    $pageSize = $data->get('pageSize');
 
     $paginator = new Paginator($page, $pageSize);
     $contacts = Message::getContacts($user);
@@ -82,7 +82,7 @@ $router->get('/api/users/<user_id:int>/<contact_id:int>/messages', function($req
 });
 
 $router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($request, $user_id, $contact_id) {
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
@@ -98,10 +98,10 @@ $router->post('/api/users/<user_id:int>/<contact_id:int>/messages', function($re
     if ($contact === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_CONTACT_NOT_FOUND'), 404);
 
-    if(!isset($data['message']) || empty($data['message']))
+    if(!$data->existAndNotEmpty('message'))
         return API::makeResponseError(I18n::getInstance()->translate('API_MESSAGE_NO_MESSAGE_GIVEN'), 400);
 
-    $message = $data['message'];
+    $message = $data->get('message');
 
     $message = Message::createMessage($user, $contact, $message);
     if($message === FALSE)

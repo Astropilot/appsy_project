@@ -28,19 +28,19 @@ $router->post('/api/faq/questions', function($request) {
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['question']) || empty($data['question']))
+    if(!$data->existAndNotEmpty('question'))
         $errors_arr[] = I18n::getInstance()->translate('API_FAQ_NO_QUESTION_GIVEN');
-    if(!isset($data['answer']) || empty($data['answer']))
+    if(!$data->existAndNotEmpty('answer'))
         $errors_arr[] = I18n::getInstance()->translate('API_FAQ_NO_ANSWER_GIVEN');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $question = $data['question'];
-    $answer = $data['answer'];
+    $question = $data->get('question');
+    $answer = $data->get('answer');
 
     $question = Faq::createQuestion($question, $answer);
     if($question === FALSE)

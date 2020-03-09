@@ -11,24 +11,24 @@ use \Testify\Config;
 $router = Router::getInstance();
 $router->post('/api/contact', function($request) {
     $errors_arr = array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
 
-    if(!isset($data['name']) || empty($data['name']))
+    if(!$data->existAndNotEmpty('name'))
         $errors_arr[] = I18n::getInstance()->translate('API_CONTACT_NO_NAME');
-    if(!isset($data['email']) || empty($data['email']))
+    if(!$data->existAndNotEmpty('email'))
         $errors_arr[] = I18n::getInstance()->translate('API_CONTACT_NO_EMAIL');
-    if(!isset($data['message']) || empty($data['message']))
+    if(!$data->existAndNotEmpty('message'))
         $errors_arr[] = I18n::getInstance()->translate('API_CONTACT_NO_MESSAGE');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $name = $data['name'];
-    $email = $data['email'];
-    $message = $data['message'];
+    $name = $data->get('name');
+    $email = $data->get('email');
+    $message = $data->get('message');
 
     $context = array(
         'user' => $name,

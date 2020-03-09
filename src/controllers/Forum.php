@@ -31,19 +31,19 @@ $router->post('/api/forum/categories', function($request) {
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['name']) || empty($data['name']))
+    if(!$data->existAndNotEmpty('name'))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NO_NAME_GIVEN');
-    if(!isset($data['description']) || empty($data['description']))
+    if(!$data->existAndNotEmpty('description'))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NO_DESCRIPTION_GIVEN');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $name = $data['name'];
-    $description = $data['description'];
+    $name = $data->get('name');
+    $description = $data->get('description');
 
     $display_order = Forum::getNewCategoryDisplayOrder();
     if ($display_order === FALSE)
@@ -65,12 +65,12 @@ $router->post('/api/forum/categories/<category_id:int>/reorder', function($reque
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['direction']) || empty($data['direction']))
+    if(!$data->existAndNotEmpty('direction'))
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_REORDER_CATEGORY_NO_DIRECTION'), 400);
 
-    $direction = $data['direction'];
+    $direction = $data->get('direction');
 
     $category = Forum::getCategory($category_id);
     if ($category === FALSE) {
@@ -118,11 +118,11 @@ $router->get('/api/forum/categories/<category_id:int>/posts', function($request,
     Security::checkAPIConnected();
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['page']) || empty($data['page']))
+    if(!$data->existAndNotEmpty('page'))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOPAGE');
-    if(!isset($data['pageSize']) || empty($data['pageSize']))
+    if(!$data->existAndNotEmpty('pageSize'))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOSIZEPAGE');
 
     if(count($errors_arr) > 0) {
@@ -134,8 +134,8 @@ $router->get('/api/forum/categories/<category_id:int>/posts', function($request,
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
     }
 
-    $page = $data['page'];
-    $pageSize = $data['pageSize'];
+    $page = $data->get('page');
+    $pageSize = $data->get('pageSize');
 
     $paginator = new Paginator($page, $pageSize);
     $posts = Forum::getPosts($category_id);
@@ -158,19 +158,19 @@ $router->post('/api/forum/categories/<category_id:int>/posts', function($request
     Security::checkAPIConnected();
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['title']) || empty($data['title']))
+    if(!$data->existAndNotEmpty('title'))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_POST_NO_TITLE');
-    if(!isset($data['content']) || empty($data['content']))
+    if(!$data->existAndNotEmpty('content'))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_POST_NO_CONTENT');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $title = $data['title'];
-    $content = $data['content'];
+    $title = $data->get('title');
+    $content = $data->get('content');
 
     $post = Forum::createPost($_SESSION['id'], $category_id, $title, $content);
     if($post === FALSE)
@@ -187,11 +187,11 @@ $router->get('/api/forum/posts/<post_id:int>/responses', function($request, $pos
     Security::checkAPIConnected();
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['page']) || empty($data['page']))
+    if(!$data->existAndNotEmpty('page'))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOPAGE');
-    if(!isset($data['pageSize']) || empty($data['pageSize']))
+    if(!$data->existAndNotEmpty('pageSize'))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_NOSIZEPAGE');
 
     if(count($errors_arr) > 0) {
@@ -203,8 +203,8 @@ $router->get('/api/forum/posts/<post_id:int>/responses', function($request, $pos
         return API::makeResponseError(I18n::getInstance()->translate('API_FORUM_CATEGORY_NOT_FOUND'), 404);
     }
 
-    $page = $data['page'];
-    $pageSize = $data['pageSize'];
+    $page = $data->get('page');
+    $pageSize = $data->get('pageSize');
 
     $paginator = new Paginator($page, $pageSize);
     $responses = Forum::getPostResponses($post_id);
@@ -228,16 +228,16 @@ $router->post('/api/forum/posts/<post_id:int>/responses', function($request, $po
     Security::checkAPIConnected();
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['content']) || empty($data['content']))
+    if(!$data->existAndNotEmpty('content'))
         $errors_arr[] = I18n::getInstance()->translate('API_FORUM_RESPONSE_NO_CONTENT');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $content = $data['content'];
+    $content = $data->get('content');
 
     $post = Forum::getPost($post_id);
     if ($post === FALSE)

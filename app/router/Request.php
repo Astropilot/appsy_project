@@ -3,6 +3,7 @@
 namespace Testify\Router;
 
 use Testify\Router\IRequest;
+use Testify\Router\RequestData;
 use Testify\Component\Security;
 
 
@@ -18,24 +19,24 @@ class Request implements IRequest {
         $this->requestUri = $_SERVER['REQUEST_URI'];
     }
 
-    public function getBody() {
+    public function getData(): RequestData {
         $body = array();
         if($this->requestMethod === 'GET') {
             foreach($_GET as $key => $value) {
                 $body[$key] = Security::protect(filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS));
             }
         }
-        if ($this->requestMethod === 'POST') {
+        else if ($this->requestMethod === 'POST') {
             foreach($_POST as $key => $value) {
                 $body[$key] = Security::protect(filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS));
             }
         }
-        if ($this->requestMethod === 'PUT') {
+        else {
             parse_str(file_get_contents('php://input'), $body);
             $body = array_map(function($e) {
                 return Security::protect($e);
             }, $body);
         }
-        return $body;
+        return new RequestData($body);
     }
 }

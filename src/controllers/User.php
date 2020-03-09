@@ -17,21 +17,21 @@ $router = Router::getInstance();
 
 $router->post('/api/users/login', function($request) {
     $errors_arr = array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
 
-    if(!isset($data['email']) || empty($data['email']))
+    if(!$data->existAndNotEmpty('email'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_NO_USERNAME_PROVIDED');
-    if(!isset($data['password']) || empty($data['password']))
+    if(!$data->existAndNotEmpty('password'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_NO_PASSWORD_PROVIDED');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $email = $data['email'];
-    $password = Security::hashPass($data['password'], Config::HASH_SALT);
+    $email = $data->get('email');
+    $password = Security::hashPass($data->get('password'), Config::HASH_SALT);
 
     if(User::userExist($email, $password) === FALSE) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NO_USER'), 404);
@@ -56,21 +56,21 @@ $router->post('/api/users/login', function($request) {
 
 $router->get('/api/users/invite', function($request) {
     $errors_arr = array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
 
-    if(!isset($data['token']) || empty($data['token']))
+    if(!$data->existAndNotEmpty('token'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_INVITE_NO_TOKEN');
-    if(!isset($data['email']) || empty($data['email']))
+    if(!$data->existAndNotEmpty('email'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_INVITE_NO_EMAIL');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $token = $data['token'];
-    $email = $data['email'];
+    $token = $data->get('token');
+    $email = $data->get('email');
 
     $invite = UserInvite::getValidInvite($token, $email);
     if($invite === FALSE)
@@ -99,7 +99,7 @@ $router->get('/api/users/<userid:int>', function($request, $user_id) {
 
 $router->put('/api/users/<userid:int>', function($request, $user_id) {
     $errors_arr = array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
@@ -107,17 +107,19 @@ $router->put('/api/users/<userid:int>', function($request, $user_id) {
     if (intval($user_id) !== $_SESSION['id'])
         $errors_arr[] = I18n::getInstance()->translate('API_USER_NOACCESS');
 
-    if (isset($data['email']) && empty($data['email']))
+    if ($data->existAndEmpty('email'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_UPDATE_NO_EMAIL');
 
-    if (isset($data['lastname']) && empty($data['lastname']))
+    if ($data->existAndEmpty('lastname'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_UPDATE_NO_LASTNAME');
 
-    if (isset($data['firstname']) && empty($data['firstname']))
+    if ($data->existAndEmpty('firstname'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_UPDATE_NO_FIRSTNAME');
 
-    if (isset($data['password']) && isset($data['passwordcheck'])) {
-        if (!empty($data['password']) && $data['password'] !== $data['passwordcheck'])
+    if ($data->isExist('password') && $data->isExist('passwordcheck')) {
+        $pass = $data->get('password');
+        $passcheck = $data->get('passwordcheck');
+        if (!$data->isEmpty('password') && $pass !== $passcheck)
             $errors_arr[] = I18n::getInstance()->translate('API_USER_UPDATE_PASSWORD_CHECK_ERROR');
     }
 
@@ -129,14 +131,14 @@ $router->put('/api/users/<userid:int>', function($request, $user_id) {
     if($user === FALSE)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
 
-    $email = isset($data['email']) ? $data['email'] : $user['email'];
-    $lastname = isset($data['lastname']) ? $data['lastname'] : $user['lastname'];
-    $firstname = isset($data['firstname']) ? $data['firstname'] : $user['firstname'];
+    $email = $data->getWithDefault('email', $user['email']);
+    $lastname = $data->getWithDefault('lastname', $user['lastname']);
+    $firstname = $data->getWithDefault('firstname', $user['firstname']);
     $role = $user['role'];
     $banned = $user['banned'];
 
-    if (isset($data['password']) && !empty($data['password'])) {
-        $password = Security::hashPass($data['password'], Config::HASH_SALT);
+    if ($data->existAndNotEmpty('password')) {
+        $password = Security::hashPass($data->get('password'), Config::HASH_SALT);
     } else
         $password = $user['password'];
 
@@ -165,25 +167,25 @@ $router->delete('/api/users/<user_id:int>', function($request, $user_id) {
 
 $router->post('/api/contacts/search', function($request) {
     $errors_arr = array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
 
-    if(!isset($data['search']))
+    if(!$data->isExist('search'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_SEARCH_NO_CRITERIA');
-    if(!isset($data['page']) || empty($data['page']))
+    if(!$data->existAndNotEmpty('page'))
         $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOPAGE');
-    if(!isset($data['pageSize']) || empty($data['pageSize']))
+    if(!$data->existAndNotEmpty('pageSize'))
         $errors_arr[] = I18n::getInstance()->translate('API_MESSAGE_NOSIZEPAGE');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $search = $data['search'];
-    $page = $data['page'];
-    $pageSize = $data['pageSize'];
+    $search = $data->get('search');
+    $page = $data->get('page');
+    $pageSize = $data->get('pageSize');
 
     $paginator = new Paginator($page, $pageSize);
     $contacts = User::findContacts($search, !Role::isUser());
@@ -215,37 +217,37 @@ $router->get('/api/users/logoff', function($request) {
 
 $router->post('/api/users', function($request) {
     $errors_arr = array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
 
-    if(!isset($data['token']) || empty($data['token']))
+    if(!$data->existAndNotEmpty('token'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_TOKEN');
-    if(!isset($data['email']) || empty($data['email']))
+    if(!$data->existAndNotEmpty('email'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_EMAIL');
-    if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+    if (!filter_var($data->getWithDefault('email', ''), FILTER_VALIDATE_EMAIL))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_EMAIL_NOTVALIDE');
-    if(!isset($data['firstname']) || empty($data['firstname']))
+    if(!$data->existAndNotEmpty('firstname'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_FIRSTNAME');
-    if(!isset($data['lastname']) || empty($data['lastname']))
+    if(!$data->existAndNotEmpty('lastname'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_LASTNAME');
-    if(!isset($data['password']) || empty($data['password']))
+    if(!$data->existAndNotEmpty('password'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_PASSWORD');
-    if (strlen($data['password']) < 6)
+    if (strlen($data->get('password')) < 6)
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_PASSWORD_SHORT');
-    if(!isset($data['password_check']) || empty($data['password_check']))
+    if(!$data->existAndNotEmpty('password_check'))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_NO_PASSWORDCHECK');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $token = $data['token'];
-    $email = $data['email'];
-    $firstname = $data['firstname'];
-    $lastname = $data['lastname'];
-    $password = $data['password'];
-    $password_check = $data['password_check'];
+    $token = $data->get('token');
+    $email = $data->get('email');
+    $firstname = $data->get('firstname');
+    $lastname = $data->get('lastname');
+    $password = $data->get('password');
+    $password_check = $data->get('password_check');
 
     if ($password !== $password_check)
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_CREATE_PASSWORD_NOT_MATCH'), 400);

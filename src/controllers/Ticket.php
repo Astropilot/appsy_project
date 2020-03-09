@@ -17,14 +17,14 @@ $router->get('/api/users/<user_id:int>/tickets', function($request, $user_id) {
     Security::checkAPIConnected();
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
     if (intval($user_id) !== $_SESSION['id'])
         return API::makeResponseError(I18n::getInstance()->translate('API_TICKET_NOACCESS'), 403);
 
-    if(!isset($data['page']) || empty($data['page']))
+    if(!$data->existAndNotEmpty('page'))
         $errors_arr[] = I18n::getInstance()->translate('API_TICKET_NOPAGE');
-    if(!isset($data['pageSize']) || empty($data['pageSize']))
+    if(!$data->existAndNotEmpty('pageSize'))
         $errors_arr[] = I18n::getInstance()->translate('API_TICKET_NOSIZEPAGE');
 
     if(count($errors_arr) > 0) {
@@ -36,8 +36,8 @@ $router->get('/api/users/<user_id:int>/tickets', function($request, $user_id) {
         return API::makeResponseError(I18n::getInstance()->translate('API_USER_NOT_FOUND'), 404);
     }
 
-    $page = $data['page'];
-    $pageSize = $data['pageSize'];
+    $page = $data->get('page');
+    $pageSize = $data->get('pageSize');
 
     $paginator = new Paginator($page, $pageSize);
     $tickets = Ticket::getTicketsFromUser($user);
@@ -59,19 +59,19 @@ $router->post('/api/users/<user_id:int>/tickets', function($request, $user_id) {
     Security::checkAPIConnected();
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['title']) || empty($data['title']))
+    if(!$data->existAndNotEmpty('title'))
         $errors_arr[] = I18n::getInstance()->translate('API_TICKETS_NO_NAME_GIVEN');
-    if(!isset($data['content']) || empty($data['content']))
+    if(!$data->existAndNotEmpty('content'))
         $errors_arr[] = I18n::getInstance()->translate('API_TICKETS_NO_DESCRIPTION_GIVEN');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $title = $data['title'];
-    $content = $data['content'];
+    $title = $data->get('title');
+    $content = $data->get('content');
 
     $ticket = Ticket::createTicket($user_id, $title, $content, 0);
     if($ticket === FALSE)
@@ -88,11 +88,11 @@ $router->get('/api/tickets/<ticket_id:int>/comments', function($request, $ticket
     Security::checkAPIConnected();
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['page']) || empty($data['page']))
+    if(!$data->existAndNotEmpty('page'))
         $errors_arr[] = I18n::getInstance()->translate('API_TICKET_NOPAGE');
-    if(!isset($data['pageSize']) || empty($data['pageSize']))
+    if(!$data->existAndNotEmpty('pageSize'))
         $errors_arr[] = I18n::getInstance()->translate('API_TICKET_NOSIZEPAGE');
 
     if(count($errors_arr) > 0) {
@@ -104,8 +104,8 @@ $router->get('/api/tickets/<ticket_id:int>/comments', function($request, $ticket
         return API::makeResponseError(I18n::getInstance()->translate('API_TICKET_NOT_FOUND'), 404);
     }
 
-    $page = $data['page'];
-    $pageSize = $data['pageSize'];
+    $page = $data->get('page');
+    $pageSize = $data->get('pageSize');
 
     $paginator = new Paginator($page, $pageSize);
     $comments = Ticket::getTicketComments($ticket);

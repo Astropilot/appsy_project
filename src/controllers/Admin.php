@@ -23,30 +23,30 @@ $router->post('/admin/api/users', function($request) {
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['email']) || empty($data['email']))
+    if(!$data->existAndNotEmpty('email'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_EMAIL');
     if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
         $errors_arr[] = I18n::getInstance()->translate('API_USER_CREATE_EMAIL_NOTVALIDE');
-    if(!isset($data['firstname']) || empty($data['firstname']))
+    if(!$data->existAndNotEmpty('firstname'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_FIRSTNAME');
-    if(!isset($data['lastname']) || empty($data['lastname']))
+    if(!$data->existAndNotEmpty('lastname'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_LASTNAME');
-    if(!isset($data['role']))
+    if(!$data->existAndNotEmpty('role'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_ROLE');
-    if(!isset($data['lang']) || empty($data['lang']))
+    if(!$data->existAndNotEmpty('lang'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_INVITE_NO_LANG');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $email = $data['email'];
-    $firstname = $data['firstname'];
-    $lastname = $data['lastname'];
-    $role = $data['role'];
-    $lang = $data['lang'];
+    $email = $data->get('email');
+    $firstname = $data->get('firstname');
+    $lastname = $data->get('lastname');
+    $role = $data->get('role');
+    $lang = $data->get('lang');
 
     date_default_timezone_set('UTC');
 
@@ -89,7 +89,7 @@ $router->post('/admin/api/users', function($request) {
 });
 
 $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
@@ -101,12 +101,15 @@ $router->put('/admin/api/users/<userid:int>', function($request, $user_id) {
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_USER_NOT_FOUND'), 404);
     }
 
-    $email = isset($data['email']) ? $data['email'] : $user['email'];
-    $password = isset($data['password']) ? Security::hashPass($data['password'], Config::HASH_SALT) : $user['password'];
-    $lastname = isset($data['lastname']) ? $data['lastname'] : $user['lastname'];
-    $firstname = isset($data['firstname']) ? $data['firstname'] : $user['firstname'];
-    $role = isset($data['role']) ? $data['role'] : $user['role'];
-    $banned = isset($data['banned']) ? $data['banned'] : $user['banned'];
+    $email = $data->getWithDefault('email', $user['email']);
+    if ($data->existAndNotEmpty('password'))
+        $password = Security::hashPass($data->get('password'), Config::HASH_SALT);
+    else
+        $password = $user['password'];
+    $lastname = $data->getWithDefault('lastname', $user['lastname']);
+    $firstname = $data->getWithDefault('firstname', $user['firstname']);
+    $role = $data->getWithDefault('role', $user['role']);
+    $banned = $data->getWithDefault('banned', $user['banned']);
 
     $res = User::updateUser($user['id'], $email, $password, $lastname, $firstname, $role, $banned);
     if ($res === FALSE)
@@ -123,22 +126,22 @@ $router->post('/admin/api/tickets', function($request) {
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['search']))
+    if(!$data->isExist('search'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_SEARCH_NO_CRITERIA');
-    if(!isset($data['page']) || empty($data['page']))
+    if(!$data->existAndNotEmpty('page'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_SEARCH_NOPAGE');
-    if(!isset($data['pageSize']) || empty($data['pageSize']))
+    if(!$data->existAndNotEmpty('pageSize'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_SEARCH_NOSIZEPAGE');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $search = $data['search'];
-    $page = $data['page'];
-    $pageSize = $data['pageSize'];
+    $search = $data->get('search');
+    $page = $data->get('page');
+    $pageSize = $data->get('pageSize');
 
     $paginator = new Paginator($page, $pageSize);
     $tickets = Ticket::findTickets($search);
@@ -156,7 +159,7 @@ $router->post('/admin/api/tickets', function($request) {
 });
 
 $router->put('/admin/api/tickets/<ticket_id:int>', function($request, $ticket_id) {
-    $data = $request->getBody();
+    $data = $request->getData();
 
     API::setAPIHeaders();
     Security::checkAPIConnected();
@@ -168,7 +171,7 @@ $router->put('/admin/api/tickets/<ticket_id:int>', function($request, $ticket_id
         return API::makeResponseError(I18n::getInstance()->translate('API_ADMIN_TICKET_NOT_FOUND'), 404);
     }
 
-    $status = isset($data['status']) ? $data['status'] : $ticket['status'];
+    $status = $data->getWithDefault('status', $ticket['status']);
 
     $res = Ticket::updateTicketStatus($ticket['id'], $status);
     if ($res === FALSE)
@@ -186,19 +189,19 @@ $router->post('/admin/api/tickets/<ticket_id:int>/comments', function($request, 
     Role::checkPermissions(Role::$ROLES['ADMINISTRATOR']);
 
     $errors_arr=array();
-    $data = $request->getBody();
+    $data = $request->getData();
 
-    if(!isset($data['author']) || empty($data['author']))
+    if(!$data->existAndNotEmpty('author'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_COMMENT_NOAUTHOR');
-    if(!isset($data['content']) || empty($data['content']))
+    if(!$data->existAndNotEmpty('content'))
         $errors_arr[] = I18n::getInstance()->translate('API_ADMIN_TICKET_COMMENT_NOCONTENT');
 
     if(count($errors_arr) > 0) {
         return API::makeResponseError($errors_arr, 400);
     }
 
-    $author = $data['author'];
-    $content = $data['content'];
+    $author = $data->get('author');
+    $content = $data->get('content');
 
     $comment = Ticket::createTicketComment($ticket_id, $author, $content);
     if ($comment === FALSE)
