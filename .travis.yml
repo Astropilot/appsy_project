@@ -1,15 +1,21 @@
-language: php
-
-php:
-- 7.2
-- 7.3
-
 jobs:
   include:
     - stage: "Unit Tests"
       name: "Framework Tests"
+      php:
+        - 7.2
+        - 7.3
+      language: php
+      services:
+        - mysql
       script: php tools/phpunit.phar --configuration framework.xml.dist --coverage-clover=coverage.xml
     - script: php tools/phpunit.phar --configuration project.xml.dist --coverage-clover=coverage.xml
+      php:
+        - 7.2
+        - 7.3
+      language: php
+      services:
+        - mysql
       name: "Project Tests"
 
 after_success:
