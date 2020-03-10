@@ -17,11 +17,7 @@
     bootstrap="app/autoload.php">
 
     <testsuites>
-        <testsuite name="Test Source">
-            <directory suffix=".php">./tests/src</directory>
-        </testsuite>
-
-        <testsuite name="Test App">
+        <testsuite name="Test Framework">
             <directory suffix=".php">./tests/app</directory>
         </testsuite>
     </testsuites>
@@ -34,7 +30,6 @@
                 <directory suffix=".php">./app/phpmailer</directory>
                 <file>./app/autoload.php</file>
             </exclude>
-            <directory suffix=".php">./src/models</directory>
         </whitelist>
     </filter>
 </phpunit>

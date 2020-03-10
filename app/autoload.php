@@ -73,5 +73,6 @@ $loader->addNamespace('Testify', 'src/');
 $loader->addNamespace('Testify\Model', 'src/models/');
 $loader->addNamespace('Testify\Component', 'app/components/');
 $loader->addNamespace('Testify\Router', 'app/router/');
+$loader->addNamespace('Testify\Network', 'app/network/');
 $loader->addNamespace('Testify\Tests', 'tests/');
 $loader->addNamespace('PHPMailer\PHPMailer', 'app/phpmailer/');

@@ -4,7 +4,13 @@ php:
 - 7.2
 - 7.3
 
-script: php tools/phpunit.phar tests --coverage-clover=coverage.xml
+jobs:
+  include:
+    - stage: "Unit Tests"
+      name: "Framework Tests"
+      script: php tools/phpunit.phar --configuration framework.xml.dist --coverage-clover=coverage.xml
+    - script: php tools/phpunit.phar --configuration project.xml.dist --coverage-clover=coverage.xml
+      name: "Project Tests"
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

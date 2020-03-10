@@ -6,7 +6,6 @@ require_once '../app/autoload.php';
 
 use Testify\Router\Request;
 use Testify\Router\Router;
-use Testify\Router\Response;
 use Testify\Model\Database;
 use Testify\Component\I18n;
 use Testify\Config;
