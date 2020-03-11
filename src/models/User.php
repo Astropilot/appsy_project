@@ -52,7 +52,7 @@ class User {
                 'email' => $email,
                 'pass' => $password,
             ));
-            return ($req->fetchColumn() ? True : False);
+            return ($req->fetchColumn() ? TRUE : FALSE);
         } catch (\PDOException $e) {
             Database::throwIfDeveloppment($e, Config::ENVIRONNEMENT);
             return FALSE;

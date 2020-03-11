@@ -21,6 +21,18 @@ TRUNCATE TABLE `tf_user_invited`;
 
 SET FOREIGN_KEY_CHECKS=1;
 
+INSERT INTO `tf_faq` (`id`, `question`, `answer`, `created_at`) VALUES
+(1, 'Je n\'arrive pas à me connecter.', 'La reponse c\'est la vie', '2020-03-11 21:04:44'),
+(2, 'Comment s\'inscrire ?', 'L\'agent 42 a ete neutralise', '2020-03-11 21:05:06'),
+(3, 'Que faire ?', 'Beaucoup de choses', '2020-03-11 21:05:06');
+
+INSERT INTO `tf_user` (`id`, `email`, `password`, `lastname`, `firstname`, `role`, `banned`) VALUES
+(1, 'demo@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Doe', 'John', 2, 0),
+(2, 'demo2@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Tessier', 'Alice', 1, 0),
+(3, 'demo3@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Lousier', 'Ben', 0, 0);
+
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

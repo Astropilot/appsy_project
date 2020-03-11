@@ -10,11 +10,6 @@ class ConfigTest {
     const SQL_HOST = 'localhost';
     const SQL_PASS = '';
     const SQL_DTB = 'testify_test';
-
-    const HASH_SALT = 'a3t=Xc7G?xyUR!YP';
-
-    const ENVIRONNEMENT = 'dev';
-
 }
 
 function importSqlFile($pdo, $sqlFile) {
