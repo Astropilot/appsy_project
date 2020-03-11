@@ -6,8 +6,6 @@ jobs:
         - 7.2
         - 7.3
       language: php
-      services:
-        - mysql
       script: php tools/phpunit.phar --configuration framework.xml.dist --coverage-clover=coverage.xml
     - script: php tools/phpunit.phar --configuration project.xml.dist --coverage-clover=coverage.xml
       php:
@@ -16,6 +14,8 @@ jobs:
       language: php
       services:
         - mysql
+      before_install:
+        - mysql -e 'CREATE DATABASE testify_test;'
       name: "Project Tests"
 
 after_success:

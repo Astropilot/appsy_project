@@ -9,8 +9,7 @@ use Testify\Model\Faq;
 class TestTest extends TestCase {
 
     public function setUp(): void {
-        //TODO: Init database
-        importSqlFile(Database::getInstance()->getPDO(), 'tests/src/testify_test.sql');
+        importSqlFile(Database::getInstance()->getPDO(), 'tests/src/testify_data.sql');
     }
 
     public function testPaginatePage1() {

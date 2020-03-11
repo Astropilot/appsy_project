@@ -68,3 +68,5 @@ function importSqlFile($pdo, $sqlFile) {
 
 
 Database::getInstance(new ConfigTest);
+
+importSqlFile(Database::getInstance()->getPDO(), 'tests/src/testify_test.sql');
