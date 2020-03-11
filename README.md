@@ -78,9 +78,10 @@ Here the list of the different commands available:
 
 ### Running the tests
 
-To run PHPUnit on the unit tests in the `tests/` folder, use the following command:
+To run PHPUnit on the unit tests you have two different configuration files, one for the Framework tests and the other one for the Project tests. You can start them by the following commands:
 ```bash
-$ php tools/phpunit.phar tests
+$ php tools/phpunit.phar --configuration framework.xml.dist
+$ php tools/phpunit.phar --configuration project.xml.dist
 ```
 
 ## Download
