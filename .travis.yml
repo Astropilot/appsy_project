@@ -1,13 +1,13 @@
 jobs:
   include:
-    - stage: "Unit Tests"
-      name: "Framework Tests"
+    - stage: "Framework Tests"
       php:
         - 7.2
         - 7.3
       language: php
       script: php tools/phpunit.phar --configuration framework.xml.dist --coverage-clover=coverage.xml
-    - script: php tools/phpunit.phar --configuration project.xml.dist --coverage-clover=coverage.xml
+    - stage: "Project Tests"
+      script: php tools/phpunit.phar --configuration project.xml.dist --coverage-clover=coverage.xml
       php:
         - 7.2
         - 7.3
@@ -16,7 +16,6 @@ jobs:
         - mysql
       before_install:
         - mysql -e 'CREATE DATABASE testify_test;'
-      name: "Project Tests"
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
