@@ -20,7 +20,7 @@ class Role {
         return (intval($_SESSION['role']) === self::$ROLES['USER']);
     }
 
-    public static function isAdministrator() : bool {
-        return (intval($_SESSION['role']) < self::$ROLES['ADMINISTRATOR']);
+    public static function isAdmin() : bool {
+        return (intval($_SESSION['role']) === self::$ROLES['ADMINISTRATOR']);
     }
 }

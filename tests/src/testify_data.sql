@@ -31,6 +31,10 @@ INSERT INTO `tf_user` (`id`, `email`, `password`, `lastname`, `firstname`, `role
 (2, 'demo2@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Tessier', 'Alice', 1, 0),
 (3, 'demo3@testify.com', 'A6548C32A358B9E7F65F7F56926ED7C34856116CD6015F9322C8CE57A791042C', 'Lousier', 'Ben', 0, 0);
 
+INSERT INTO `tf_user_invited` (`id`, `email`, `firstname`, `lastname`, `role`, `invite_token`, `expire_date`, `active`) VALUES
+(1, 'demo4@testify.com', 'foo', 'bar', 1, 'foo', '2099-03-11 21:05:06', 1);
+
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
