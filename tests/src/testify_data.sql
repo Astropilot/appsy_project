@@ -35,6 +35,11 @@ INSERT INTO `tf_user_invited` (`id`, `email`, `firstname`, `lastname`, `role`, `
 (1, 'demo4@testify.com', 'foo', 'bar', 1, 'foo', '2099-03-11 21:05:06', 1);
 
 
+INSERT INTO `tf_message` (`id`, `author`, `recipient`, `message`, `created_at`) VALUES
+(1, 1, 2, 'Salut !', '2020-03-11 21:05:06'),
+(2, 2, 1, 'Hello', '2020-03-11 21:07:54');
+
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
